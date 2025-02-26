@@ -13,6 +13,7 @@ public class Explorer implements IExplorerRaid {
     private final Logger logger = LogManager.getLogger();
 
     @Override
+    //drone gets its heading, battery level ?? 
     public void initialize(String s) {
         logger.info("** Initializing the Exploration Command Center");
         JSONObject info = new JSONObject(new JSONTokener(new StringReader(s)));
@@ -24,6 +25,7 @@ public class Explorer implements IExplorerRaid {
     }
 
     @Override
+    // where the drone will take decisions 
     public String takeDecision() {
         JSONObject decision = new JSONObject();
         decision.put("action", "stop"); // we stop the exploration immediately
@@ -32,6 +34,7 @@ public class Explorer implements IExplorerRaid {
     }
 
     @Override
+    // where to store the decisions made my the drone 
     public void acknowledgeResults(String s) {
         JSONObject response = new JSONObject(new JSONTokener(new StringReader(s)));
         logger.info("** Response received:\n"+response.toString(2));
