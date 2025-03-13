@@ -1,11 +1,10 @@
 package ca.mcmaster.se2aa4.island.teamXXX; 
 
 
-import eu.ace_design.island.bot.IExplorerRaid;
+import org.json.JSONArray;
 import org.json.JSONObject;
-import org.json.JSONTokener;
 
-public class Action implements DroneActions{
+public class Action implements ActionInterface{
 
     protected Drone drone; 
 
@@ -13,50 +12,45 @@ public class Action implements DroneActions{
 
     private JSONObject extraInfo; 
 
-    public Action(Drone currDrone){
-        this.drone = currDrone; 
-    } 
+    protected JSONObject decision;
 
+    //Add actions to drone class instead, but leave update methods as is
     @Override
-    public void fly(){
-        this.decision.put("action", "fly"); 
+    public String fly(){
+        decision.put("action", "fly");
+        return decision.toString(); 
+        
     }
 
     @Override // will return what headings its facing 
-    public void heading() {
-        this.decision.put("action","heading");
+    public String heading() {
+        decision.put("action","heading");
+        return decision.toString(); 
     }
 
     @Override // will return json object distance? 
-    public void echo(){
+    public String echo(){
         this.decision.put("action","echo"); 
+        return decision.toString(); 
     }
 
     @Override // will return biome type 
-    public void scan(){
+    public String scan(){
         this.decision.put("action","scan"); 
+        return decision.toString(); 
     }
 
     @Override
-    public void stop(){
+    public String stop(){
         this.decision.put("action","stop");
+        return decision.toString(); 
     }
 
     @Override
     public void updateDrone(JSONObject response){
 
         Integer cost = response.getInt("cost");
-        this.drone.setBattery(cost); 
-        
-
-        // should the biomeArray, creeks, and the sites be in the drone or should they be stored somewhere else? 
-        // JSONObject biomesArray = extraInfo.getJSONObject("biomes"); // does this info matter? 
-        
-        // JSONArray creeks = extraInfo.getJSONArray("creeks");
-        // setCreeks(creeks); 
-
-        // JSONArray sites = extraInfo.getJSONArray("sites"); 
-        // setSites(sites); 
+        this.drone.setBattery(cost);  
 
     }
 
@@ -64,14 +58,14 @@ public class Action implements DroneActions{
     public void updateIsland(JSONObject response){
         this.extraInfo = response.getJSONObject("extras");
 
-        JSONObject biomesArray = this.extraInfo.getJSONArray("biomes"); 
+        JSONArray biomesArray = this.extraInfo.getJSONArray("biomes"); 
         JSONArray creeks = this.extraInfo.getJSONArray("creeks");
         JSONArray sites = this.extraInfo.getJSONArray("sites"); 
 
         // island.updateBiomesArray() ?? 
 
-        this.island.setCreeks(JSONArray creeks);
-        this.island.setSites(JSONArray sites);  
+        island.setCreeks(creeks);
+        island.setSites(sites);  
 
     }
 

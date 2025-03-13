@@ -1,5 +1,6 @@
 package ca.mcmaster.se2aa4.island.teamXXX; 
 
+import ca.mcmaster.se2aa4.island.teamXXX.enums.Direction;
 
 public class Drone { 
     
@@ -21,11 +22,11 @@ public class Drone {
     }
 
     public Direction getHeading(){
-        return self.currDir; 
+        return this.currDir; 
     }
 
     public Integer getBattery(){
-        return self.currBattery; 
+        return this.currBattery; 
     }
 
     public void setBattery(Integer cost) {

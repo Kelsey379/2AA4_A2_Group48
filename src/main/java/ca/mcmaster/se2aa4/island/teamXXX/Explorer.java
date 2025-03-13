@@ -1,12 +1,14 @@
 package ca.mcmaster.se2aa4.island.teamXXX;
 
 import java.io.StringReader;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import eu.ace_design.island.bot.IExplorerRaid;
 import org.json.JSONObject;
 import org.json.JSONTokener;
+
+import ca.mcmaster.se2aa4.island.teamXXX.enums.Direction;
+import eu.ace_design.island.bot.IExplorerRaid;
 
 public class Explorer implements IExplorerRaid {
 
@@ -15,7 +17,7 @@ public class Explorer implements IExplorerRaid {
     private Action currAction; 
     private Direction startDir; 
 
-    private State currState; 
+    //private State currState;
 
     private final Logger logger = LogManager.getLogger();
 
@@ -39,7 +41,7 @@ public class Explorer implements IExplorerRaid {
         logger.info("Battery level is {}", batteryLevel);
 
 
-        this.drone = new Drone(this.startDir, startBattery);
+        this.drone = new Drone(this.startDir, batteryLevel);
         this.island = new Island(); 
 
 
@@ -47,12 +49,14 @@ public class Explorer implements IExplorerRaid {
     }
 
     @Override
-    // where the drone will take decisions 
+    //the state machine decides next action and then the decsion JSON object will be passed into the action class methods
     public String takeDecision() {
         JSONObject decision = new JSONObject();
         decision.put("action", "stop"); // we stop the exploration immediately
         logger.info("** Decision: {}",decision.toString());
         return decision.toString();
+
+        //add logic for states
     }
 
     @Override
@@ -62,8 +66,8 @@ public class Explorer implements IExplorerRaid {
         // JSONObject extraInfo = response.getJSONObject("extras"); 
         // JSONObject biomesArray = extraInfo.getJSONObject("biomes"); 
 
-        this.action.updateDrone(response); // !!! 
-        this.ation.updateIsland(response); // !!! 
+        this.currAction.updateDrone(response); // !!! 
+        this.currAction.updateIsland(response); // !!! 
         
         logger.info("** Response received:\n"+response.toString(2));
         Integer cost = response.getInt("cost");
