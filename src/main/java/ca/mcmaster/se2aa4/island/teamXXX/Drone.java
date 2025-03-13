@@ -12,11 +12,11 @@ public class Drone {
 
     public Drone(Direction startDir, Integer startBattery){
 
-        self.currDir = startDir; 
+        this.currDir = startDir; 
 
-        self.currBattery = startBattery; 
+        this.currBattery = startBattery; 
 
-        self.currAction = new Action(); 
+        this.currAction = new Action(); 
     
     }
 
@@ -24,56 +24,33 @@ public class Drone {
         return self.currDir; 
     }
 
-    private void setCreeks(JSONArray creeks){
-        self.creekArray = creeks; 
-    }
-
-    public boolean getCreek() {
-       if ( self.creeks != null && self.creeks.length() > 0){
-        return true; 
-       }
-       else{
-        return false; 
-       }
-    }
-    private void setSites(JSONArray sites){
-        self.siteArray = sites; 
-    }
-
-    public boolean getSites() {
-        if (self.sites != null && self.sites.length() > 0) {
-            return true; 
-        }
-        else{return false;}
-    }
-
     public Integer getBattery(){
         return self.currBattery; 
     }
 
     public void setBattery(Integer cost) {
-        self.currBattery -= cost; 
+        this.currBattery -= cost; 
     }
 
     
     public void fly(){
-        self.currAction.fly(); 
+        this.currAction.fly(); 
     }
 
     public void heading(){
-        self.currAction.heading(); 
+        this.currAction.heading(); 
     }
 
     public void echo(){
-        self.currAction.echo(); 
+        this.currAction.echo(); 
     }
 
     public void scan(){
-        self.currAction.scan(); 
+        this.currAction.scan(); 
     }
 
     public void stop() {
-        self.currAction.stop(); 
+        this.currAction.stop(); 
     }
 
 }
