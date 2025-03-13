@@ -13,7 +13,6 @@ public class Explorer implements IExplorerRaid {
     private Drone drone; 
     private Action currAction; 
     private Direction startDir; 
-    private BatteryStatus startBattery; 
 
     private State currState; 
 
@@ -29,16 +28,15 @@ public class Explorer implements IExplorerRaid {
         JSONObject info = new JSONObject(new JSONTokener(new StringReader(s)));
         logger.info("** Initialization info:\n {}",info.toString(2));
 
-        String direction = info.getString("heading");
+        String direction = info.getString("heading"); // N, S, E, W
+        self.startDir = Direction.setStartDir(direction); 
+       
         Integer batteryLevel = info.getInt("budget");
 
 
         logger.info("The drone is facing {}", direction);
         logger.info("Battery level is {}", batteryLevel);
 
-
-        self.startDir = new Direction(direction);
-        self.startBattery = new BatteryStatus(batteryLevel);
 
         self.drone = new Drone(self.startDir, self.startBattery);
 
@@ -61,7 +59,7 @@ public class Explorer implements IExplorerRaid {
         JSONObject extraInfo = response.getJSONObject("extras"); 
         JSONObject biomesArray = extraInfo.getJSONObject("biomes"); 
 
-        self.drone.updateDrone(response); // !!! 
+        self.action.updateDrone(response); // !!! 
         
         logger.info("** Response received:\n"+response.toString(2));
         Integer cost = response.getInt("cost");

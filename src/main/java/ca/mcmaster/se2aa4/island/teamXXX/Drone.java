@@ -3,20 +3,18 @@ package ca.mcmaster.se2aa4.island.teamXXX;
 
 public class Drone { 
     
-    private Direction currDir; 
-    private BatteryStatus currBattery; 
+    protected Direction currDir; // enum class : currDir.NORTH
 
-    private creekArray; 
-    private siteArray; 
+    protected Integer currBattery;
 
     private Action currAction; 
     
 
-    public Drone(Direction currDir, BatteryStatus currBattery){
+    public Drone(Direction startDir, Integer startBattery){
 
-        self.currDir = new Direction(currDir); 
-        self.currBattery = new BatteryStatus (currBattery); 
+        self.currDir = startDir; 
 
+        self.currBattery = startBattery; 
 
         self.currAction = new Action(); 
     
@@ -24,14 +22,6 @@ public class Drone {
 
     public Direction getHeading(){
         return self.currDir; 
-    }
-
-    public BatteryStatus getBattery(){
-        return self.currBattery; 
-    }
-
-    public BatteryStatus setBattery(Integer cost){
-        self.currBattery -= cost; 
     }
 
     private void setCreeks(JSONArray creeks){
@@ -56,13 +46,22 @@ public class Drone {
         }
         else{return false;}
     }
+
+    public Integer getBattery(){
+        return self.currBattery; 
+    }
+
+    public void setBattery(Integer cost) {
+        self.currBattery -= cost; 
+    }
+
     
     public void fly(){
         self.currAction.fly(); 
     }
 
     public void heading(){
-        self.currActoin.heading(); 
+        self.currAction.heading(); 
     }
 
     public void echo(){
