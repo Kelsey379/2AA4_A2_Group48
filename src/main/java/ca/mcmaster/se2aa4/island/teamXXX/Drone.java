@@ -14,32 +14,32 @@ public class Drone {
 
     public Drone(Direction currDir, BatteryStatus currBattery){
 
-        self.currDir = new Direction(currDir); 
-        self.currBattery = new BatteryStatus (currBattery); 
+        this.currDir = new Direction(currDir); 
+        this.currBattery = new BatteryStatus (currBattery); 
 
 
-        self.currAction = new Action(); 
+        this.currAction = new Action(); 
     
     }
 
     public Direction getHeading(){
-        return self.currDir; 
+        return this.currDir; 
     }
 
     public BatteryStatus getBattery(){
-        return self.currBattery; 
+        return this.currBattery; 
     }
 
     public BatteryStatus setBattery(Integer cost){
-        self.currBattery -= cost; 
+        this.currBattery -= cost; 
     }
 
     private void setCreeks(JSONArray creeks){
-        self.creekArray = creeks; 
+        this.creekArray = creeks; 
     }
 
     public boolean getCreek() {
-       if ( self.creeks != null && self.creeks.length() > 0){
+       if ( this.creeks != null && this.creeks.length() > 0){
         return true; 
        }
        else{
@@ -47,34 +47,34 @@ public class Drone {
        }
     }
     private void setSites(JSONArray sites){
-        self.siteArray = sites; 
+        this.siteArray = sites; 
     }
 
     public boolean getSites() {
-        if (self.sites != null && self.sites.length() > 0) {
+        if (this.sites != null && this.sites.length() > 0) {
             return true; 
         }
         else{return false;}
     }
     
     public void fly(){
-        self.currAction.fly(); 
+        this.currAction.fly(); 
     }
 
     public void heading(){
-        self.currActoin.heading(); 
+        this.currAction.heading(); 
     }
 
     public void echo(){
-        self.currAction.echo(); 
+        this.currAction.echo(); 
     }
 
     public void scan(){
-        self.currAction.scan(); 
+        this.currAction.scan(); 
     }
 
     public void stop() {
-        self.currAction.stop(); 
+        this.currAction.stop(); 
     }
 
 }

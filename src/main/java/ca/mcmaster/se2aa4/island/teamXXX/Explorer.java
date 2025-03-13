@@ -37,10 +37,10 @@ public class Explorer implements IExplorerRaid {
         logger.info("Battery level is {}", batteryLevel);
 
 
-        self.startDir = new Direction(direction);
-        self.startBattery = new BatteryStatus(batteryLevel);
+        this.startDir = new Direction(direction);
+        this.startBattery = new BatteryStatus(batteryLevel);
 
-        self.drone = new Drone(self.startDir, self.startBattery);
+        this.drone = new Drone(this.startDir, this.startBattery);
 
 
     }
@@ -61,7 +61,7 @@ public class Explorer implements IExplorerRaid {
         JSONObject extraInfo = response.getJSONObject("extras"); 
         JSONObject biomesArray = extraInfo.getJSONObject("biomes"); 
 
-        self.drone.updateDrone(response); // !!! 
+        this.drone.updateDrone(response); // !!! 
         
         logger.info("** Response received:\n"+response.toString(2));
         Integer cost = response.getInt("cost");
