@@ -1,0 +1,35 @@
+
+the takeDecision: 
+1. commands that can move the drone
+    create a new drone object with the 
+    battery and heading 
+2. store the map in an ADS? 
+    need to be able to work through the json file? 
+3. parse through the ADS and change the drone 
+accordingly 
+4. make a move ( call the takeDecision method) 
+5. after every takeDecision call acknowledgeResults 
+
+6. echo either ground or out of range 
+    not if its viable spot or not 
+
+7. scan tells the type of land it is 
+
+8. need to find emergecny site ( return the info) 
+9. need to find the creek sit ( return the info ) 
+10. when u use the scan method it will automatically return 
+if the type of land is emergecny or creek
+
+REQUIRED: 
+
+find creek, find emergecny site, avoid going MIA, produce final 
+report with the inlet identifier 
+
+when u use echo, it return ground or no ground 
+but it mean that the ground can be any of the 5 biomes
+so you need to go to that ground biome and use scan to determine 
+which biome it is, and just because it might be a beach biome 
+it does not mean that its a creek, it will have that as a 
+seperate identifier 
+
+
