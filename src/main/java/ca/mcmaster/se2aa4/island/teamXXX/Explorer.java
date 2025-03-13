@@ -11,6 +11,7 @@ import org.json.JSONTokener;
 public class Explorer implements IExplorerRaid {
 
     private Drone drone; 
+    private Island island; 
     private Action currAction; 
     private Direction startDir; 
 
@@ -29,7 +30,7 @@ public class Explorer implements IExplorerRaid {
         logger.info("** Initialization info:\n {}",info.toString(2));
 
         String direction = info.getString("heading"); // N, S, E, W
-        self.startDir = Direction.setStartDir(direction); 
+        this.startDir = Direction.setStartDir(direction); 
        
         Integer batteryLevel = info.getInt("budget");
 
@@ -38,7 +39,9 @@ public class Explorer implements IExplorerRaid {
         logger.info("Battery level is {}", batteryLevel);
 
 
-        self.drone = new Drone(self.startDir, self.startBattery);
+        this.drone = new Drone(this.startDir, startBattery);
+        this.island = new Island(); 
+
 
 
     }
@@ -56,10 +59,11 @@ public class Explorer implements IExplorerRaid {
     // where to store the decisions made my the drone 
     public void acknowledgeResults(String s) {
         JSONObject response = new JSONObject(new JSONTokener(new StringReader(s)));
-        JSONObject extraInfo = response.getJSONObject("extras"); 
-        JSONObject biomesArray = extraInfo.getJSONObject("biomes"); 
+        // JSONObject extraInfo = response.getJSONObject("extras"); 
+        // JSONObject biomesArray = extraInfo.getJSONObject("biomes"); 
 
-        self.action.updateDrone(response); // !!! 
+        this.action.updateDrone(response); // !!! 
+        this.ation.updateIsland(response); // !!! 
         
         logger.info("** Response received:\n"+response.toString(2));
         Integer cost = response.getInt("cost");

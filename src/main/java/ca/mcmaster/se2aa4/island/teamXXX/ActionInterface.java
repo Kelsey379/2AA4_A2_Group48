@@ -8,7 +8,5 @@ public interface DroneActions {
     void scan(); 
     void stop(); 
     void updateDrone(); 
-    boolean foundCreek(); 
-    boolean foundSite(); 
-
+    void updateIsland(); 
 }
