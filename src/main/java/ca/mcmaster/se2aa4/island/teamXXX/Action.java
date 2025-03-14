@@ -15,36 +15,6 @@ public class Action implements ActionInterface{
     protected JSONObject decision;
 
     //Add actions to drone class instead, but leave update methods as is
-    @Override
-    public String fly(){
-        decision.put("action", "fly");
-        return decision.toString(); 
-        
-    }
-
-    @Override // will return what headings its facing 
-    public String heading() {
-        decision.put("action","heading");
-        return decision.toString(); 
-    }
-
-    @Override // will return json object distance? 
-    public String echo(){
-        this.decision.put("action","echo"); 
-        return decision.toString(); 
-    }
-
-    @Override // will return biome type 
-    public String scan(){
-        this.decision.put("action","scan"); 
-        return decision.toString(); 
-    }
-
-    @Override
-    public String stop(){
-        this.decision.put("action","stop");
-        return decision.toString(); 
-    }
 
     @Override
     public void updateDrone(JSONObject response){
