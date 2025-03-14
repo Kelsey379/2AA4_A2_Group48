@@ -13,6 +13,8 @@ public class Drone {
     private Action currAction; 
 
     public JSONObject decision; 
+    public JSONObject parameters; 
+    public String status; 
     
 
     public Drone(Direction startDir, Integer startBattery){
@@ -25,7 +27,11 @@ public class Drone {
     
     }
 
-    public Direction getHeading(){
+    public Action getCurrAction(){
+        return this.currAction; 
+    }
+
+    public Direction getFacingDirection(){
         return this.currDir; 
     }
 
@@ -43,13 +49,22 @@ public class Drone {
         return decision.toString(); 
     }
 
-    public String heading(){
+    public String heading(Direction changeDirection){
         this.decision.put("action","heading");
+        parameters.put("direction", changeDirection); 
+        decision.put("parameters",parameters); 
+
+    
         return decision.toString(); 
     }
 
-    public String echo(){
-        this.decision.put("action","heading");
+    public String echo(Direction echoDirection){
+
+        this.decision.put("action","echo");
+        // this.direction.NORTH --> "N"; 
+        parameters.put("direction", echoDirection); 
+        decision.put("parameteres",parameters); 
+
         return this.decision.toString(); 
     }
 
@@ -62,5 +77,20 @@ public class Drone {
         this.decision.put("action","stop");
         return this.decision.toString(); 
     }
+
+    public void setStatus(String status){
+        this.status = status; 
+    }
+
+
+    public String getStatus(){
+        return status; 
+    }
+
+    public void turnRight(Direction currDir) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+
 
 }

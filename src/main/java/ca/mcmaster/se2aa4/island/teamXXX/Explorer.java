@@ -11,13 +11,14 @@ import ca.mcmaster.se2aa4.island.teamXXX.enums.Direction;
 import eu.ace_design.island.bot.IExplorerRaid;
 
 public class Explorer implements IExplorerRaid {
-
+    public Algorithm algorithm; 
     private Drone drone; 
     private Island island; 
     private Action currAction; 
-    private Direction startDir; 
+    private Direction startDir;
 
-    //private State currState;
+
+    private StateMachine currState;
 
     private final Logger logger = LogManager.getLogger();
 
@@ -42,7 +43,13 @@ public class Explorer implements IExplorerRaid {
 
 
         this.drone = new Drone(this.startDir, batteryLevel);
+        this.currAction = this.drone.getCurrAction(); 
         this.island = new Island(); 
+        this.currState = new StateMachine(this.drone, this.currAction, this.island); 
+
+        this.algorithm = new Algorithm(this.drone, this.island, this.currState);
+
+
 
 
 
@@ -54,8 +61,13 @@ public class Explorer implements IExplorerRaid {
         JSONObject decision = new JSONObject();
         decision.put("action", "stop"); // we stop the exploration immediately
         logger.info("** Decision: {}",decision.toString());
+
+        
+    
         return decision.toString();
 
+        // String action = currState.executeState(); 
+        // return action; 
         //add logic for states
     }
 
@@ -76,6 +88,8 @@ public class Explorer implements IExplorerRaid {
         logger.info("The status of the drone is {}", status);
         JSONObject extraInfo = response.getJSONObject("extras");
         logger.info("Additional information received: {}", extraInfo);
+
+        
     }
 
     @Override

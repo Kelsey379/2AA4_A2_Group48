@@ -21,7 +21,7 @@ public class Island {
         this.creekArray = creeks; 
     }
 
-    public boolean getCreek() {
+    public boolean getCreek() { //algorithm calls this
        if ( this.creekArray != null && this.creekArray.length() > 0){
         return true; 
        }

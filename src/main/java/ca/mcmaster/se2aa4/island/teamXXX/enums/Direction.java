@@ -1,10 +1,10 @@
 package ca.mcmaster.se2aa4.island.teamXXX.enums;
 
 public enum Direction {
-    NORTH("N"), 
-    SOUTH("S"), 
-    EAST("E"),
-    WEST("W"); 
+    N("N"), 
+    S("S"), 
+    E("E"),
+    W("W"); 
 
     private final String currDirection; 
 
@@ -17,13 +17,19 @@ public enum Direction {
             throw new IllegalArgumentException("no starting direction");
         }
         switch(startDir.toUpperCase()) {
-            case "N" : return NORTH;
-            case "S" : return SOUTH; 
-            case "E" : return EAST; 
-            case "W" : return WEST; 
+            case "N": return N;
+            // Direction."N", Direction.N there is a diff
+            case "S" : return S; 
+            case "E" : return E; 
+            case "W" : return W; 
             default: 
                 throw new IllegalArgumentException("Not a valid starting direction");
         }
         
     }
+
+    public String getDir(){
+        return this.currDirection; 
+    }
+
 }
