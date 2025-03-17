@@ -4,6 +4,7 @@ public enum Direction {
     N("N"), 
     S("S"), 
     E("E"),
+    
     W("W"); 
 
     private final String currDirection; 
