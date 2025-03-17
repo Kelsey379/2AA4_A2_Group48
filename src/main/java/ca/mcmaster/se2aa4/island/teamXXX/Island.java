@@ -10,6 +10,8 @@ public class Island {
     protected JSONArray creekArray; 
     protected JSONArray siteArray; 
 
+    // private JSONObject extraInfo; 
+
     public Island(){
 
         this.foundCreek = false; 
@@ -17,30 +19,32 @@ public class Island {
 
     }
 
-    public void setCreeks(JSONArray creeks){
-        this.creekArray = creeks; 
+    public void setCreeks(Boolean creeks){
+        this.foundCreek = creeks; 
     }
 
     public boolean getCreek() { //algorithm calls this
-       if ( this.creekArray != null && this.creekArray.length() > 0){
-        return true; 
-       }
-       else{
-        return false; 
-       }
+        return this.foundCreek; 
     }
 
-    public void setSites(JSONArray sites){
+    public void setSites(Boolean sites){
 
-        this.siteArray = sites; 
+        this.foundSites = sites; 
     }
 
     public boolean getSites() {
 
-        if (this.siteArray != null && this.siteArray.length() > 0) {
-            return true; 
-        }
-        else{return false;}
+        return this.foundSites; 
+    }
+
+    public void updateIsland(Boolean foundCreek, Boolean foundSite){
+
+
+        // island.updateBiomesArray() ?? 
+
+        setCreeks(foundCreek);
+        setSites(foundSite);  
+
     }
 
 

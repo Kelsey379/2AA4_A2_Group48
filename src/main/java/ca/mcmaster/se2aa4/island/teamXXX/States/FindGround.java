@@ -1,50 +1,89 @@
 package ca.mcmaster.se2aa4.island.teamXXX.States;
 
-import ca.mcmaster.se2aa4.island.teamXXX.Action;
+
+import org.json.JSONObject;
+
+import ca.mcmaster.se2aa4.island.teamXXX.Action; 
 import ca.mcmaster.se2aa4.island.teamXXX.Drone;
 import ca.mcmaster.se2aa4.island.teamXXX.Island;
-import ca.mcmaster.se2aa4.island.teamXXX.State;
+import ca.mcmaster.se2aa4.island.teamXXX.States.State;
 import ca.mcmaster.se2aa4.island.teamXXX.StateMachine;
 import ca.mcmaster.se2aa4.island.teamXXX.enums.Direction;
 
+import java.util.JSONObject; 
 
-public class FindGround extends  State{
+import org.json.JSONArray;
 
-    StateMachine nextState;
+
+public class FindGround extends State {
+
     Direction currDir;
+    Boolean lost = false; 
+    Boolean flyForward = false ; 
 
-    public FindGround(Drone drone, Action action, Island island) {
-        super(drone, action, island);
+
+    public FindGround(Drone drone, Action action, Island island, StateMachine state, Direction currDir) {
+        super(drone, action, island, state);
+        this.currDir = currDir; 
     }
     
     @Override
-    public String executeState(){
-        currDir = drone.getFacingDirection();
-        if(Integer.parseInt(drone.echo(currDir)) > 0){
-                exitState(Integer.parseInt(drone.echo(currDir)));
+    public void executeState(){
+
+        String resultAction = drone.echo(currDir); 
+        missionControl.takeDecision(resultAction); 
+
+        JSONObject response = missionControl.getResponse(); 
+
+        Integer cost = response.getInt("cost"); 
+        String status = response.getString("status"); 
+        
+        JSONObject extras = response.getJSONObject("extras"); 
+        Integer range = extras.getInt("range");
+
+        drone.updateDrone(cost, status);
+        // ned to check if echo operation cost brings down battery
+
+
+        if(status.equals("OK")){
+            if (range > 0) {
+                flyForward = true; 
             }
-        else {
-            drone.turnRight(currDir);
+
         }
-        Direction dirToEcho = currDir;
-        while (Integer.parseInt(drone.echo(action.turnLeft(dirToEcho))) == 0) { 
+        else{
+            lost = true; 
+        }
+
+        // currDir = drone.getFacingDirection();
+        // if(Integer.parseInt(drone.echo(currDir)) > 0){
+        //         exitState(Integer.parseInt(drone.echo(currDir)));
+        //     }
+        // else {
+        //     drone.turnRight(currDir);
+        // }
+        // Direction dirToEcho = currDir;
+        // while (Integer.parseInt(drone.echo(action.turnLeft(dirToEcho))) == 0) { 
             
-            drone.fly();
+        //     drone.fly();
                 
-                //scan left
-                //if nothing, fly forward 1 square
-                //echon left
-                //if nothing, fly forward again, echo left
-                //repeat until found
-            }
-        }
+        //         //scan left
+        //         //if nothing, fly forward 1 square
+        //         //echon left
+        //         //if nothing, fly forward again, echo left
+        //         //repeat until found
+        // }
+        
     }
 
     @Override
-    public State exitState(Integer range){
+    public State exitState(){
 
-        nextState = new FlyForward(range); 
+        if(lost){stateMachine.setState(stateMachine.LossOfSignal);}
+        else if (flyForward) {stateMachine.setState(stateMachine.FlyForward);}
+
+        return stateMachine.getState(); 
 
     }
     
-}
+} 

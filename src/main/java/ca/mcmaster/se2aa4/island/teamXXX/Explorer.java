@@ -45,7 +45,7 @@ public class Explorer implements IExplorerRaid {
         this.drone = new Drone(this.startDir, batteryLevel);
         this.currAction = this.drone.getCurrAction(); 
         this.island = new Island(); 
-        this.currState = new StateMachine(this.drone, this.currAction, this.island); 
+        this.currState = new StateMachine(this.drone, this.currAction, this.island, this.startDir); 
 
         this.algorithm = new Algorithm(this.drone, this.island, this.currState);
 
@@ -58,11 +58,13 @@ public class Explorer implements IExplorerRaid {
     @Override
     //the state machine decides next action and then the decsion JSON object will be passed into the action class methods
     public String takeDecision() {
+
         JSONObject decision = new JSONObject();
         decision.put("action", "stop"); // we stop the exploration immediately
         logger.info("** Decision: {}",decision.toString());
 
-        
+
+        // String finalDecision = MissionControl.getRecentAction(); 
     
         return decision.toString();
 
@@ -78,8 +80,10 @@ public class Explorer implements IExplorerRaid {
         // JSONObject extraInfo = response.getJSONObject("extras"); 
         // JSONObject biomesArray = extraInfo.getJSONObject("biomes"); 
 
-        this.currAction.updateDrone(response); // !!! 
-        this.currAction.updateIsland(response); // !!! 
+        // this.currAction.updateDrone(response); // !!! --> Mission Control
+        // this.currAction.updateIsland(response); // !!! --> Mission Control 
+
+        missionControl.setResponse(response); 
         
         logger.info("** Response received:\n"+response.toString(2));
         Integer cost = response.getInt("cost");

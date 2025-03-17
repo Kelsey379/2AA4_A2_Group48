@@ -1,25 +1,47 @@
-package ca.mcmaster.se2aa4.island.teamXXX;
+package ca.mcmaster.se2aa4.island.teamXXX.States;
+
+
+import org.json.JSONObject;
+
+import ca.mcmaster.se2aa4.island.teamXXX.*;
+import ca.mcmaster.se2aa4.island.teamXXX.StateMachine;
 
 public class FlyForward extends State {
-    
-    private Integer range; 
-    public FlyForward(Drone drone, Action action, Island island, Integer range){
-        
-        super(drone, action, island); 
-        this.range = range; 
+     
+    private boolean lost = false; 
 
+    public FlyForward(Drone drone, Action action, Island island, StateMachine stateMachine){
+        
+        super(drone, action, island, stateMachine); 
 
     }
 
     @Override 
-    public String executeState() {
-        while (range > 0) {
-            range =- 1 ; 
-            return drone.fly(); 
-        }
-    }
-    public void exitState(){
+    public void executeState() {
+        String resultAction = drone.fly(); 
 
+        missionControl.takeDecision(resultAction); 
+
+        JSONObject response = missionControl.getResponse(); 
+
+
+        Integer cost = response.getInt("cost"); 
+        String status = response.getString("status"); 
+
+        drone.updateDrone(cost, status);
+
+        if(!status.equals("OK")){
+            lost = false; 
+        }
+
+    }
+
+    @Override
+    public State exitState(){
+        if (lost){stateMachine.setState(stateMachine.LossOfSignal);}
+        else{stateMachine.setState(stateMachine.Scan); }
+
+        return stateMachine.getState(); 
     }
     
 }

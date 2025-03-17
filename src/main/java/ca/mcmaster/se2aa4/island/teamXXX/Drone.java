@@ -91,6 +91,14 @@ public class Drone {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    public void updateDrone(Integer cost, String Status){
+
+        setBattery(cost);  
+        
+        setStatus(status); 
+
+    }
+
 
 
 }

@@ -2,6 +2,8 @@ package ca.mcmaster.se2aa4.island.teamXXX.States;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import ca.mcmaster.se2aa4.island.teamXXX.Action; 
 import ca.mcmaster.se2aa4.island.teamXXX.Drone;
@@ -13,28 +15,33 @@ import ca.mcmaster.se2aa4.island.teamXXX.StateMachine;
 
 public class StartState extends State {
 
-    StateMachine nextState; 
-
     private final Logger logger = LogManager.getLogger(); 
 
-    public StartState(Drone drone, Action action, Island island) {
-        super(drone, action, island);
+    public StartState(Drone drone, Action action, Island island, StateMachine currState) {
+        super(drone, action, island, currState);
     }
 
     @Override
-    public String executeState(){
+    public void executeState(){
        logger.info("**State Machine is initialized, enter the machine with the start state"); 
-        String resultDecision = this.drone.fly(); 
+        String resultAction = this.drone.fly(); 
 
-        return resultDecision; 
+        missionControl.takeDecision(resultAction); 
+        JSONObject response = missionControl.getResponse(); 
+
+        Integer cost = response.getInt("cost"); 
+        String status = response.getString("status"); 
+
+        drone.updateDrone(cost, status);
+
+
     }
 
     @Override
     public State exitState(){
-        
-       nextState.setState(new FindGround());
 
-       return nextState.getState();
+        stateMachine.setState(stateMachine.FindGround);
+        return stateMachine.getState(); 
         
     } 
 
