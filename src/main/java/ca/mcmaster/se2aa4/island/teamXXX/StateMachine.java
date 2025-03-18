@@ -1,10 +1,13 @@
 package ca.mcmaster.se2aa4.island.teamXXX;
 
 
-import java.util.List; 
-import java.util.ArrayList; 
-
-import ca.mcmaster.se2aa4.island.teamXXX.States.*;
+import ca.mcmaster.se2aa4.island.teamXXX.States.FindGround;
+import ca.mcmaster.se2aa4.island.teamXXX.States.FlyForward;
+import ca.mcmaster.se2aa4.island.teamXXX.States.GoHome;
+import ca.mcmaster.se2aa4.island.teamXXX.States.LossOfSignal;
+import ca.mcmaster.se2aa4.island.teamXXX.States.Scan;
+import ca.mcmaster.se2aa4.island.teamXXX.States.StartState;
+import ca.mcmaster.se2aa4.island.teamXXX.States.State;
 import ca.mcmaster.se2aa4.island.teamXXX.enums.Direction;
 
 public class StateMachine {
@@ -25,10 +28,8 @@ public class StateMachine {
     public Drone drone;
     public Action currAction;
     public Island island;
-
-
-
-    public List<State> stateMachineStates = new ArrayList<>(); 
+    public MissionControl missionControl; 
+ 
 
     public Direction currDir; 
 
@@ -36,20 +37,21 @@ public class StateMachine {
         // public List<State> states = new ArrayList<State>();
 
 
-        public StateMachine(Drone drone, Action action, Island island, Direction currDir) {
+        public StateMachine(Drone drone, Action action, Island island, Direction currDir, MissionControl missionControl) {
             this.drone = drone;
             this.currAction = action;
             this.island = island; 
             this.currDir = currDir; 
+            this.missionControl = missionControl; 
 
-            this.StartState = new StartState(this.drone, this.currAction, this.island, this); 
+            this.StartState = new StartState(this.drone, this.currAction, this.island, this, this.missionControl); 
  
-            this.FindGround = new FindGround(this.drone, this.currAction, this.island, this,this.currDir); 
+            this.FindGround = new FindGround(this.drone, this.currAction, this.island, this,this.currDir, this.missionControl); 
         
-            this.FlyForward = new FlyForward(this.drone, this.currAction, this.island,this); 
-            this.GoHome = new GoHome(this.drone, this.currAction, this.island, this); 
-            this.LossOfSignal = new LossOfSignal(this.drone, this.currAction, this.island, this); 
-            this.Scan = new Scan(this.drone, this.currAction, this.island, this); 
+            this.FlyForward = new FlyForward(this.drone, this.currAction, this.island,this, this.missionControl); 
+            this.GoHome = new GoHome(this.drone, this.currAction, this.island, this, this.missionControl); 
+            this.LossOfSignal = new LossOfSignal(this.drone, this.currAction, this.island, this, this.missionControl); 
+            this.Scan = new Scan(this.drone, this.currAction, this.island, this, this.missionControl); 
 
             this.currentState = this.StartState;  
 

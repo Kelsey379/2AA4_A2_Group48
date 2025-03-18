@@ -8,8 +8,8 @@ import org.json.JSONObject;
 
 public class GoHome extends State{
     
-    public GoHome(Drone drone, Action action, Island island, StateMachine stateMachine) {
-        super(drone, action, island, stateMachine); 
+    public GoHome(Drone drone, Action action, Island island, StateMachine stateMachine, MissionControl missionControl) {
+        super(drone, action, island, stateMachine, missionControl); 
     }
 
     @Override

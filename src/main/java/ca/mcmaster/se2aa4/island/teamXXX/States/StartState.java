@@ -2,13 +2,12 @@ package ca.mcmaster.se2aa4.island.teamXXX.States;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import ca.mcmaster.se2aa4.island.teamXXX.Action; 
 import ca.mcmaster.se2aa4.island.teamXXX.Drone;
 import ca.mcmaster.se2aa4.island.teamXXX.Island;
-import ca.mcmaster.se2aa4.island.teamXXX.State;
+import ca.mcmaster.se2aa4.island.teamXXX.MissionControl;
 import ca.mcmaster.se2aa4.island.teamXXX.StateMachine;
 
 
@@ -17,8 +16,8 @@ public class StartState extends State {
 
     private final Logger logger = LogManager.getLogger(); 
 
-    public StartState(Drone drone, Action action, Island island, StateMachine currState) {
-        super(drone, action, island, currState);
+    public StartState(Drone drone, Action action, Island island, StateMachine currState, MissionControl missionControl) {
+        super(drone, action, island, currState, missionControl);
     }
 
     @Override

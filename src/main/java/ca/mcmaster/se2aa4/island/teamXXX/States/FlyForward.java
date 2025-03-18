@@ -10,9 +10,9 @@ public class FlyForward extends State {
      
     private boolean lost = false; 
 
-    public FlyForward(Drone drone, Action action, Island island, StateMachine stateMachine){
+    public FlyForward(Drone drone, Action action, Island island, StateMachine stateMachine, MissionControl missionControl){
         
-        super(drone, action, island, stateMachine); 
+        super(drone, action, island, stateMachine, missionControl); 
 
     }
 

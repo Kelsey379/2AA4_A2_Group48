@@ -19,6 +19,7 @@ public class Explorer implements IExplorerRaid {
 
 
     private StateMachine currState;
+    public MissionControl missionControl;
 
     private final Logger logger = LogManager.getLogger();
 
@@ -45,12 +46,11 @@ public class Explorer implements IExplorerRaid {
         this.drone = new Drone(this.startDir, batteryLevel);
         this.currAction = this.drone.getCurrAction(); 
         this.island = new Island(); 
-        this.currState = new StateMachine(this.drone, this.currAction, this.island, this.startDir); 
 
-        this.algorithm = new Algorithm(this.drone, this.island, this.currState);
+        this.missionControl = new MissionControl(); 
+        this.currState = new StateMachine(this.drone, this.currAction, this.island, this.startDir, this.missionControl); 
 
-
-
+        this.algorithm = new Algorithm(this.drone, this.currAction, this.island, this.currState, this.startDir);
 
 
     }
@@ -59,14 +59,18 @@ public class Explorer implements IExplorerRaid {
     //the state machine decides next action and then the decsion JSON object will be passed into the action class methods
     public String takeDecision() {
 
-        JSONObject decision = new JSONObject();
-        decision.put("action", "stop"); // we stop the exploration immediately
-        logger.info("** Decision: {}",decision.toString());
+        // JSONObject decision = new JSONObject();
+        // decision.put("action", "stop"); // we stop the exploration immediately
+        // logger.info("** Decision: {}",decision.toString());
+
+        String decision = missionControl.getTakeDecision(); 
 
 
         // String finalDecision = MissionControl.getRecentAction(); 
     
-        return decision.toString();
+        // return decision.toString();
+
+        return decision; 
 
         // String action = currState.executeState(); 
         // return action; 

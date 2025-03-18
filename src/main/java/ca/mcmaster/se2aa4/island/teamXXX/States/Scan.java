@@ -1,10 +1,13 @@
 package ca.mcmaster.se2aa4.island.teamXXX.States; 
 
+import org.json.JSONArray;
 import org.json.JSONObject;
-import org.json.JSONArray; 
 
-
-import ca.mcmaster.se2aa4.island.teamXXX.*;
+import ca.mcmaster.se2aa4.island.teamXXX.Action;
+import ca.mcmaster.se2aa4.island.teamXXX.Drone;
+import ca.mcmaster.se2aa4.island.teamXXX.Island;
+import ca.mcmaster.se2aa4.island.teamXXX.MissionControl;
+import ca.mcmaster.se2aa4.island.teamXXX.StateMachine;
 
 
 public class Scan extends State{
@@ -12,10 +15,10 @@ public class Scan extends State{
     private boolean foundCreek = false ; 
     private boolean foundSite = false; 
    
-    public Scan (Drone drone, Action action, Island island, StateMachine stateMachine){
+    public Scan (Drone drone, Action action, Island island, StateMachine stateMachine, MissionControl missionControl){
    
    
-        super(drone, action, island, stateMachine); 
+        super(drone, action, island, stateMachine,missionControl); 
 
 
     }

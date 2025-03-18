@@ -6,13 +6,9 @@ import org.json.JSONObject;
 import ca.mcmaster.se2aa4.island.teamXXX.Action; 
 import ca.mcmaster.se2aa4.island.teamXXX.Drone;
 import ca.mcmaster.se2aa4.island.teamXXX.Island;
-import ca.mcmaster.se2aa4.island.teamXXX.States.State;
+import ca.mcmaster.se2aa4.island.teamXXX.MissionControl;
 import ca.mcmaster.se2aa4.island.teamXXX.StateMachine;
 import ca.mcmaster.se2aa4.island.teamXXX.enums.Direction;
-
-import java.util.JSONObject; 
-
-import org.json.JSONArray;
 
 
 public class FindGround extends State {
@@ -22,8 +18,8 @@ public class FindGround extends State {
     Boolean flyForward = false ; 
 
 
-    public FindGround(Drone drone, Action action, Island island, StateMachine state, Direction currDir) {
-        super(drone, action, island, state);
+    public FindGround(Drone drone, Action action, Island island, StateMachine state, Direction currDir, MissionControl missionControl) {
+        super(drone, action, island, state, missionControl);
         this.currDir = currDir; 
     }
     

@@ -7,5 +7,6 @@ public interface ActionInterface {
 
     Direction turnLeft(Direction currDir);
     Direction turnRight(Direction currDir);
+    
 
 }
