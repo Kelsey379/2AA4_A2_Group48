@@ -10,16 +10,18 @@ import org.json.JSONTokener;
 import ca.mcmaster.se2aa4.island.teamXXX.enums.Direction;
 import eu.ace_design.island.bot.IExplorerRaid;
 
+
 public class Explorer implements IExplorerRaid {
-    public Algorithm algorithm; 
     private Drone drone; 
     private Island island; 
     private Action currAction; 
     private Direction startDir;
 
 
-    private StateMachine currState;
+    public  StateMachine stateMachine;
     public MissionControl missionControl;
+
+    public Algorithm algorithm; 
 
     private final Logger logger = LogManager.getLogger();
 
@@ -48,11 +50,13 @@ public class Explorer implements IExplorerRaid {
         this.island = new Island(); 
 
         this.missionControl = new MissionControl(); 
-        this.currState = new StateMachine(this.drone, this.currAction, this.island, this.startDir, this.missionControl); 
+        this.stateMachine = new StateMachine(this.drone, this.currAction, this.island, this.startDir, this.missionControl); 
 
-        this.algorithm = new Algorithm(this.drone, this.currAction, this.island, this.currState, this.startDir);
+        //this.algorithm = new Algorithm(this.drone, this.currAction, this.island, this.currState, this.startDir);
 
-        algorithm.RUN(); 
+        //algorithm.RUN();
+
+        this.algorithm = new Algorithm(this.drone, this.currAction, this.island, this.startDir, this.missionControl, this.stateMachine); 
 
 
     }
@@ -65,7 +69,9 @@ public class Explorer implements IExplorerRaid {
         // decision.put("action", "stop"); // we stop the exploration immediately
         // logger.info("** Decision: {}",decision.toString());
 
+        algorithm.runStep();
         String decision = missionControl.getTakeDecision(); 
+
 
 
         // String finalDecision = MissionControl.getRecentAction(); 

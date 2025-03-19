@@ -21,16 +21,18 @@ public class LossOfSignal extends State {
        String resultAction = drone.stop(); 
 
        missionControl.takeDecision(resultAction); 
-       JSONObject response = missionControl.getResponse(); 
-       
-       Integer cost = response.getInt("cost"); 
-       String status = response.getString("status"); 
-       drone.updateDrone(cost, status);
+      
 
     }
 
     @Override
     public State exitState(){
+        
+        JSONObject response = missionControl.getResponse(); 
+       
+        Integer cost = response.getInt("cost"); 
+        String status = response.getString("status"); 
+        drone.updateDrone(cost, status);
 
         return null; 
 

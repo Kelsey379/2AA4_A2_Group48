@@ -26,22 +26,27 @@ public class StartState extends State {
         String resultAction = this.drone.fly(); 
 
         missionControl.takeDecision(resultAction); 
-        JSONObject response = missionControl.getResponse(); 
-
-        Integer cost = response.getInt("cost"); 
-        String status = response.getString("status"); 
-
-        drone.updateDrone(cost, status);
+        
 
 
     }
 
+
+
     @Override
     public State exitState(){
 
+        JSONObject response = missionControl.getResponse();
+        if (response == null) {
+        } else {
+            int cost = response.getInt("cost");
+            String status = response.getString("status");
+            drone.updateDrone(cost, status);
+            logger.info("** StartState: Received response, cost: {}, status: {}", cost, status);
+        }
+        logger.info("** StartState: Transitioning to Turn state.");
         stateMachine.setState(stateMachine.Turn);
         return stateMachine.getState(); 
-        
-    } 
+    }
 
 }

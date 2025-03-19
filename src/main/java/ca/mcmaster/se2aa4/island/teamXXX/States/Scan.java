@@ -30,6 +30,15 @@ public class Scan extends State{
 
         String resultAction = drone.scan(); 
         missionControl.takeDecision(resultAction); 
+        
+
+
+        
+    }
+
+    @Override 
+    public State exitState() {
+        
         JSONObject response = missionControl.getResponse(); 
 
         Integer cost = response.getInt("cost");
@@ -63,13 +72,6 @@ public class Scan extends State{
             island.updateIsland(foundCreek, foundSite);
         }
 
-
-
-        
-    }
-
-    @Override 
-    public State exitState() {
 
         if(foundCreek){
 

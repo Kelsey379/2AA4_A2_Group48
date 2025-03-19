@@ -33,17 +33,21 @@ public class Turn extends State {
         String currAction = drone.heading(currDir); 
         missionControl.takeDecision(currAction);
         
-        JSONObject response = missionControl.getResponse(); 
-
-        Integer cost = response.getInt("cost"); 
-        String status = response.getString("status"); 
-        drone.updateDrone(cost, status);
+       
 
         
     }
 
     @Override
     public State exitState(){
+        JSONObject response = missionControl.getResponse(); 
+        if (response != null) {
+            int cost = response.getInt("cost");
+            String status = response.getString("status");
+            drone.updateDrone(cost, status);
+        
+        }
+
         stateMachine.setState(stateMachine.FindGround);
         return stateMachine.getState(); 
     }

@@ -1,9 +1,13 @@
 package ca.mcmaster.se2aa4.island.teamXXX.States;
 
 
-import ca.mcmaster.se2aa4.island.teamXXX.*;
-import ca.mcmaster.se2aa4.island.teamXXX.StateMachine;
 import org.json.JSONObject;
+
+import ca.mcmaster.se2aa4.island.teamXXX.Action;
+import ca.mcmaster.se2aa4.island.teamXXX.Drone;
+import ca.mcmaster.se2aa4.island.teamXXX.Island;
+import ca.mcmaster.se2aa4.island.teamXXX.MissionControl;
+import ca.mcmaster.se2aa4.island.teamXXX.StateMachine;
 
 
 public class GoHome extends State{
@@ -18,6 +22,12 @@ public class GoHome extends State{
         String resultAction = drone.stop(); 
         missionControl.takeDecision(resultAction); 
 
+       
+    }
+
+    @Override 
+    public State exitState(){
+        
         JSONObject response = missionControl.getResponse(); 
 
 
@@ -26,10 +36,6 @@ public class GoHome extends State{
 
         drone.updateDrone(cost, status);
 
-    }
-
-    @Override 
-    public State exitState(){
         return null; 
     }
     

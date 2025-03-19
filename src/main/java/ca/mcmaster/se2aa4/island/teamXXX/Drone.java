@@ -24,7 +24,9 @@ public class Drone {
         this.currBattery = startBattery; 
 
         this.currAction = new Action(); 
-    
+
+        this.decision = new JSONObject(); 
+        this.parameters = new JSONObject();     
     }
 
     public Action getCurrAction(){
@@ -63,7 +65,7 @@ public class Drone {
         this.decision.put("action","echo");
         // this.direction.NORTH --> "N"; 
         parameters.put("direction", echoDirection); 
-        decision.put("parameteres",parameters); 
+        decision.put("parameters",parameters); 
 
         return this.decision.toString(); 
     }

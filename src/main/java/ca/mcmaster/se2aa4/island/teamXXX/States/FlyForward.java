@@ -9,6 +9,7 @@ import ca.mcmaster.se2aa4.island.teamXXX.Island;
 import ca.mcmaster.se2aa4.island.teamXXX.MissionControl;
 import ca.mcmaster.se2aa4.island.teamXXX.StateMachine;
 
+
 public class FlyForward extends State {
      
     private boolean lost = false; 
@@ -26,6 +27,12 @@ public class FlyForward extends State {
 
         missionControl.takeDecision(resultAction); 
 
+        
+
+    }
+
+    @Override
+    public State exitState(){
         JSONObject response = missionControl.getResponse(); 
 
 
@@ -37,11 +44,6 @@ public class FlyForward extends State {
         if(!status.equals("OK")){
             lost = false; 
         }
-
-    }
-
-    @Override
-    public State exitState(){
         if (lost){stateMachine.setState(stateMachine.LossOfSignal);}
         else{stateMachine.setState(stateMachine.Scan); }
 
