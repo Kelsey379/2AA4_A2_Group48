@@ -15,9 +15,6 @@ public class FindGround extends State {
 
     Direction currDir;
     Boolean lost = false; 
-    Boolean flyForward = false ; 
-    Boolean turn = false; 
-
 
 
     public FindGround(Drone drone, Action action, Island island, StateMachine state, Direction currDir, MissionControl missionControl) {

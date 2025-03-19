@@ -10,7 +10,7 @@ public class Drone {
 
     protected Integer currBattery;
 
-    private Action currAction; 
+    private final Action currAction; 
 
     public JSONObject decision; 
     public JSONObject parameters; 

@@ -36,20 +36,20 @@ public class Algorithm{
 
         currState = stateMachine.getState(); // startstate
 
-        if(currState.equals(StartState)) {
+        if(currState == stateMachine.StartState) {
             // todo- check battery condition?  
             currState.executeState(); 
             currState = currState.exitState(); // currState = Turn 
         }
 
-        if(currState.equals(Turn)){
+        if(currState == stateMachine.Turn){
             currState.executeState(); 
             
             currState = currState.exitState(); // FindGround
 
         }
 
-        if(currState.equals(FindGround)){
+        if(currState == stateMachine.FindGround){
             currState.executeState(); 
 
             currState = currState.exitState();
@@ -59,35 +59,35 @@ public class Algorithm{
             }
         }
 
-        while(!currState.equals(GoHome)){
+        while(currState != stateMachine.GoHome){
 
         
-            if (currState.equals(Scan)){
+            if (currState == stateMachine.Scan){
                 currState.executeState(); 
 
                 currState = currState.exitState(); 
 
-                if(currState.equals(LossOfSignal)){
+                if(currState == stateMachine.LossOfSignal){
                     currState.executeState();
                     currState = currState.exitState(); 
                 }
             }
 
-            if(currState.equals(UTurn)){
-                if(currState.equals(FlyForward)){
+            if(currState == stateMachine.UTurn){
+                if(currState == stateMachine.FlyForward){
                     currState.executeState();
                     currState = currState.exitState(); 
-                    if(currState.equals(LossOfSignal)){
+                    if(currState == stateMachine.LossOfSignal){
                         currState.executeState();
                         currState = currState.exitState(); 
                     }
                 }
             }
 
-            if(currState.equals(FlyForward)){
+            if(currState == stateMachine.FlyForward){
                 currState.executeState();
                 currState = currState.exitState(); 
-                if(currState.equals(LossOfSignal)){
+                if(currState == stateMachine.LossOfSignal){
                     currState.executeState();
                     currState = currState.exitState(); 
                 }

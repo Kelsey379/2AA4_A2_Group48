@@ -52,6 +52,8 @@ public class Explorer implements IExplorerRaid {
 
         this.algorithm = new Algorithm(this.drone, this.currAction, this.island, this.currState, this.startDir);
 
+        algorithm.RUN(); 
+
 
     }
 

@@ -9,52 +9,50 @@
     "budget": 7000
   },
   "part": "Engine",
-  "time": 1742318530421,
+  "time": 1742408565574,
   "meth": "initialize"
 },{
-  "data": {"action": "fly"},
-  "part": "Explorer",
-  "time": 1742318530445,
-  "meth": "takeDecision"
-},{
   "data": {
-    "cost": 3,
-    "extras": {},
-    "status": "OK"
+    "exception": ["TimeoutException"],
+    "stacktrace": [[
+      "scala.concurrent.impl.Promise$DefaultPromise.ready(Promise.scala:223)",
+      "scala.concurrent.impl.Promise$DefaultPromise.result(Promise.scala:227)",
+      "scala.concurrent.Await$$anonfun$result$1.apply(package.scala:190)",
+      "scala.concurrent.BlockContext$DefaultBlockContext$.blockOn(BlockContext.scala:53)",
+      "scala.concurrent.Await$.result(package.scala:190)",
+      "eu.ace_design.island.util.Timeout$class.timeout(Timeout.scala:16)",
+      "eu.ace_design.island.game.Engine.timeout(Engine.scala:18)",
+      "eu.ace_design.island.game.Engine.run(Engine.scala:34)",
+      "eu.ace_design.island.arena.utils.Runner.play(Runner.scala:96)",
+      "eu.ace_design.island.arena.utils.Runner.process(Runner.scala:64)",
+      "eu.ace_design.island.arena.utils.Runner$$anonfun$1.apply(Runner.scala:54)",
+      "eu.ace_design.island.arena.utils.Runner$$anonfun$1.apply(Runner.scala:54)",
+      "scala.collection.TraversableLike$$anonfun$map$1.apply(TraversableLike.scala:234)",
+      "scala.collection.TraversableLike$$anonfun$map$1.apply(TraversableLike.scala:234)",
+      "scala.collection.immutable.Set$Set1.foreach(Set.scala:94)",
+      "scala.collection.TraversableLike$class.map(TraversableLike.scala:234)",
+      "scala.collection.AbstractSet.scala$collection$SetLike$$super$map(Set.scala:47)",
+      "scala.collection.SetLike$class.map(SetLike.scala:92)",
+      "scala.collection.AbstractSet.map(Set.scala:47)",
+      "eu.ace_design.island.arena.utils.Runner.eu$ace_design$island$arena$utils$Runner$$process(Runner.scala:54)",
+      "eu.ace_design.island.arena.utils.Runner$$anonfun$apply$1.apply(Runner.scala:38)",
+      "eu.ace_design.island.arena.utils.Runner$$anonfun$apply$1.apply(Runner.scala:38)",
+      "scala.collection.TraversableLike$$anonfun$flatMap$1.apply(TraversableLike.scala:241)",
+      "scala.collection.TraversableLike$$anonfun$flatMap$1.apply(TraversableLike.scala:241)",
+      "scala.collection.immutable.Set$Set1.foreach(Set.scala:94)",
+      "scala.collection.TraversableLike$class.flatMap(TraversableLike.scala:241)",
+      "scala.collection.AbstractTraversable.flatMap(Traversable.scala:104)",
+      "eu.ace_design.island.arena.utils.Runner.apply(Runner.scala:38)",
+      "eu.ace_design.island.arena.utils.Runner.apply(Runner.scala:25)",
+      "eu.ace_design.island.runner.Runner.process(Runner.java:264)",
+      "eu.ace_design.island.runner.Runner.fire(Runner.java:185)",
+      "ca.mcmaster.se2aa4.island.teamXXX.Runner.main(Runner.java:21)",
+      "org.codehaus.mojo.exec.ExecJavaMojo.lambda$execute$0(ExecJavaMojo.java:283)",
+      "java.base/java.lang.Thread.run(Thread.java:1583)"
+    ]],
+    "message": ["Futures timed out after [2000 milliseconds]"]
   },
-  "part": "Engine",
-  "time": 1742318530451,
-  "meth": "takeDecision"
-},{
-  "data": {"action": "scan"},
   "part": "Explorer",
-  "time": 1742318530453,
-  "meth": "takeDecision"
-},{
-  "data": {
-    "cost": 7,
-    "extras": {
-      "creeks": [],
-      "biomes": ["OCEAN"],
-      "sites": []
-    },
-    "status": "OK"
-  },
-  "part": "Engine",
-  "time": 1742318530457,
-  "meth": "takeDecision"
-},{
-  "data": {"action": "stop"},
-  "part": "Explorer",
-  "time": 1742318530458,
-  "meth": "takeDecision"
-},{
-  "data": {
-    "cost": 5,
-    "extras": {},
-    "status": "OK"
-  },
-  "part": "Engine",
-  "time": 1742318530459,
-  "meth": "takeDecision"
+  "time": 1742408567593,
+  "meth": "initialize"
 }]
