@@ -8,6 +8,8 @@ import ca.mcmaster.se2aa4.island.teamXXX.States.LossOfSignal;
 import ca.mcmaster.se2aa4.island.teamXXX.States.Scan;
 import ca.mcmaster.se2aa4.island.teamXXX.States.StartState;
 import ca.mcmaster.se2aa4.island.teamXXX.States.State;
+import ca.mcmaster.se2aa4.island.teamXXX.States.Turn;
+import ca.mcmaster.se2aa4.island.teamXXX.States.UTurn;
 import ca.mcmaster.se2aa4.island.teamXXX.enums.Direction;
 
 public class StateMachine {
@@ -25,6 +27,7 @@ public class StateMachine {
     public State Scan; 
 
     public State Turn; 
+    public State UTurn; 
 
 
     public Drone drone;
@@ -55,7 +58,11 @@ public class StateMachine {
             this.LossOfSignal = new LossOfSignal(this.drone, this.currAction, this.island, this, this.missionControl); 
             this.Scan = new Scan(this.drone, this.currAction, this.island, this, this.missionControl); 
 
-            this.Turn = new Scan (this.drone, this.currAction, this.island, this, this.missionControl);
+            this.Turn = new Turn(this.drone, this.currAction, this.island, this, this.currDir, this.missionControl);
+
+            this.UTurn = new UTurn(this.drone, this.currAction, this.island, this,this.currDir, this.missionControl); 
+
+
 
             this.currentState = this.StartState;  
 

@@ -3,7 +3,7 @@ package ca.mcmaster.se2aa4.island.teamXXX.enums;
 public enum Direction {
     N("N"), 
     S("S"), 
-    E("E");
+    E("E"),
     W("W"); 
 
     private final String currDirection; 

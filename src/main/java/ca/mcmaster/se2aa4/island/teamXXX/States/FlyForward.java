@@ -3,7 +3,10 @@ package ca.mcmaster.se2aa4.island.teamXXX.States;
 
 import org.json.JSONObject;
 
-import ca.mcmaster.se2aa4.island.teamXXX.*;
+import ca.mcmaster.se2aa4.island.teamXXX.Action;
+import ca.mcmaster.se2aa4.island.teamXXX.Drone;
+import ca.mcmaster.se2aa4.island.teamXXX.Island;
+import ca.mcmaster.se2aa4.island.teamXXX.MissionControl;
 import ca.mcmaster.se2aa4.island.teamXXX.StateMachine;
 
 public class FlyForward extends State {
@@ -18,6 +21,7 @@ public class FlyForward extends State {
 
     @Override 
     public void executeState() {
+        
         String resultAction = drone.fly(); 
 
         missionControl.takeDecision(resultAction); 

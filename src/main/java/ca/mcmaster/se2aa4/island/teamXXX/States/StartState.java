@@ -39,7 +39,7 @@ public class StartState extends State {
     @Override
     public State exitState(){
 
-        stateMachine.setState(stateMachine.FindGround);
+        stateMachine.setState(stateMachine.Turn);
         return stateMachine.getState(); 
         
     } 

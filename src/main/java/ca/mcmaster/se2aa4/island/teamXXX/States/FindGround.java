@@ -19,6 +19,7 @@ public class FindGround extends State {
     Boolean turn = false; 
 
 
+
     public FindGround(Drone drone, Action action, Island island, StateMachine state, Direction currDir, MissionControl missionControl) {
         super(drone, action, island, state, missionControl);
         this.currDir = currDir; 
@@ -27,7 +28,7 @@ public class FindGround extends State {
     @Override
     public void executeState(){
 
-        String resultAction = drone.echo(currDir); 
+        String resultAction = drone.echo(Direction.E); 
         missionControl.takeDecision(resultAction); 
 
         JSONObject response = missionControl.getResponse(); 
@@ -39,22 +40,32 @@ public class FindGround extends State {
         Integer range = extras.getInt("range");
 
         drone.updateDrone(cost, status);
-        island.setNearestRange(range); 
-        // ned to check if echo operation cost brings down battery
+        // island.setNearestRange(range); 
 
-
-        if(status.equals("OK")){
-            if (range > 0) {
-                flyForward = true; 
+        while(range == 0 ){
+            missionControl.takeDecision(drone.fly());
+            response = missionControl.getResponse(); 
+            cost = response.getInt("cost");
+            status = response.getString("status"); 
+            if(!status.equals("OK")){
+                lost = true;
+                break;
             }
-            else{
-                turn = true; 
-            }
-        }
-        else{
-            lost = true; 
+
+            drone.updateDrone(cost, status); 
+            missionControl.takeDecision(drone.echo(Direction.E));
+            response = missionControl.getResponse(); 
+            extras = response.getJSONObject("extras");
+            range = extras.getInt("range");             
         }
 
+        if (!lost){
+            currDir = Direction.E; 
+            drone.heading(currDir);
+
+            
+        }
+        
         // currDir = drone.getFacingDirection();
         // if(Integer.parseInt(drone.echo(currDir)) > 0){
         //         exitState(Integer.parseInt(drone.echo(currDir)));
@@ -80,9 +91,7 @@ public class FindGround extends State {
     public State exitState(){
 
         if(lost){stateMachine.setState(stateMachine.LossOfSignal);}
-        else if (flyForward) {stateMachine.setState(stateMachine.FlyForward);}
-        else if (turn){stateMachine.setState(stateMachine.Turn); }
-
+        else {stateMachine.setState(stateMachine.Scan);}
         return stateMachine.getState(); 
 
     }

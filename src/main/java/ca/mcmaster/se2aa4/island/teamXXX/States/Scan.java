@@ -14,6 +14,8 @@ public class Scan extends State{
 
     private boolean foundCreek = false ; 
     private boolean foundSite = false; 
+
+    public boolean foundOcean = false; 
    
     public Scan (Drone drone, Action action, Island island, StateMachine stateMachine, MissionControl missionControl){
    
@@ -38,19 +40,30 @@ public class Scan extends State{
         JSONArray creeks = response.getJSONArray("creeks");
         JSONArray sites = response.getJSONArray("sites"); 
 
-        if(creeks.length() > 0 ) {
-            foundCreek = true; 
-        }
-        else if (sites.length() > 0 ){
-            foundSite = true; 
-     
+        JSONObject extras = response.getJSONObject("extras"); 
+        JSONArray biomes = extras.getJSONArray("biomes"); 
+
+        String biomeType = biomes.getString(0); 
+
+        if("OCEAN".equals(biomeType)){
+            foundOcean = true; 
         }
         else{
-            foundCreek = false; 
-            foundSite = false; 
+            if(creeks.length() > 0 ) {
+                foundCreek = true; 
+            }
+            else if (sites.length() > 0 ){
+                foundSite = true; 
+     
+            }
+            else{
+                foundCreek = false; 
+                foundSite = false; 
+            }
+            island.updateIsland(foundCreek, foundSite);
         }
 
-        island.updateIsland(foundCreek, foundSite);
+
 
         
     }
@@ -73,6 +86,9 @@ public class Scan extends State{
 
         }
 
+        else if (foundOcean){
+            stateMachine.setState(stateMachine.UTurn);
+        }
         else{
             stateMachine.setState(stateMachine.FlyForward);
         }

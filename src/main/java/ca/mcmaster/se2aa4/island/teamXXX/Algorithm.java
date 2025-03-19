@@ -1,6 +1,5 @@
 package ca.mcmaster.se2aa4.island.teamXXX; 
 
-import ca.mcmaster.se2aa4.island.teamXXX.States.*;
 import ca.mcmaster.se2aa4.island.teamXXX.States.State;
 import ca.mcmaster.se2aa4.island.teamXXX.enums.Direction;
 
@@ -15,9 +14,10 @@ public class Algorithm{
     private Object StartState;
     private Object FindGround;
     private Object LossOfSignal;
-
+    private Object GoHome; 
     private Object Turn; 
     private Object FlyForward; 
+    private Object UTurn; 
 
     private Object Scan; 
 
@@ -39,47 +39,63 @@ public class Algorithm{
         if(currState.equals(StartState)) {
             // todo- check battery condition?  
             currState.executeState(); 
-            currState = currState.exitState(); // currState = findGround 
+            currState = currState.exitState(); // currState = Turn 
+        }
+
+        if(currState.equals(Turn)){
+            currState.executeState(); 
+            
+            currState = currState.exitState(); // FindGround
+
         }
 
         if(currState.equals(FindGround)){
             currState.executeState(); 
-            
-            currState = currState.exitState(); // fly forward or LOS 
 
+            currState = currState.exitState();
             if(currState.equals(LossOfSignal)){
-                currState.executeState(); //drone.stop(); 
-                currState = currState.exitState(); // currState = null;
-            } 
-            else if (currState.equals(Turn)){
                 currState.executeState();
-                currState = currState.exitState(); // change heading to S. 
+                currState = currState.exitState(); 
             }
+        }
 
-            else if (currState.equals(FlyForward)){
+        while(!currState.equals(GoHome)){
 
-                int range = island.getNearestRange(); 
+        
+            if (currState.equals(Scan)){
+                currState.executeState(); 
 
-                while (range > 0 ) {
+                currState = currState.exitState(); 
+
+                if(currState.equals(LossOfSignal)){
                     currState.executeState();
-                    
-                    range --; 
+                    currState = currState.exitState(); 
                 }
-    
             }
-        }
 
-        if (currState.equals(FlyForward)){
-            currState = currState.exitState(); 
-            if(currState.equals(Scan)){
-
+            if(currState.equals(UTurn)){
+                if(currState.equals(FlyForward)){
+                    currState.executeState();
+                    currState = currState.exitState(); 
+                    if(currState.equals(LossOfSignal)){
+                        currState.executeState();
+                        currState = currState.exitState(); 
+                    }
+                }
             }
-            else{
+
+            if(currState.equals(FlyForward)){
                 currState.executeState();
-                currState = currState.exitState();
+                currState = currState.exitState(); 
+                if(currState.equals(LossOfSignal)){
+                    currState.executeState();
+                    currState = currState.exitState(); 
+                }
             }
-        }
 
+        } 
+        currState.executeState(); // must be goHome
+        currState = currState.exitState(); 
         
     }
 
