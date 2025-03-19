@@ -16,6 +16,7 @@ public class FindGround extends State {
     Direction currDir;
     Boolean lost = false; 
     Boolean flyForward = false ; 
+    Boolean turn = false; 
 
 
     public FindGround(Drone drone, Action action, Island island, StateMachine state, Direction currDir, MissionControl missionControl) {
@@ -38,6 +39,7 @@ public class FindGround extends State {
         Integer range = extras.getInt("range");
 
         drone.updateDrone(cost, status);
+        island.setNearestRange(range); 
         // ned to check if echo operation cost brings down battery
 
 
@@ -45,7 +47,9 @@ public class FindGround extends State {
             if (range > 0) {
                 flyForward = true; 
             }
-
+            else{
+                turn = true; 
+            }
         }
         else{
             lost = true; 
@@ -77,6 +81,7 @@ public class FindGround extends State {
 
         if(lost){stateMachine.setState(stateMachine.LossOfSignal);}
         else if (flyForward) {stateMachine.setState(stateMachine.FlyForward);}
+        else if (turn){stateMachine.setState(stateMachine.Turn); }
 
         return stateMachine.getState(); 
 
