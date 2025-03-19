@@ -16,6 +16,12 @@ public class Algorithm{
     private Object FindGround;
     private Object LossOfSignal;
 
+    private Object Turn; 
+    private Object FlyForward; 
+
+    private Object Scan; 
+
+
 
     public Algorithm(Drone drone, Action actoin, Island island, StateMachine stateMachine, Direction startDir){
         this.drone = drone; 
@@ -42,12 +48,12 @@ public class Algorithm{
             currState = currState.exitState(); // fly forward or LOS 
 
             if(currState.equals(LossOfSignal)){
-                currState.executeState();
-                currState = currState.exitState(); 
+                currState.executeState(); //drone.stop(); 
+                currState = currState.exitState(); // currState = null;
             } 
             else if (currState.equals(Turn)){
                 currState.executeState();
-                currState = currState.exitState(); 
+                currState = currState.exitState(); // change heading to S. 
             }
 
             else if (currState.equals(FlyForward)){
@@ -60,9 +66,20 @@ public class Algorithm{
                     range --; 
                 }
     
-                currState = currState.exitState(); 
             }
         }
+
+        if (currState.equals(FlyForward)){
+            currState = currState.exitState(); 
+            if(currState.equals(Scan)){
+
+            }
+            else{
+                currState.executeState();
+                currState = currState.exitState();
+            }
+        }
+
         
     }
 

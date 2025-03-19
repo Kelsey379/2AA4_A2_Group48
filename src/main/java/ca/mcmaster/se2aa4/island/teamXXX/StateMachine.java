@@ -24,6 +24,8 @@ public class StateMachine {
     public State LossOfSignal; 
     public State Scan; 
 
+    public State Turn; 
+
 
     public Drone drone;
     public Action currAction;
@@ -52,6 +54,8 @@ public class StateMachine {
             this.GoHome = new GoHome(this.drone, this.currAction, this.island, this, this.missionControl); 
             this.LossOfSignal = new LossOfSignal(this.drone, this.currAction, this.island, this, this.missionControl); 
             this.Scan = new Scan(this.drone, this.currAction, this.island, this, this.missionControl); 
+
+            this.Turn = new Scan (this.drone, this.currAction, this.island, this, this.missionControl);
 
             this.currentState = this.StartState;  
 
