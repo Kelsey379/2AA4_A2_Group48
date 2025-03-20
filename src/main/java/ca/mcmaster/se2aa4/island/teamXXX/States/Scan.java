@@ -1,5 +1,7 @@
 package ca.mcmaster.se2aa4.island.teamXXX.States; 
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -16,6 +18,8 @@ public class Scan extends State{
     private boolean foundSite = false; 
 
     public boolean foundOcean = false; 
+
+    private final Logger logger = LogManager.getLogger(); 
    
     public Scan (Drone drone, Action action, Island island, StateMachine stateMachine, MissionControl missionControl){
    
@@ -76,6 +80,7 @@ public class Scan extends State{
         if(foundCreek){
 
             if(island.getSites()){
+                logger.info("**Transitioning to GoHome State");
                 return stateMachine.GoHome; 
             }
 
@@ -83,12 +88,14 @@ public class Scan extends State{
         else if (foundSite){
 
             if(island.getCreek()) {
+                logger.info("**Transitioning to GoHome State");
                 return stateMachine.GoHome; 
             }
 
         }
 
         else if (foundOcean){
+            logger.info("**Transitioning to U-turn state.");
             return stateMachine.UTurn; 
         }
         // missionControl.setResponse(null);

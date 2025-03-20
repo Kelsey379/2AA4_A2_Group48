@@ -15,8 +15,8 @@ ca/mcmaster/se2aa4/island/teamXXX/Drone.class
 ca/mcmaster/se2aa4/island/teamXXX/enums/MovementType.class
 ca/mcmaster/se2aa4/island/teamXXX/Action$1.class
 ca/mcmaster/se2aa4/island/teamXXX/States/State.class
-ca/mcmaster/se2aa4/island/teamXXX/States/StartState.class
 ca/mcmaster/se2aa4/island/teamXXX/States/GoHome.class
+ca/mcmaster/se2aa4/island/teamXXX/States/StartState.class
 ca/mcmaster/se2aa4/island/teamXXX/States/FoundGroundTurnEast.class
 ca/mcmaster/se2aa4/island/teamXXX/States/Scan.class
 ca/mcmaster/se2aa4/island/teamXXX/Explorer.class

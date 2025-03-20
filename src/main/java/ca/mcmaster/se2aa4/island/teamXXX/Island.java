@@ -9,6 +9,7 @@ public class Island {
     protected boolean foundSites; 
     protected JSONArray creekArray; 
     protected JSONArray siteArray; 
+    protected int range;
 
     // private JSONObject extraInfo; 
 
@@ -16,6 +17,8 @@ public class Island {
 
         this.foundCreek = false; 
         this.foundSites = false; 
+        this.range = 0;
+
 
     }
 
@@ -46,6 +49,15 @@ public class Island {
         setSites(foundSite);  
 
     }
+
+    public int getRange(){
+        return this.range;
+    }
+    
+    public void setRange(int range){
+        this.range = range;
+    }
+
 
 
 }

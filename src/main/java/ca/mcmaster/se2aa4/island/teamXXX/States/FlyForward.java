@@ -1,6 +1,8 @@
 package ca.mcmaster.se2aa4.island.teamXXX.States;
 
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
 
 import ca.mcmaster.se2aa4.island.teamXXX.Action;
@@ -13,7 +15,10 @@ import ca.mcmaster.se2aa4.island.teamXXX.StateMachine;
 public class FlyForward extends State {
      
     private boolean lost = false; 
-    public int range; 
+    private int range; 
+
+    private final Logger logger = LogManager.getLogger(); 
+
 
     public FlyForward(Drone drone, Action action, Island island, StateMachine stateMachine, MissionControl missionControl){
         
@@ -48,8 +53,10 @@ public class FlyForward extends State {
         if(range != -1){
             range --; 
             island.setRange(range); 
+            logger.info("Stay in FlyForward state.");
             return stateMachine.FlyForward; 
         }
+        logger.info("Transition to in Scan state.");
         return stateMachine.Scan; 
  
     }

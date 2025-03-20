@@ -1,6 +1,8 @@
 
 package ca.mcmaster.se2aa4.island.teamXXX.States;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
 
 import ca.mcmaster.se2aa4.island.teamXXX.Action;
@@ -15,6 +17,7 @@ public class UTurn extends State {
 
     public Direction currDir; 
     public Boolean lost; 
+    private final Logger logger = LogManager.getLogger();
     
     public UTurn(Drone drone, Action action, Island island, StateMachine state, Direction currDir, MissionControl missionControl){
         
@@ -101,9 +104,14 @@ public class UTurn extends State {
 
     @Override
     public State exitState(){
-        if(lost){stateMachine.setState(stateMachine.LossOfSignal);}
-        else{stateMachine.setState(stateMachine.FlyForward);}
+        if(lost) {
+            logger.info("**Transitioning to LossOfignal state.");
+            return stateMachine.LossOfSignal;
+        }
+        else {
+            logger.info("**Transitioning to FLyForward state.");
+        }
 
-        return stateMachine.getState(); 
+        return stateMachine.FlyForward; 
     }
 }

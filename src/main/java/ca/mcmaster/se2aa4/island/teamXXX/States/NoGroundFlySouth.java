@@ -3,7 +3,7 @@ package ca.mcmaster.se2aa4.island.teamXXX.States;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
- 
+
 import ca.mcmaster.se2aa4.island.teamXXX.Action;
 import ca.mcmaster.se2aa4.island.teamXXX.Drone;
 import ca.mcmaster.se2aa4.island.teamXXX.Island;
@@ -11,56 +11,39 @@ import ca.mcmaster.se2aa4.island.teamXXX.MissionControl;
 import ca.mcmaster.se2aa4.island.teamXXX.StateMachine;
 import ca.mcmaster.se2aa4.island.teamXXX.enums.Direction;
 
+public class NoGroundFlySouth extends State {
 
-public class NoGroundFlySouth extends State{
-    
-    Direction currDir; 
-    private final Logger logger = LogManager.getLogger(); 
-
+    private final Logger logger = LogManager.getLogger();
 
     public NoGroundFlySouth(Drone drone, Action action, Island island, StateMachine state, Direction currDir, MissionControl missionControl) {
-        super(drone, action, island, state, missionControl); 
-        this.currDir = currDir; 
+        super(drone, action, island, state, missionControl);
     }
 
     @Override
     public void executeState() {
+        // Ensure drone is facing SOUTH before flying
+        drone.setFacingDirection(Direction.S);
 
-        this.currDir = drone.getFacingDirection();  // should be Directoin.S ; 
+        // Execute fly action (already facing south now)
         String currAction = drone.fly(); 
         missionControl.takeDecision(currAction);
-        
     }
 
     @Override
-    public State exitState(){
-
+    public State exitState() {
         JSONObject response = missionControl.getResponse();
-        // if (response == null) {
-        //     return stateMachine.getState();`
-        // }
-        
-        // Process the response.
+
         Integer cost = response.getInt("cost"); 
         String status = response.getString("status"); 
-    
 
         drone.updateDrone(cost, status);
-     
-        if(!status.equals("OK")){
 
-            logger.info("** StartState: Transitioning to LossOfSignal state.");
-            stateMachine.setState(stateMachine.LossOfSignal);
- 
+        if (!status.equals("OK")) {
+            logger.info("Transitioning to LossOfSignal state.");
+            return stateMachine.LossOfSignal;
         }
 
-        // stateMachine.setState(stateMachine.FindGround); 
-        
-        // missionControl.setResponse(null);
-
-        return stateMachine.FindGround; 
-
-
+        logger.info("Transitioning back to FindGround state.");
+        return stateMachine.FindGround;
     }
-
 }

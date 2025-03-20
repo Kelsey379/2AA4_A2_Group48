@@ -1,67 +1,55 @@
-// REDUNDANT --> MOVE TO THE START STATE?? 
-
-
 package ca.mcmaster.se2aa4.island.teamXXX.States;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
 
-import ca.mcmaster.se2aa4.island.teamXXX.Action; 
+import ca.mcmaster.se2aa4.island.teamXXX.Action;
 import ca.mcmaster.se2aa4.island.teamXXX.Drone;
 import ca.mcmaster.se2aa4.island.teamXXX.Island;
 import ca.mcmaster.se2aa4.island.teamXXX.MissionControl;
 import ca.mcmaster.se2aa4.island.teamXXX.StateMachine;
 import ca.mcmaster.se2aa4.island.teamXXX.enums.Direction;
 
-
 public class Turn extends State {
 
-    private final Logger logger = LogManager.getLogger(); 
-    Direction currDir;
+    private final Logger logger = LogManager.getLogger();
 
     public Turn(Drone drone, Action action, Island island, StateMachine state, Direction currDir, MissionControl missionControl) {
         super(drone, action, island, state, missionControl);
-        this.currDir = currDir; 
     }
-    
+
     @Override
-    public void executeState(){
+    public void executeState() {
+        // Get drone's current direction directly
+        Direction currentDirection = drone.getFacingDirection();
 
-        if(currDir == Direction.E){
-            currDir = action.turnRight(currDir); 
-            
-            
-            drone.setFacingDirection(currDir);
+        // Always turn right from current direction
+        Direction newDirection = action.turnRight(currentDirection);
 
-        }
-        
-        String currAction = drone.heading(currDir); 
+        // Update drone's internal direction
+        drone.setFacingDirection(newDirection);
+
+        // Log clearly
+        logger.info("Drone turned from {} to {}", currentDirection, newDirection);
+
+        // Set the drone's heading action
+        String currAction = drone.heading(newDirection);
         missionControl.takeDecision(currAction);
-        
-       
-
-        
     }
 
     @Override
-    public State exitState(){
-        JSONObject response = missionControl.getResponse(); 
+    public State exitState() {
+        JSONObject response = missionControl.getResponse();
         if (response != null) {
             int cost = response.getInt("cost");
             String status = response.getString("status");
             drone.updateDrone(cost, status);
-        
         }
-        logger.info("The drone is facing "+drone.getFacingDirection());
-        logger.info("** StartState: Transitioning to FindGround state.");
-        stateMachine.setState(stateMachine.FindGround);
 
-        
-        missionControl.setResponse(null);
+        logger.info("The drone is now facing {}", drone.getFacingDirection());
+        logger.info("**Transitioning to FindGround state.");
 
-
-        return stateMachine.getState(); 
+        return stateMachine.FindGround;
     }
-    
-} 
+}

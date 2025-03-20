@@ -51,17 +51,23 @@ public class Algorithm{
         if (currState == null) {
             return;
         }
-        // Always call executeState() first to let the state perform its action.
-        currState.executeState();
-        
-        // Then, if a response is available, process the state transition.
+
         if (missionControl.getResponse() != null) {
+            // first process the previous response
             State nextState = currState.exitState();
             stateMachine.setState(nextState);
             missionControl.setResponse(null);
+            currState = nextState; // immediately update currState to the next one
         }
-        
+
+        // Always execute the current state's action after processing response
+        if (currState != null) {
+            currState.executeState();
+        }
     }
+
+    
+
 
     // public void runStep() {
     //     currState = stateMachine.getState();

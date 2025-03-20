@@ -3,6 +3,7 @@ package ca.mcmaster.se2aa4.island.teamXXX;
 
 import ca.mcmaster.se2aa4.island.teamXXX.States.FindGround;
 import ca.mcmaster.se2aa4.island.teamXXX.States.FlyForward;
+import ca.mcmaster.se2aa4.island.teamXXX.States.FoundGroundTurnEast;
 import ca.mcmaster.se2aa4.island.teamXXX.States.GoHome;
 import ca.mcmaster.se2aa4.island.teamXXX.States.LossOfSignal;
 import ca.mcmaster.se2aa4.island.teamXXX.States.NoGroundFlySouth;
@@ -11,8 +12,7 @@ import ca.mcmaster.se2aa4.island.teamXXX.States.StartState;
 import ca.mcmaster.se2aa4.island.teamXXX.States.State;
 import ca.mcmaster.se2aa4.island.teamXXX.States.Turn;
 import ca.mcmaster.se2aa4.island.teamXXX.States.UTurn;
-import ca.mcmaster.se2aa4.island.teamXXX.enums.Direction;
-import ca.mcmaster.se2aa4.island.teamXXX.States.FoundGroundTurnEast; 
+import ca.mcmaster.se2aa4.island.teamXXX.enums.Direction; 
 
 public class StateMachine {
     
@@ -76,7 +76,7 @@ public class StateMachine {
 
 
 
-            this.currentState = this.StartState;  
+            this.currentState = this.Turn;  
 
             // this.currentState = new StartState(this.drone, this.currAction, this.island);
         }

@@ -72,6 +72,8 @@ public class Explorer implements IExplorerRaid {
         algorithm.runStep();
         String decision = missionControl.getTakeDecision(); 
 
+        logger.info("** Decision: {}",decision);
+
 
 
         // String finalDecision = MissionControl.getRecentAction(); 

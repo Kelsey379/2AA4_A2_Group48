@@ -22,7 +22,7 @@ public class StartState extends State {
 
     @Override
     public void executeState(){
-       logger.info("**State Machine is initialized, enter the machine with the start state"); 
+        logger.info("**State Machine is initialized, enter the machine with the start state"); 
         String resultAction = this.drone.fly(); 
 
         missionControl.takeDecision(resultAction); 
@@ -42,14 +42,13 @@ public class StartState extends State {
             int cost = response.getInt("cost");
             String status = response.getString("status");
             drone.updateDrone(cost, status);
-            logger.info("** StartState: Received response, cost: {}, status: {}", cost, status);
+            logger.info("Received response, cost: {}, status: {}", cost, status);
         }
-        logger.info("** StartState: Transitioning to Turn state.");
+        logger.info("**Transitioning to Turn state.");
         
         missionControl.setResponse(null);
 
-        stateMachine.setState(stateMachine.Turn);
-        return stateMachine.getState(); 
+        return stateMachine.Turn; 
     }
 
 }

@@ -15,6 +15,7 @@ public class FindGround extends State {
 
     private final Logger logger = LogManager.getLogger(); 
 
+
     Direction currDir;
     Boolean lost = false;
     // Flag to indicate that we've issued our initial command
@@ -25,6 +26,7 @@ public class FindGround extends State {
     public FindGround(Drone drone, Action action, Island island, StateMachine state, Direction currDir, MissionControl missionControl) {
         super(drone, action, island, state, missionControl);
         this.currDir = currDir; 
+
     }
     
     @Override
@@ -32,6 +34,7 @@ public class FindGround extends State {
         
             // Issue the initial echo command.
         String resultAction = drone.echo(Direction.E); 
+        logger.info("echoing from findground");
         missionControl.takeDecision(resultAction);
 
     }
@@ -81,7 +84,7 @@ public class FindGround extends State {
         if (found.equals("GROUND")) {
             // Ground found: adjust heading.
             logger.info("The drone is facing " + drone.getFacingDirection());
-            logger.info("** StartState: Transitioning to FoundGroundTurnEast");
+            logger.info("Transitioning to FoundGroundTurnEast");
             
             island.setRange(range); 
 
@@ -89,10 +92,11 @@ public class FindGround extends State {
         } else {
             // Nothing detected: issue fly command.
             logger.info("The drone is facing " + drone.getFacingDirection());
-            logger.info("** StartState: Transitioning to NoGroundFlySouth");
+            logger.info("Transitioning to NoGroundFlySouth");
             return stateMachine.NoGroundFlySouth;
         }
     }
+
 } 
 
 
