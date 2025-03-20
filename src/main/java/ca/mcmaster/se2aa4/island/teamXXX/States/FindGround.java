@@ -82,6 +82,9 @@ public class FindGround extends State {
             // Ground found: adjust heading.
             logger.info("The drone is facing " + drone.getFacingDirection());
             logger.info("** StartState: Transitioning to FoundGroundTurnEast");
+            
+            island.setRange(range); 
+
             return stateMachine.FoundGroundTurnEast;
         } else {
             // Nothing detected: issue fly command.

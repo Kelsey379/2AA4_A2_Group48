@@ -13,6 +13,7 @@ import ca.mcmaster.se2aa4.island.teamXXX.StateMachine;
 public class FlyForward extends State {
      
     private boolean lost = false; 
+    public int range; 
 
     public FlyForward(Drone drone, Action action, Island island, StateMachine stateMachine, MissionControl missionControl){
         
@@ -27,14 +28,13 @@ public class FlyForward extends State {
 
         missionControl.takeDecision(resultAction); 
 
-        
-
     }
 
     @Override
     public State exitState(){
         JSONObject response = missionControl.getResponse(); 
 
+        range = island.getRange(); 
 
         Integer cost = response.getInt("cost"); 
         String status = response.getString("status"); 
@@ -44,6 +44,11 @@ public class FlyForward extends State {
         if(!status.equals("OK")){
             return stateMachine.LossOfSignal; 
 
+        }
+        if(range != -1){
+            range --; 
+            island.setRange(range); 
+            return stateMachine.FlyForward; 
         }
         return stateMachine.Scan; 
  
