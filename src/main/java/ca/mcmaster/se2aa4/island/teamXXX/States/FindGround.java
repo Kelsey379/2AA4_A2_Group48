@@ -1,7 +1,10 @@
 package ca.mcmaster.se2aa4.island.teamXXX.States;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
-import ca.mcmaster.se2aa4.island.teamXXX.Action; 
+ 
+import ca.mcmaster.se2aa4.island.teamXXX.Action;
 import ca.mcmaster.se2aa4.island.teamXXX.Drone;
 import ca.mcmaster.se2aa4.island.teamXXX.Island;
 import ca.mcmaster.se2aa4.island.teamXXX.MissionControl;
@@ -9,6 +12,8 @@ import ca.mcmaster.se2aa4.island.teamXXX.StateMachine;
 import ca.mcmaster.se2aa4.island.teamXXX.enums.Direction;
 
 public class FindGround extends State {
+
+    private final Logger logger = LogManager.getLogger(); 
 
     Direction currDir;
     Boolean lost = false;
@@ -61,8 +66,10 @@ public class FindGround extends State {
 
         // Determine the next state.
         if(lost) {
+            logger.info("** StartState: Transitioning to LossOfSignal state.");
             stateMachine.setState(stateMachine.LossOfSignal);
         } else {
+            logger.info("** StartState: Transitioning to Scan state.");
             stateMachine.setState(stateMachine.Scan);
         }
         

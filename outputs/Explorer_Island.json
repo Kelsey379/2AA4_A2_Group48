@@ -9,12 +9,12 @@
     "budget": 7000
   },
   "part": "Engine",
-  "time": 1742426676413,
+  "time": 1742486780706,
   "meth": "initialize"
 },{
   "data": {"action": "fly"},
   "part": "Explorer",
-  "time": 1742426676442,
+  "time": 1742486780732,
   "meth": "takeDecision"
 },{
   "data": {
@@ -23,12 +23,26 @@
     "status": "OK"
   },
   "part": "Engine",
-  "time": 1742426676451,
+  "time": 1742486780738,
   "meth": "takeDecision"
 },{
   "data": {"action": "fly"},
   "part": "Explorer",
-  "time": 1742426676454,
+  "time": 1742486780743,
+  "meth": "takeDecision"
+},{
+  "data": {
+    "cost": 4,
+    "extras": {},
+    "status": "OK"
+  },
+  "part": "Engine",
+  "time": 1742486780743,
+  "meth": "takeDecision"
+},{
+  "data": {"action": "fly"},
+  "part": "Explorer",
+  "time": 1742486780744,
   "meth": "takeDecision"
 },{
   "data": {
@@ -37,21 +51,7 @@
     "status": "OK"
   },
   "part": "Engine",
-  "time": 1742426676454,
-  "meth": "takeDecision"
-},{
-  "data": {"action": "fly"},
-  "part": "Explorer",
-  "time": 1742426676455,
-  "meth": "takeDecision"
-},{
-  "data": {
-    "cost": 6,
-    "extras": {},
-    "status": "OK"
-  },
-  "part": "Engine",
-  "time": 1742426676455,
+  "time": 1742486780745,
   "meth": "takeDecision"
 },{
   "data": {
@@ -59,7 +59,7 @@
     "stacktrace": [[
       "org.json.JSONObject.get(JSONObject.java:568)",
       "org.json.JSONObject.getInt(JSONObject.java:740)",
-      "ca.mcmaster.se2aa4.island.teamXXX.States.FindGround.exitState(FindGround.java:47)",
+      "ca.mcmaster.se2aa4.island.teamXXX.States.FindGround.exitState(FindGround.java:52)",
       "ca.mcmaster.se2aa4.island.teamXXX.Algorithm.runStep(Algorithm.java:42)",
       "ca.mcmaster.se2aa4.island.teamXXX.Explorer.takeDecision(Explorer.java:72)",
       "eu.ace_design.island.game.Engine$$anonfun$2.apply(Engine.scala:60)",
@@ -75,6 +75,6 @@
     "message": ["JSONObject[\"range\"] not found."]
   },
   "part": "Explorer",
-  "time": 1742426676456,
+  "time": 1742486780746,
   "meth": "takeDecision"
 }]
