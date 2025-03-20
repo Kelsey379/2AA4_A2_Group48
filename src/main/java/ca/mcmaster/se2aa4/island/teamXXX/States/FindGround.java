@@ -55,25 +55,29 @@ public class FindGround extends State {
 
         drone.updateDrone(cost, status);
      
-
-        // Decide next command based on range.
-        if (range == 0) {
-            // Nothing detected: issue fly command.
-            missionControl.takeDecision(drone.fly());
-        } else {
-            // Ground found: adjust heading.
-            currDir = Direction.E;
-            missionControl.takeDecision(drone.heading(currDir));
+        if(!status.equals("OK")){
+            lost = true; 
         }
-
-        // Determine the next state.
         if(lost) {
             logger.info("** StartState: Transitioning to LossOfSignal state.");
             stateMachine.setState(stateMachine.LossOfSignal);
+        } 
+
+        
+        // Decide next command based on range.
+        if (range == 0) {
+            // Nothing detected: issue fly command.
+            stateMachine.setState(stateMachine.NoGroundFlySouth); 
+            // missionControl.takeDecision(drone.fly());
         } else {
-            logger.info("** StartState: Transitioning to Scan state.");
-            stateMachine.setState(stateMachine.Scan);
+            // Ground found: adjust heading.
+            stateMachine.setState(stateMachine.FoundGroundTurnEast); 
+            // currDir = Direction.E;
+            // missionControl.takeDecision(drone.heading(currDir));
         }
+
+        // Determine the next state.
+
         
         // Reset for next cycle.
         startedSearch = false;

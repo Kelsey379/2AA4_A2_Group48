@@ -5,12 +5,14 @@ import ca.mcmaster.se2aa4.island.teamXXX.States.FindGround;
 import ca.mcmaster.se2aa4.island.teamXXX.States.FlyForward;
 import ca.mcmaster.se2aa4.island.teamXXX.States.GoHome;
 import ca.mcmaster.se2aa4.island.teamXXX.States.LossOfSignal;
+import ca.mcmaster.se2aa4.island.teamXXX.States.NoGroundFlySouth;
 import ca.mcmaster.se2aa4.island.teamXXX.States.Scan;
 import ca.mcmaster.se2aa4.island.teamXXX.States.StartState;
 import ca.mcmaster.se2aa4.island.teamXXX.States.State;
 import ca.mcmaster.se2aa4.island.teamXXX.States.Turn;
 import ca.mcmaster.se2aa4.island.teamXXX.States.UTurn;
 import ca.mcmaster.se2aa4.island.teamXXX.enums.Direction;
+import ca.mcmaster.se2aa4.island.teamXXX.States.FoundGroundTurnEast; 
 
 public class StateMachine {
     
@@ -26,9 +28,14 @@ public class StateMachine {
     public State LossOfSignal; 
     public State Scan; 
 
+
+
     public State Turn; 
     public State UTurn; 
 
+
+    public State FoundGroundTurnEast; 
+    public State NoGroundFlySouth;     
 
     public Drone drone;
     public Action currAction;
@@ -61,6 +68,11 @@ public class StateMachine {
             this.Turn = new Turn(this.drone, this.currAction, this.island, this, this.currDir, this.missionControl);
 
             this.UTurn = new UTurn(this.drone, this.currAction, this.island, this,this.currDir, this.missionControl); 
+
+            this.FoundGroundTurnEast = new FoundGroundTurnEast(this.drone, this.currAction, this.island, this,this.currDir, this.missionControl); 
+
+            this.NoGroundFlySouth = new NoGroundFlySouth(this.drone, this.currAction, this.island, this,this.currDir, this.missionControl); 
+
 
 
 
