@@ -19,6 +19,8 @@ public class FindGround extends State {
     Boolean lost = false;
     // Flag to indicate that we've issued our initial command
     private boolean startedSearch = false;
+    private final Direction echoDir = Direction.E;
+
 
     public FindGround(Drone drone, Action action, Island island, StateMachine state, Direction currDir, MissionControl missionControl) {
         super(drone, action, island, state, missionControl);
@@ -29,7 +31,7 @@ public class FindGround extends State {
     public void executeState(){
         if (!startedSearch) {
             // Issue the initial echo command.
-            String resultAction = drone.echo(Direction.E);
+            String resultAction = drone.echo(echoDir);
             missionControl.takeDecision(resultAction);
             startedSearch = true;
         } else {

@@ -6,12 +6,12 @@ ca/mcmaster/se2aa4/island/teamXXX/Algorithm.class
 ca/mcmaster/se2aa4/island/teamXXX/enums/MovementType.class
 ca/mcmaster/se2aa4/island/teamXXX/MissionControl.class
 ca/mcmaster/se2aa4/island/teamXXX/States/FindGround.class
-ca/mcmaster/se2aa4/island/teamXXX/Action$1.class
 ca/mcmaster/se2aa4/island/teamXXX/enums/Direction.class
 ca/mcmaster/se2aa4/island/teamXXX/States/LossOfSignal.class
+ca/mcmaster/se2aa4/island/teamXXX/Action$1.class
 ca/mcmaster/se2aa4/island/teamXXX/States/State.class
-ca/mcmaster/se2aa4/island/teamXXX/States/GoHome.class
 ca/mcmaster/se2aa4/island/teamXXX/States/StartState.class
+ca/mcmaster/se2aa4/island/teamXXX/States/GoHome.class
 ca/mcmaster/se2aa4/island/teamXXX/States/Scan.class
 ca/mcmaster/se2aa4/island/teamXXX/enums/Type.class
 ca/mcmaster/se2aa4/island/teamXXX/Island.class

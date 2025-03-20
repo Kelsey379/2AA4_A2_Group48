@@ -30,6 +30,10 @@ public class Turn extends State {
 
         if(currDir == Direction.E){
             currDir = action.turnRight(currDir); 
+            
+            
+            drone.setFacingDirection(currDir);
+
         }
         
         String currAction = drone.heading(currDir); 
@@ -49,7 +53,7 @@ public class Turn extends State {
             drone.updateDrone(cost, status);
         
         }
-        logger.info("The drone is facing "+currDir);
+        logger.info("The drone is facing "+drone.getFacingDirection());
         logger.info("** StartState: Transitioning to FindGround state.");
         stateMachine.setState(stateMachine.FindGround);
         return stateMachine.getState(); 

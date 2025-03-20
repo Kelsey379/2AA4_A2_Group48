@@ -37,6 +37,10 @@ public class Drone {
         return this.currDir; 
     }
 
+    public void setFacingDirection(Direction currDir){
+        this.currDir = currDir; 
+    }
+
     public Integer getBattery(){
         return this.currBattery; 
     }
@@ -52,13 +56,19 @@ public class Drone {
     }
 
     public String heading(Direction changeDirection){
-        this.decision.put("action","heading");
-        parameters.put("direction", changeDirection); 
-        decision.put("parameters",parameters); 
-
-    
-        return decision.toString(); 
+        
+        this.currDir = changeDirection;
+        this.decision = new JSONObject();
+        this.parameters = new JSONObject();
+        
+        this.decision.put("action", "heading");
+        this.parameters.put("direction", changeDirection);
+        this.decision.put("parameters", this.parameters);
+        
+        // Optionally update the drone's internal facing direction:
+        return decision.toString();
     }
+
 
     public String echo(Direction echoDirection){
 
