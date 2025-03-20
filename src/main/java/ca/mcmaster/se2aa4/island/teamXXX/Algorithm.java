@@ -45,40 +45,42 @@ public class Algorithm{
         missionControl.setResponse(null); 
     }*/
 
-    // public void runStep() {
-    //     currState = stateMachine.getState();
-    //     if (currState == null) {
-    //         return;
-    //     }
-    //     // Always call executeState() first to let the state perform its action.
-    //     currState.executeState();
-        
-    //     // Then, if a response is available, process the state transition.
-    //     if (missionControl.getResponse() != null) {
-    //         State nextState = currState.exitState();
-    //         stateMachine.setState(nextState);
-    //         missionControl.setResponse(null);
-    //     }
-    // }
-
+   // THIS ONE WORKS 
     public void runStep() {
         currState = stateMachine.getState();
         if (currState == null) {
             return;
         }
+        // Always call executeState() first to let the state perform its action.
+        currState.executeState();
         
-        // Check if we have a response from a previous action
+        // Then, if a response is available, process the state transition.
         if (missionControl.getResponse() != null) {
-            // Process the response and transition to the next state
             State nextState = currState.exitState();
             stateMachine.setState(nextState);
             missionControl.setResponse(null);
-            // Don't execute the new state yet - wait for the next cycle
-        } else {
-            // No response yet, so execute the current state
-            currState.executeState();
         }
+        
     }
+
+    // public void runStep() {
+    //     currState = stateMachine.getState();
+    //     if (currState == null) {
+    //         return;
+    //     }
+        
+    //     // Check if we have a response from a previous action
+    //     if (missionControl.getResponse() != null) {
+    //         // Process the response and transition to the next state
+    //         State nextState = currState.exitState();
+    //         stateMachine.setState(nextState);
+    //         missionControl.setResponse(null);
+    //         // Don't execute the new state yet - wait for the next cycle
+    //     } else {
+    //         // No response yet, so execute the current state
+    //         currState.executeState();
+    //     }
+    // }
 
 
 

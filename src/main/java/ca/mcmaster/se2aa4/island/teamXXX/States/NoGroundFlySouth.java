@@ -27,7 +27,8 @@ public class NoGroundFlySouth extends State{
     public void executeState() {
 
         this.currDir = drone.getFacingDirection();  // should be Directoin.S ; 
-        missionControl.takeDecision(drone.fly());
+        String currAction = drone.fly(); 
+        missionControl.takeDecision(currAction);
         
     }
 
@@ -35,9 +36,9 @@ public class NoGroundFlySouth extends State{
     public State exitState(){
 
         JSONObject response = missionControl.getResponse();
-        if (response == null) {
-            return stateMachine.getState();
-        }
+        // if (response == null) {
+        //     return stateMachine.getState();`
+        // }
         
         // Process the response.
         Integer cost = response.getInt("cost"); 
@@ -53,9 +54,11 @@ public class NoGroundFlySouth extends State{
  
         }
 
-        stateMachine.setState(stateMachine.FindGround); 
+        // stateMachine.setState(stateMachine.FindGround); 
         
-        return stateMachine.getState(); 
+        // missionControl.setResponse(null);
+
+        return stateMachine.FindGround; 
 
 
     }

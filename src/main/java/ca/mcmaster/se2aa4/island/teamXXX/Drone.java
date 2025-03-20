@@ -7,6 +7,8 @@ import ca.mcmaster.se2aa4.island.teamXXX.enums.Direction;
 public class Drone { 
     
     protected Direction currDir; 
+    
+    public Direction echoDirection; 
 
     protected Integer currBattery;
 
@@ -72,10 +74,14 @@ public class Drone {
 
     public String echo(Direction echoDirection){
 
+        this.echoDirection = echoDirection; 
+        
+        this.decision = new JSONObject();
+        this.parameters = new JSONObject();
         this.decision.put("action","echo");
         // this.direction.NORTH --> "N"; 
-        parameters.put("direction", echoDirection); 
-        decision.put("parameters",parameters); 
+        this.parameters.put("direction", this.echoDirection); 
+        this.decision.put("parameters", this.parameters); 
 
         return this.decision.toString(); 
     }

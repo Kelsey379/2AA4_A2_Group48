@@ -42,12 +42,11 @@ public class FlyForward extends State {
         drone.updateDrone(cost, status);
 
         if(!status.equals("OK")){
-            lost = false; 
-        }
-        if (lost){stateMachine.setState(stateMachine.LossOfSignal);}
-        else{stateMachine.setState(stateMachine.Scan); }
+            return stateMachine.LossOfSignal; 
 
-        return stateMachine.getState(); 
+        }
+        return stateMachine.Scan; 
+ 
     }
     
 }

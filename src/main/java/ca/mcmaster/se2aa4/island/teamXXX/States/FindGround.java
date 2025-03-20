@@ -18,7 +18,7 @@ public class FindGround extends State {
     Direction currDir;
     Boolean lost = false;
     // Flag to indicate that we've issued our initial command
-    private boolean startedSearch = false;
+    
     private final Direction echoDir = Direction.E;
 
 
@@ -29,59 +29,67 @@ public class FindGround extends State {
     
     @Override
     public void executeState(){
-        if (!startedSearch) {
+        
             // Issue the initial echo command.
-            String resultAction = drone.echo(echoDir);
-            missionControl.takeDecision(resultAction);
-            startedSearch = true;
-        } else {
-            // If we've already issued a command, simply wait for the response.
-        }
+        String resultAction = drone.echo(Direction.E); 
+        missionControl.takeDecision(resultAction);
+
     }
     
     @Override
     public State exitState(){
         // Check if a response is available.
         JSONObject response = missionControl.getResponse();
+        logger.info("Received response is: " + response);
         if (response == null) {
+            logger.error("No response received from mission control.");
             return stateMachine.getState();
         }
+        
+        // Log the entire response for debugging.
+        logger.info("Response received: " + response.toString());
         
         // Process the response.
         Integer cost = response.getInt("cost"); 
         String status = response.getString("status"); 
         JSONObject extras = response.getJSONObject("extras"); 
-        Integer range = extras.getInt("range");
+        
+        // Log the extras for debugging.
+        logger.info("Extras received: " + extras.toString());
+        
+        // Check if the range field is present.
+        if (!extras.has("range")) {
+            logger.error("Range field is missing in the response extras.");
+            return stateMachine.getState();
+        }
+        
+        int range = extras.getInt("range");
+        logger.info("The range is " + range);
+
+        String found = extras.has("found") ? extras.getString("found") : "";
 
         drone.updateDrone(cost, status);
-     
+    
         if(!status.equals("OK")){
-            lost = true; 
-        }
-        if(lost) {
             logger.info("** StartState: Transitioning to LossOfSignal state.");
-            stateMachine.setState(stateMachine.LossOfSignal);
-        } 
-
-        
-        // Decide next command based on range.
-        if (range == 0) {
-            // Nothing detected: issue fly command.
-            stateMachine.setState(stateMachine.NoGroundFlySouth); 
-            // missionControl.takeDecision(drone.fly());
-        } else {
-            // Ground found: adjust heading.
-            stateMachine.setState(stateMachine.FoundGroundTurnEast); 
-            // currDir = Direction.E;
-            // missionControl.takeDecision(drone.heading(currDir));
+            return stateMachine.LossOfSignal; 
         }
 
-        // Determine the next state.
-
-        
-        // Reset for next cycle.
-        startedSearch = false;
         missionControl.setResponse(null);
-        return stateMachine.getState();
+
+        // Decide next command based on range.
+        if (found.equals("GROUND")) {
+            // Ground found: adjust heading.
+            logger.info("The drone is facing " + drone.getFacingDirection());
+            logger.info("** StartState: Transitioning to FoundGroundTurnEast");
+            return stateMachine.FoundGroundTurnEast;
+        } else {
+            // Nothing detected: issue fly command.
+            logger.info("The drone is facing " + drone.getFacingDirection());
+            logger.info("** StartState: Transitioning to NoGroundFlySouth");
+            return stateMachine.NoGroundFlySouth;
+        }
     }
-}
+} 
+
+

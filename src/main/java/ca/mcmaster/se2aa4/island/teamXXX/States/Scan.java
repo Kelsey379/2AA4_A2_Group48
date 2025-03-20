@@ -76,27 +76,24 @@ public class Scan extends State{
         if(foundCreek){
 
             if(island.getSites()){
-                stateMachine.setState(stateMachine.GoHome);
+                return stateMachine.GoHome; 
             }
 
         }
         else if (foundSite){
 
             if(island.getCreek()) {
-                stateMachine.setState(stateMachine.GoHome);
+                return stateMachine.GoHome; 
             }
 
         }
 
         else if (foundOcean){
-            stateMachine.setState(stateMachine.UTurn);
+            return stateMachine.UTurn; 
         }
-        else{
-            stateMachine.setState(stateMachine.FlyForward);
-        }
+        // missionControl.setResponse(null);
 
-        return stateMachine.getState(); 
-        
+        return stateMachine.FlyForward; 
 
     }
 

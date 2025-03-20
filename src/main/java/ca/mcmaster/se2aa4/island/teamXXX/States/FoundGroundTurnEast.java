@@ -26,7 +26,8 @@ public class FoundGroundTurnEast extends State{
     public void executeState() {
 
         this.currDir = Direction.E; 
-        missionControl.takeDecision(drone.heading(currDir));
+        String currAction = drone.heading(currDir); 
+        missionControl.takeDecision(currAction);
         
     }
 
@@ -34,9 +35,9 @@ public class FoundGroundTurnEast extends State{
     public State exitState(){
 
         JSONObject response = missionControl.getResponse();
-        if (response == null) {
-            return stateMachine.getState();
-        }
+        // if (response == null) {
+        //     return stateMachine.getState();
+        // }
         
         // Process the response.
         Integer cost = response.getInt("cost"); 
@@ -48,13 +49,14 @@ public class FoundGroundTurnEast extends State{
         if(!status.equals("OK")){
 
             logger.info("** StartState: Transitioning to LossOfSignal state.");
-            stateMachine.setState(stateMachine.LossOfSignal);
+            return stateMachine.LossOfSignal; 
  
         }
 
-        stateMachine.setState(stateMachine.FlyForward); 
+        // stateMachine.setState(stateMachine.FlyForward); 
         
-        return stateMachine.getState(); 
+        // missionControl.setResponse(null); 
+        return stateMachine.FlyForward; 
 
 
     }

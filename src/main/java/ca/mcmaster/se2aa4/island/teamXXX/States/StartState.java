@@ -45,6 +45,9 @@ public class StartState extends State {
             logger.info("** StartState: Received response, cost: {}, status: {}", cost, status);
         }
         logger.info("** StartState: Transitioning to Turn state.");
+        
+        missionControl.setResponse(null);
+
         stateMachine.setState(stateMachine.Turn);
         return stateMachine.getState(); 
     }

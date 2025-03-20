@@ -56,6 +56,11 @@ public class Turn extends State {
         logger.info("The drone is facing "+drone.getFacingDirection());
         logger.info("** StartState: Transitioning to FindGround state.");
         stateMachine.setState(stateMachine.FindGround);
+
+        
+        missionControl.setResponse(null);
+
+
         return stateMachine.getState(); 
     }
     
