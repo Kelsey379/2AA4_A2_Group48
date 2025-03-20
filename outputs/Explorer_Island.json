@@ -9,26 +9,12 @@
     "budget": 7000
   },
   "part": "Engine",
-  "time": 1742491038006,
+  "time": 1742493717561,
   "meth": "initialize"
 },{
   "data": {"action": "fly"},
   "part": "Explorer",
-  "time": 1742491038027,
-  "meth": "takeDecision"
-},{
-  "data": {
-    "cost": 4,
-    "extras": {},
-    "status": "OK"
-  },
-  "part": "Engine",
-  "time": 1742491038033,
-  "meth": "takeDecision"
-},{
-  "data": {"action": "fly"},
-  "part": "Explorer",
-  "time": 1742491038035,
+  "time": 1742493717581,
   "meth": "takeDecision"
 },{
   "data": {
@@ -37,7 +23,21 @@
     "status": "OK"
   },
   "part": "Engine",
-  "time": 1742491038035,
+  "time": 1742493717587,
+  "meth": "takeDecision"
+},{
+  "data": {"action": "fly"},
+  "part": "Explorer",
+  "time": 1742493717589,
+  "meth": "takeDecision"
+},{
+  "data": {
+    "cost": 4,
+    "extras": {},
+    "status": "OK"
+  },
+  "part": "Engine",
+  "time": 1742493717589,
   "meth": "takeDecision"
 },{
   "data": {
@@ -45,7 +45,7 @@
     "parameters": {"direction": "S"}
   },
   "part": "Explorer",
-  "time": 1742491038036,
+  "time": 1742493717590,
   "meth": "takeDecision"
 },{
   "data": {
@@ -54,7 +54,7 @@
     "status": "OK"
   },
   "part": "Engine",
-  "time": 1742491038038,
+  "time": 1742493717592,
   "meth": "takeDecision"
 },{
   "data": {
@@ -62,8 +62,7 @@
     "stacktrace": [[
       "org.json.JSONObject.get(JSONObject.java:568)",
       "org.json.JSONObject.getInt(JSONObject.java:740)",
-      "ca.mcmaster.se2aa4.island.teamXXX.States.FindGround.processResponse(FindGround.java:61)",
-      "ca.mcmaster.se2aa4.island.teamXXX.States.FindGround.exitState(FindGround.java:42)",
+      "ca.mcmaster.se2aa4.island.teamXXX.States.FindGround.exitState(FindGround.java:54)",
       "ca.mcmaster.se2aa4.island.teamXXX.Algorithm.runStep(Algorithm.java:58)",
       "ca.mcmaster.se2aa4.island.teamXXX.Explorer.takeDecision(Explorer.java:72)",
       "eu.ace_design.island.game.Engine$$anonfun$2.apply(Engine.scala:60)",
@@ -79,6 +78,6 @@
     "message": ["JSONObject[\"range\"] not found."]
   },
   "part": "Explorer",
-  "time": 1742491038039,
+  "time": 1742493717593,
   "meth": "takeDecision"
 }]
