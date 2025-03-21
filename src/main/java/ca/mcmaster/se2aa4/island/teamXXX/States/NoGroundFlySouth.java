@@ -39,10 +39,11 @@ public class NoGroundFlySouth extends State {
         drone.updateDrone(cost, status);
 
         if (!status.equals("OK")) {
+            logger.info("The drone is facing " + drone.getFacingDirection());
             logger.info("Transitioning to LossOfSignal state.");
             return stateMachine.LossOfSignal;
         }
-
+        logger.info("The drone is facing " + drone.getFacingDirection());
         logger.info("Transitioning back to FindGround state.");
         return stateMachine.FindGround;
     }

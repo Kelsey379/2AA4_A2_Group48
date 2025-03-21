@@ -53,8 +53,10 @@ public class FlyForward extends State {
             range --; 
             island.setRange(range); 
             logger.info("Stay in FlyForward state.");
+            logger.info("The drone is facing " + drone.getFacingDirection());
             return stateMachine.FlyForward; 
         }
+        logger.info("The drone is facing " + drone.getFacingDirection());
         logger.info("Transition to in Scan state.");
         return stateMachine.Scan; 
  

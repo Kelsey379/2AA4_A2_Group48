@@ -13,52 +13,91 @@ import ca.mcmaster.se2aa4.island.teamXXX.enums.Direction;
 
 public class UTurn extends State {
 
+    private Direction currDir; 
+    private Direction newDir;
+    private Direction prevDir;
+    private String currAction;
+    private int step = 0;
     private final Logger logger = LogManager.getLogger();
-    private int step = 0; // Step tracker to manage 2-part turn
 
-    public UTurn(Drone drone, Action action, Island island, StateMachine state, MissionControl missionControl) {
-        super(drone, action, island, state, missionControl);
+    public UTurn(Drone drone, Action action, Island island, StateMachine stateMachine, MissionControl missionControl){
+        super(drone, action, island, stateMachine, missionControl);
     }
 
     @Override
-    public void executeState() {
-        Direction currentDir = drone.getFacingDirection();
+    public void executeState(){
+        currDir = drone.getFacingDirection();
 
+        // STEP 1: Set prevDir, turn from E or W to S
         if (step == 0) {
-            // First turn → always turn South
-            String action = drone.heading(Direction.S);
-            drone.setFacingDirection(Direction.S);
-            missionControl.takeDecision(action);
-            logger.info("UTurn step 0: Turning South");
-        } else if (step == 1) {
-            // Second turn → either turn East or West
-            Direction newDir = (currentDir == Direction.S || currentDir == Direction.E) ? Direction.W : Direction.E;
-            String action = drone.heading(newDir);
-            drone.setFacingDirection(newDir);
-            missionControl.takeDecision(action);
-            logger.info("UTurn step 1: Turning {}", newDir);
+            if (currDir.equals(Direction.E)) {
+                prevDir = currDir;
+                newDir = action.turnRight(currDir);
+            } else if (currDir.equals(Direction.W)) {
+                prevDir = currDir;
+                newDir = action.turnLeft(currDir);
+            }
+
+            if (newDir != null) {
+                drone.setFacingDirection(newDir);
+                currAction = drone.heading(newDir);
+                missionControl.takeDecision(currAction);
+                step = 1;
+                logger.info("Step 1 of U-Turn: Turned from " + prevDir + " to " + newDir);
+                return;
+            }
+        }
+
+        // STEP 2: Now facing S, turn to opposite of original direction
+        if (step == 1 && currDir.equals(Direction.S)) {
+            if (prevDir == null) {
+                logger.error("prevDir is null during UTurn step 2!");
+                return;
+            }
+
+            if (prevDir.equals(Direction.W)) {
+                newDir = action.turnLeft(currDir);
+            } else if (prevDir.equals(Direction.E)) {
+                newDir = action.turnRight(currDir);
+            }
+
+            if (newDir != null) {
+                drone.setFacingDirection(newDir);
+                currAction = drone.heading(newDir);
+                missionControl.takeDecision(currAction);
+                step = 2;
+                logger.info("Step 2 of U-Turn: Turned from S to " + newDir + " (opposite of " + prevDir + ")");
+            }
         }
     }
 
     @Override
-    public State exitState() {
+    public State exitState(){
         JSONObject response = missionControl.getResponse();
-        int cost = response.getInt("cost");
-        String status = response.getString("status");
+        Integer cost = response.getInt("cost"); 
+        String status = response.getString("status"); 
         drone.updateDrone(cost, status);
 
-        if (!"OK".equals(status)) {
-            logger.warn("UTurn failed. Drone lost signal.");
-            return stateMachine.LossOfSignal;
+        if (!status.equals("OK")) {
+            logger.info("The drone is facing " + drone.getFacingDirection());
+            logger.info("Transitioning to LossOfSignal state.");
+            return stateMachine.LossOfSignal; 
         }
 
-        if (step < 1) {
-            step++;
-            logger.info("UTurn continuing to second step...");
-            return stateMachine.UTurn; // Stay in UTurn state to complete second turn
+        if (step == 1) {
+            logger.info("U-Turn step 1 complete. Continuing U-turn.");
+            return stateMachine.UTurn;
+        } else if (step == 2) {
+            logger.info("U-Turn complete. Drone now facing " + drone.getFacingDirection());
+            // Reset internal state for reuse
+            step = 0;
+            prevDir = null;
+            logger.info("Transition to in Scan state.");
+            return stateMachine.Scan;
         }
 
-        logger.info("UTurn complete. Transitioning to FlyForward.");
-        return stateMachine.FlyForward;
+        // Fallback
+        logger.info("Transition to in Scan state.");
+        return stateMachine.Scan;
     }
 }

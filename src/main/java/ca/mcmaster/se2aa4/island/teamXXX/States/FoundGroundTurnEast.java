@@ -37,10 +37,11 @@ public class FoundGroundTurnEast extends State {
         drone.updateDrone(cost, status);
 
         if (!status.equals("OK")) {
+            logger.info("The drone is facing " + drone.getFacingDirection());
             logger.info("Transitioning to LossOfSignal state.");
             return stateMachine.LossOfSignal; 
         }
-
+        logger.info("The drone is facing " + drone.getFacingDirection());
         logger.info("Transitioning to FlyForward state.");
         return stateMachine.FlyForward; 
     }
