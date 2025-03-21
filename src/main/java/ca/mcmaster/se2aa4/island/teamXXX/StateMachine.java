@@ -58,20 +58,20 @@ public class StateMachine {
 
             this.StartState = new StartState(this.drone, this.currAction, this.island, this, this.missionControl); 
  
-            this.FindGround = new FindGround(this.drone, this.currAction, this.island, this,this.currDir, this.missionControl); 
+            this.FindGround = new FindGround(this.drone, this.currAction, this.island, this, this.missionControl); 
         
             this.FlyForward = new FlyForward(this.drone, this.currAction, this.island,this, this.missionControl); 
             this.GoHome = new GoHome(this.drone, this.currAction, this.island, this, this.missionControl); 
             this.LossOfSignal = new LossOfSignal(this.drone, this.currAction, this.island, this, this.missionControl); 
             this.Scan = new Scan(this.drone, this.currAction, this.island, this, this.missionControl); 
 
-            this.Turn = new Turn(this.drone, this.currAction, this.island, this, this.currDir, this.missionControl);
+            this.Turn = new Turn(this.drone, this.currAction, this.island, this, this.missionControl);
 
-            this.UTurn = new UTurn(this.drone, this.currAction, this.island, this,this.currDir, this.missionControl); 
+            this.UTurn = new UTurn(this.drone, this.currAction, this.island, this, this.missionControl); 
 
-            this.FoundGroundTurnEast = new FoundGroundTurnEast(this.drone, this.currAction, this.island, this,this.currDir, this.missionControl); 
+            this.FoundGroundTurnEast = new FoundGroundTurnEast(this.drone, this.currAction, this.island, this,this.missionControl); 
 
-            this.NoGroundFlySouth = new NoGroundFlySouth(this.drone, this.currAction, this.island, this,this.currDir, this.missionControl); 
+            this.NoGroundFlySouth = new NoGroundFlySouth(this.drone, this.currAction, this.island, this,this.missionControl); 
 
 
 

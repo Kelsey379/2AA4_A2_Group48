@@ -42,66 +42,55 @@ public class Scan extends State{
 
     @Override 
     public State exitState() {
-        
-        JSONObject response = missionControl.getResponse(); 
+        JSONObject response = missionControl.getResponse();
+        logger.info("** Scan.exitState() started with response: {}", response.toString());
 
         Integer cost = response.getInt("cost");
-        String status = response.getString("status"); 
+        String status = response.getString("status");
 
         drone.updateDrone(cost, status);
 
-        JSONArray creeks = response.getJSONArray("creeks");
-        JSONArray sites = response.getJSONArray("sites"); 
+        JSONObject extras = response.getJSONObject("extras");
 
-        JSONObject extras = response.getJSONObject("extras"); 
-        JSONArray biomes = extras.getJSONArray("biomes"); 
+        JSONArray creeks = extras.getJSONArray("creeks");
+        JSONArray sites = extras.getJSONArray("sites");
+        JSONArray biomes = extras.getJSONArray("biomes");
 
-        String biomeType = biomes.getString(0); 
+        logger.info("** Scan received biomes array: {}", biomes.toString());
 
-        if("OCEAN".equals(biomeType)){
-            foundOcean = true; 
-        }
-        else{
-            if(creeks.length() > 0 ) {
-                foundCreek = true; 
+        if (biomes.length() > 0) {
+            String biomeType = biomes.getString(0);
+            logger.info("** First biome detected: {}", biomeType);
+            if ("OCEAN".equals(biomeType)) {
+                foundOcean = true;
+                logger.info("** Ocean found! Preparing to transition to U-turn.");
             }
-            else if (sites.length() > 0 ){
-                foundSite = true; 
-     
-            }
-            else{
-                foundCreek = false; 
-                foundSite = false; 
-            }
-            island.updateIsland(foundCreek, foundSite);
         }
 
-
-        if(foundCreek){
-
-            if(island.getSites()){
-                logger.info("**Transitioning to GoHome State");
-                return stateMachine.GoHome; 
-            }
-
+        if (creeks.length() > 0) {
+            foundCreek = true;
         }
-        else if (foundSite){
-
-            if(island.getCreek()) {
-                logger.info("**Transitioning to GoHome State");
-                return stateMachine.GoHome; 
-            }
-
+        if (sites.length() > 0) {
+            foundSite = true;
         }
 
-        else if (foundOcean){
+        island.updateIsland(foundCreek, foundSite);
+
+        if (foundCreek && island.getSites()) {
+            logger.info("**Transitioning to GoHome State");
+            return stateMachine.GoHome;
+        } else if (foundSite && island.getCreek()) {
+            logger.info("**Transitioning to GoHome State");
+            return stateMachine.GoHome;
+        } else if (foundOcean) {
             logger.info("**Transitioning to U-turn state.");
-            return stateMachine.UTurn; 
+            return stateMachine.UTurn;
         }
-        // missionControl.setResponse(null);
 
-        return stateMachine.FlyForward; 
-
+        logger.info("**No POIs or ocean. Transitioning to FlyForward.");
+        return stateMachine.FlyForward;
     }
+
+
 
 }

@@ -1,4 +1,3 @@
-
 package ca.mcmaster.se2aa4.island.teamXXX.States;
 
 import org.apache.logging.log4j.LogManager;
@@ -12,106 +11,54 @@ import ca.mcmaster.se2aa4.island.teamXXX.MissionControl;
 import ca.mcmaster.se2aa4.island.teamXXX.StateMachine;
 import ca.mcmaster.se2aa4.island.teamXXX.enums.Direction;
 
-
 public class UTurn extends State {
 
-    public Direction currDir; 
-    public Boolean lost; 
     private final Logger logger = LogManager.getLogger();
-    
-    public UTurn(Drone drone, Action action, Island island, StateMachine state, Direction currDir, MissionControl missionControl){
-        
+    private int step = 0; // Step tracker to manage 2-part turn
+
+    public UTurn(Drone drone, Action action, Island island, StateMachine state, MissionControl missionControl) {
         super(drone, action, island, state, missionControl);
-        this.currDir = currDir; 
     }
 
     @Override
-    public void executeState(){
-        
-        if(currDir.equals(Direction.E)){
-            currDir = Direction.S;
-            String currAction = drone.heading(currDir);
-            
-            missionControl.takeDecision(currAction);
-            JSONObject response = missionControl.getResponse(); 
+    public void executeState() {
+        Direction currentDir = drone.getFacingDirection();
 
-            Integer cost = response.getInt("cost"); 
-            String status = response.getString("status"); 
-            
-            drone.updateDrone(cost, status);
-            if(!status.equals("OK")){
-                lost = true; 
-            }
-            if(!lost){
-                currDir = Direction.W; 
-                currAction = drone.heading(currDir);
-            
-                missionControl.takeDecision(currAction);
-                response = missionControl.getResponse(); 
-
-                cost = response.getInt("cost"); 
-                status = response.getString("status"); 
-                
-                drone.updateDrone(cost, status);
-
-                if(!status.equals("OK")){
-                    lost = true; 
-                }   
-            }
-            
-
-
+        if (step == 0) {
+            // First turn → always turn South
+            String action = drone.heading(Direction.S);
+            drone.setFacingDirection(Direction.S);
+            missionControl.takeDecision(action);
+            logger.info("UTurn step 0: Turning South");
+        } else if (step == 1) {
+            // Second turn → either turn East or West
+            Direction newDir = (currentDir == Direction.S || currentDir == Direction.E) ? Direction.W : Direction.E;
+            String action = drone.heading(newDir);
+            drone.setFacingDirection(newDir);
+            missionControl.takeDecision(action);
+            logger.info("UTurn step 1: Turning {}", newDir);
         }
-        else if (currDir.equals(Direction.W)){
-            currDir = Direction.S;
-            String currAction = drone.heading(currDir);
-            
-            missionControl.takeDecision(currAction);
-            JSONObject response = missionControl.getResponse(); 
-
-            Integer cost = response.getInt("cost"); 
-            String status = response.getString("status"); 
-            
-
-
-            drone.updateDrone(cost, status);
-
-            if(!status.equals("OK")){
-                lost = true; 
-            }
-            if(!lost){
-                currDir = Direction.E; 
-                currAction = drone.heading(currDir);
-            
-                missionControl.takeDecision(currAction);
-                response = missionControl.getResponse(); 
-
-                cost = response.getInt("cost"); 
-                status = response.getString("status"); 
-                
-                drone.updateDrone(cost, status);
-
-                if(!status.equals("OK")){
-                    lost = true; 
-                }
-            }
-
-
-        }
-
-
     }
 
     @Override
-    public State exitState(){
-        if(lost) {
-            logger.info("**Transitioning to LossOfignal state.");
+    public State exitState() {
+        JSONObject response = missionControl.getResponse();
+        int cost = response.getInt("cost");
+        String status = response.getString("status");
+        drone.updateDrone(cost, status);
+
+        if (!"OK".equals(status)) {
+            logger.warn("UTurn failed. Drone lost signal.");
             return stateMachine.LossOfSignal;
         }
-        else {
-            logger.info("**Transitioning to FLyForward state.");
+
+        if (step < 1) {
+            step++;
+            logger.info("UTurn continuing to second step...");
+            return stateMachine.UTurn; // Stay in UTurn state to complete second turn
         }
 
-        return stateMachine.FlyForward; 
+        logger.info("UTurn complete. Transitioning to FlyForward.");
+        return stateMachine.FlyForward;
     }
 }

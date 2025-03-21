@@ -16,16 +16,11 @@ public class FindGround extends State {
     private final Logger logger = LogManager.getLogger(); 
 
 
-    Direction currDir;
-    Boolean lost = false;
     // Flag to indicate that we've issued our initial command
-    
-    private final Direction echoDir = Direction.E;
 
 
-    public FindGround(Drone drone, Action action, Island island, StateMachine state, Direction currDir, MissionControl missionControl) {
+    public FindGround(Drone drone, Action action, Island island, StateMachine state, MissionControl missionControl) {
         super(drone, action, island, state, missionControl);
-        this.currDir = currDir; 
 
     }
     

@@ -15,7 +15,7 @@ public class FoundGroundTurnEast extends State {
 
     private final Logger logger = LogManager.getLogger();
 
-    public FoundGroundTurnEast(Drone drone, Action action, Island island, StateMachine state, Direction currDir, MissionControl missionControl) {
+    public FoundGroundTurnEast(Drone drone, Action action, Island island, StateMachine state, MissionControl missionControl) {
         super(drone, action, island, state, missionControl);
     }
 

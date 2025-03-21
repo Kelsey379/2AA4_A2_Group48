@@ -14,7 +14,6 @@ import ca.mcmaster.se2aa4.island.teamXXX.StateMachine;
 
 public class FlyForward extends State {
      
-    private boolean lost = false; 
     private int range; 
 
     private final Logger logger = LogManager.getLogger(); 

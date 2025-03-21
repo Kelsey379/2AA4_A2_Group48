@@ -15,7 +15,7 @@ public class Turn extends State {
 
     private final Logger logger = LogManager.getLogger();
 
-    public Turn(Drone drone, Action action, Island island, StateMachine state, Direction currDir, MissionControl missionControl) {
+    public Turn(Drone drone, Action action, Island island, StateMachine state, MissionControl missionControl) {
         super(drone, action, island, state, missionControl);
     }
 
