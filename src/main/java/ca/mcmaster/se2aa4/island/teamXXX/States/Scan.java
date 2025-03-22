@@ -72,11 +72,14 @@ public class Scan extends State {
 
         // Transition logic
         if (foundCreek && island.getSites()) {
-            logger.info("**Transitioning to GoHome State");
+            logger.info("** Transitioning to GoHome State");
             return stateMachine.GoHome;
         } else if (foundSite && island.getCreek()) {
-            logger.info("**Transitioning to GoHome State");
+            logger.info("** Transitioning to GoHome State");
             return stateMachine.GoHome;
+        } else if (foundOcean && island.hasLandedOnIsland()) {
+            logger.info("** Ocean detected but drone is already on the island. Skipping U-turn.");
+            return stateMachine.GoHome; // Optional: Change to another explore state
         } else if (foundOcean) {
             return stateMachine.UTurn;
         }

@@ -1,6 +1,5 @@
 package ca.mcmaster.se2aa4.island.teamXXX.States;
 
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
@@ -11,27 +10,19 @@ import ca.mcmaster.se2aa4.island.teamXXX.Island;
 import ca.mcmaster.se2aa4.island.teamXXX.MissionControl;
 import ca.mcmaster.se2aa4.island.teamXXX.StateMachine;
 
-
 public class FlyForward extends State {
      
     private int range; 
-
     private final Logger logger = LogManager.getLogger(); 
 
-
     public FlyForward(Drone drone, Action action, Island island, StateMachine stateMachine, MissionControl missionControl){
-        
         super(drone, action, island, stateMachine, missionControl); 
-
     }
 
     @Override 
     public void executeState() {
-        
         String resultAction = drone.fly(); 
-
         missionControl.takeDecision(resultAction); 
-
     }
 
     @Override
@@ -45,21 +36,22 @@ public class FlyForward extends State {
 
         drone.updateDrone(cost, status);
 
-        if(!status.equals("OK")){
+        if (!status.equals("OK")) {
             return stateMachine.LossOfSignal; 
-
         }
-        if(range != -1){
-            range --; 
-            island.setRange(range); 
+
+        if (range > 0) {
+            range--;
+            island.setRange(range);
             logger.info("Stay in FlyForward state.");
             logger.info("The drone is facing " + drone.getFacingDirection());
             return stateMachine.FlyForward; 
+        } else {
+            // === NEW LANDING LOGIC ===
+            island.setHasLandedOnIsland(true); 
+            logger.info("The drone is facing " + drone.getFacingDirection());
+            logger.info("Drone has landed on island. Transition to Scan state.");
+            return stateMachine.Scan; 
         }
-        logger.info("The drone is facing " + drone.getFacingDirection());
-        logger.info("Transition to in Scan state.");
-        return stateMachine.Scan; 
- 
     }
-    
 }
