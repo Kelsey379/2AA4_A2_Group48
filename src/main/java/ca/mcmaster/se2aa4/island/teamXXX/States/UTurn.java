@@ -25,17 +25,38 @@ public class UTurn extends State {
     }
 
     @Override
-    public void executeState(){
+    public void executeState() {
         currDir = drone.getFacingDirection();
 
-        // STEP 1: Set prevDir, turn from E or W to S
+        // STEP 0: Save current direction, make 90° turn
         if (step == 0) {
-            if (currDir.equals(Direction.E)) {
-                prevDir = currDir;
-                newDir = action.turnRight(currDir);
-            } else if (currDir.equals(Direction.W)) {
-                prevDir = currDir;
-                newDir = action.turnLeft(currDir);
+            prevDir = currDir;
+            Direction prevHorizontal = drone.getPrevHorizontalDirection();
+
+            switch (currDir) {
+                case E:
+                    newDir = action.turnRight(currDir); // → S
+                    break;
+                case W:
+                    newDir = action.turnLeft(currDir); // → S
+                    break;
+                case N:
+                    if (prevHorizontal == Direction.E) {
+                        newDir = action.turnRight(currDir); // N → E
+                    } else if (prevHorizontal == Direction.W) {
+                        newDir = action.turnLeft(currDir); // N → W
+                    }
+                    break;
+                case S:
+                    if (prevHorizontal == Direction.E) {
+                        newDir = action.turnLeft(currDir); // S → E
+                    } else if (prevHorizontal == Direction.W) {
+                        newDir = action.turnRight(currDir); // S → W
+                    }
+                    break;
+                default:
+                    logger.warn("UTurn: Unhandled direction " + currDir);
+                    break;
             }
 
             if (newDir != null) {
@@ -47,17 +68,19 @@ public class UTurn extends State {
             }
         }
 
-        // STEP 2: Now facing S, turn to opposite of original direction
-        if (step == 1 && currDir.equals(Direction.S)) {
-            if (prevDir == null) {
-                logger.error("prevDir is null during UTurn step 2!");
-                return;
-            }
+        // STEP 1: Now turn 90° again to complete U-turn
+        if (step == 1) {
+            currDir = drone.getFacingDirection();
 
-            if (prevDir.equals(Direction.W)) {
-                newDir = action.turnLeft(currDir);
-            } else if (prevDir.equals(Direction.E)) {
-                newDir = action.turnRight(currDir);
+            switch (prevDir) {
+                case E:
+                case W:
+                    newDir = Direction.S;
+                    break;
+                case N:
+                case S:
+                    newDir = Direction.N;
+                    break;
             }
 
             if (newDir != null) {
@@ -70,16 +93,16 @@ public class UTurn extends State {
     }
 
     @Override
-    public State exitState(){
+    public State exitState() {
         JSONObject response = missionControl.getResponse();
-        Integer cost = response.getInt("cost"); 
-        String status = response.getString("status"); 
+        Integer cost = response.getInt("cost");
+        String status = response.getString("status");
         drone.updateDrone(cost, status);
 
         if (!status.equals("OK")) {
             logger.info("The drone is facing " + drone.getFacingDirection());
             logger.info("Transitioning to LossOfSignal state.");
-            return stateMachine.LossOfSignal; 
+            return stateMachine.LossOfSignal;
         }
 
         if (step == 1) {
@@ -88,15 +111,11 @@ public class UTurn extends State {
             return stateMachine.UTurn;
         } else if (step == 2) {
             logger.info("U-Turn complete. Drone now facing " + drone.getFacingDirection());
-            // Reset internal state for reuse
             step = 0;
             prevDir = null;
-            logger.info("Transition to in Scan state.");
             return stateMachine.Scan;
         }
 
-        // Fallback
-        logger.info("Transition to in Scan state.");
         return stateMachine.Scan;
     }
 }

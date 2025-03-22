@@ -16,6 +16,7 @@ public class Scan extends State {
     private boolean foundCreek = false;
     private boolean foundSite = false;
     public boolean foundOcean = false;
+    private int sequentialOceanEchoes = 0;
 
     private final Logger logger = LogManager.getLogger();
 
@@ -31,9 +32,7 @@ public class Scan extends State {
 
     @Override
     public State exitState() {
-
-        foundCreek = false;
-        foundSite = false;
+        
         foundOcean = false;
 
         JSONObject response = missionControl.getResponse();
@@ -60,20 +59,31 @@ public class Scan extends State {
             logger.info("** First biome detected: " + biomeType);
             if ("OCEAN".equals(biomeType)) {
                 foundOcean = true;
-                logger.info("** Ocean is first biome. Preparing to transition to echo check.");
+                sequentialOceanEchoes += 1;
+                logger.info("** Ocean Scanned: Preparing to transition to echo check.");
+            } else {
+                sequentialOceanEchoes = 0; //Reset only when not ocean
             }
         }
 
         // === Decision Logic ===
         if (foundCreek && island.getSites()) {
-            logger.info("** Transitioning to GoHome State");
+            logger.info("** Transitioning to GoHome State (creek + site found)");
             return stateMachine.GoHome;
+
         } else if (foundSite && island.getCreek()) {
-            logger.info("** Transitioning to GoHome State");
+            logger.info("** Transitioning to GoHome State (site + creek found)");
             return stateMachine.GoHome;
+
+        } else if (foundOcean && sequentialOceanEchoes == 2) {
+            logger.info("Scanned 2 oceans back-to-back. Avoiding repeated U-turns. Transitioning to IslandEdge.");
+            sequentialOceanEchoes = 0;
+            return stateMachine.IslandEdge;
+
         } else if (foundOcean && island.hasLandedOnIsland()) {
             logger.info("** Ocean detected & drone already on island. Going to EchoCheck state.");
             return stateMachine.EchoCheck;
+
         } else if (foundOcean) {
             logger.info("** Ocean detected before landing. Transitioning to UTurn.");
             return stateMachine.UTurn;

@@ -10,7 +10,7 @@ public class Island {
     protected JSONArray siteArray; 
     protected int range;
 
-    private boolean hasLandedOnIsland = false; // NEW FIELD
+    private boolean hasLandedOnIsland = false; 
 
     public Island() {
         this.foundCreek = false; 
@@ -49,7 +49,7 @@ public class Island {
         this.range = range;
     }
 
-    // === NEW LANDING STATUS METHODS ===
+   
     public boolean hasLandedOnIsland() {
         return hasLandedOnIsland;
     }

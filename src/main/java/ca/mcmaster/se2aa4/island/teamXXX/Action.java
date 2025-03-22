@@ -13,7 +13,7 @@ public class Action implements ActionInterface{
 
     protected JSONObject decision;
 
-    //Add actions to drone class instead, but leave update methods as is
+   
 
     @Override 
     public Direction turnLeft(Direction currDir){

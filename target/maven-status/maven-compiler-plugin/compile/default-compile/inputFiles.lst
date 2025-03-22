@@ -8,6 +8,7 @@
 /home/abbass48/2AA4_A2_Group48/src/main/java/ca/mcmaster/se2aa4/island/teamXXX/States/Scan.java
 /home/abbass48/2AA4_A2_Group48/src/main/java/ca/mcmaster/se2aa4/island/teamXXX/States/FlyForward.java
 /home/abbass48/2AA4_A2_Group48/src/main/java/ca/mcmaster/se2aa4/island/teamXXX/Drone.java
+/home/abbass48/2AA4_A2_Group48/src/main/java/ca/mcmaster/se2aa4/island/teamXXX/States/IslandEdge.java
 /home/abbass48/2AA4_A2_Group48/src/main/java/ca/mcmaster/se2aa4/island/teamXXX/States/NoGroundFlySouth.java
 /home/abbass48/2AA4_A2_Group48/src/main/java/ca/mcmaster/se2aa4/island/teamXXX/MissionControl.java
 /home/abbass48/2AA4_A2_Group48/src/main/java/ca/mcmaster/se2aa4/island/teamXXX/StateMachine.java
