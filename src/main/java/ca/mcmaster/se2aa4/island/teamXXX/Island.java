@@ -35,9 +35,11 @@ public class Island {
     }
 
     public void updateIsland(Boolean foundCreek, Boolean foundSite) {
-        setCreeks(foundCreek);
-        setSites(foundSite);  
+       
+        if (foundCreek) this.foundCreek = true;
+        if (foundSite) this.foundSites = true;
     }
+    
 
     public int getRange() {
         return this.range;

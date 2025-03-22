@@ -31,7 +31,7 @@ public class Scan extends State {
 
     @Override
     public State exitState() {
-     
+
         foundCreek = false;
         foundSite = false;
         foundOcean = false;
@@ -49,7 +49,12 @@ public class Scan extends State {
 
         logger.info("** Scan received biomes array: " + biomes.toString());
 
-        // Check first biome
+        
+        foundCreek = creeks.length() > 0;
+        foundSite = sites.length() > 0;
+        island.updateIsland(foundCreek, foundSite); 
+
+        
         if (biomes.length() > 0) {
             String biomeType = biomes.getString(0);
             logger.info("** First biome detected: " + biomeType);
@@ -57,12 +62,6 @@ public class Scan extends State {
                 foundOcean = true;
                 logger.info("** Ocean is first biome. Preparing to transition to echo check.");
             }
-        }
-
-        if (!foundOcean) {
-            foundCreek = creeks.length() > 0;
-            foundSite = sites.length() > 0;
-            island.updateIsland(foundCreek, foundSite);
         }
 
         // === Decision Logic ===
@@ -83,4 +82,5 @@ public class Scan extends State {
         logger.info("Transition to FlyForward state");
         return stateMachine.FlyForward;
     }
+
 }
