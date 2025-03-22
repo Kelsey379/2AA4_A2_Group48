@@ -1,6 +1,7 @@
 package ca.mcmaster.se2aa4.island.teamXXX;
 
 
+import ca.mcmaster.se2aa4.island.teamXXX.States.EchoCheck;
 import ca.mcmaster.se2aa4.island.teamXXX.States.FindGround;
 import ca.mcmaster.se2aa4.island.teamXXX.States.FlyForward;
 import ca.mcmaster.se2aa4.island.teamXXX.States.FoundGroundTurnEast;
@@ -27,6 +28,7 @@ public class StateMachine {
     public State GoHome; 
     public State LossOfSignal; 
     public State Scan; 
+    public State EchoCheck;
 
 
 
@@ -72,7 +74,7 @@ public class StateMachine {
             this.FoundGroundTurnEast = new FoundGroundTurnEast(this.drone, this.currAction, this.island, this,this.missionControl); 
 
             this.NoGroundFlySouth = new NoGroundFlySouth(this.drone, this.currAction, this.island, this,this.missionControl); 
-
+            this.EchoCheck = new EchoCheck(this.drone, this.currAction, this.island, this,this.missionControl); 
 
 
 

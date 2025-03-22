@@ -11,6 +11,7 @@ ca/mcmaster/se2aa4/island/teamXXX/enums/Type.class
 ca/mcmaster/se2aa4/island/teamXXX/Island.class
 ca/mcmaster/se2aa4/island/teamXXX/States/Turn.class
 ca/mcmaster/se2aa4/island/teamXXX/States/FlyForward.class
+ca/mcmaster/se2aa4/island/teamXXX/States/EchoCheck.class
 ca/mcmaster/se2aa4/island/teamXXX/Drone.class
 ca/mcmaster/se2aa4/island/teamXXX/enums/MovementType.class
 ca/mcmaster/se2aa4/island/teamXXX/Action$1.class

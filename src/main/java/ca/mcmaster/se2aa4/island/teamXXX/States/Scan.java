@@ -31,14 +31,12 @@ public class Scan extends State {
 
     @Override
     public State exitState() {
-
-        // 🔁 Reset all detection flags each time we exit this state
+     
         foundCreek = false;
         foundSite = false;
         foundOcean = false;
 
         JSONObject response = missionControl.getResponse();
-
         Integer cost = response.getInt("cost");
         String status = response.getString("status");
 
@@ -51,26 +49,23 @@ public class Scan extends State {
 
         logger.info("** Scan received biomes array: " + biomes.toString());
 
-        // Only check the first biome
+        // Check first biome
         if (biomes.length() > 0) {
             String biomeType = biomes.getString(0);
             logger.info("** First biome detected: " + biomeType);
-
             if ("OCEAN".equals(biomeType)) {
                 foundOcean = true;
-                logger.info("** Ocean is first biome. Preparing to transition to U-turn.");
+                logger.info("** Ocean is first biome. Preparing to transition to echo check.");
             }
         }
 
-        // If not ocean, check for creeks and sites
         if (!foundOcean) {
             foundCreek = creeks.length() > 0;
             foundSite = sites.length() > 0;
-
             island.updateIsland(foundCreek, foundSite);
         }
 
-        // Transition logic
+        // === Decision Logic ===
         if (foundCreek && island.getSites()) {
             logger.info("** Transitioning to GoHome State");
             return stateMachine.GoHome;
@@ -78,13 +73,14 @@ public class Scan extends State {
             logger.info("** Transitioning to GoHome State");
             return stateMachine.GoHome;
         } else if (foundOcean && island.hasLandedOnIsland()) {
-            logger.info("** Ocean detected but drone is already on the island. Skipping U-turn.");
-            return stateMachine.GoHome; // Optional: Change to another explore state
+            logger.info("** Ocean detected & drone already on island. Going to EchoCheck state.");
+            return stateMachine.EchoCheck;
         } else if (foundOcean) {
+            logger.info("** Ocean detected before landing. Transitioning to UTurn.");
             return stateMachine.UTurn;
         }
 
-        // No creek/site/ocean found – continue flying forward
+        logger.info("Transition to FlyForward state");
         return stateMachine.FlyForward;
     }
 }

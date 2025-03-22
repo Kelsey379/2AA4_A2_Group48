@@ -47,10 +47,10 @@ public class FlyForward extends State {
             logger.info("The drone is facing " + drone.getFacingDirection());
             return stateMachine.FlyForward; 
         } else {
-            // === NEW LANDING LOGIC ===
+            
             island.setHasLandedOnIsland(true); 
             logger.info("The drone is facing " + drone.getFacingDirection());
-            logger.info("Drone has landed on island. Transition to Scan state.");
+            logger.info("Transition to Scan state.");
             return stateMachine.Scan; 
         }
     }

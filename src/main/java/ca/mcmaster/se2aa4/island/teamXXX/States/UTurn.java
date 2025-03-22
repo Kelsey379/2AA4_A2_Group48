@@ -43,7 +43,6 @@ public class UTurn extends State {
                 currAction = drone.heading(newDir);
                 missionControl.takeDecision(currAction);
                 step = 1;
-                logger.info("Step 1 of U-Turn: Turned from " + prevDir + " to " + newDir);
                 return;
             }
         }
@@ -66,7 +65,6 @@ public class UTurn extends State {
                 currAction = drone.heading(newDir);
                 missionControl.takeDecision(currAction);
                 step = 2;
-                logger.info("Step 2 of U-Turn: Turned from S to " + newDir + " (opposite of " + prevDir + ")");
             }
         }
     }
@@ -85,6 +83,7 @@ public class UTurn extends State {
         }
 
         if (step == 1) {
+            logger.info("The drone is facing " + drone.getFacingDirection());
             logger.info("U-Turn step 1 complete. Continuing U-turn.");
             return stateMachine.UTurn;
         } else if (step == 2) {
