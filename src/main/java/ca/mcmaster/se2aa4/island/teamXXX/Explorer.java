@@ -26,7 +26,6 @@ public class Explorer implements IExplorerRaid {
     private final Logger logger = LogManager.getLogger();
 
     @Override
-    //drone gets its heading, battery level ?? 
     public void initialize(String s) {
 
 
@@ -52,9 +51,6 @@ public class Explorer implements IExplorerRaid {
         this.missionControl = new MissionControl(); 
         this.stateMachine = new StateMachine(this.drone, this.currAction, this.island, this.startDir, this.missionControl); 
 
-        //this.algorithm = new Algorithm(this.drone, this.currAction, this.island, this.currState, this.startDir);
-
-        //algorithm.RUN();
 
         this.algorithm = new Algorithm(this.drone, this.currAction, this.island, this.startDir, this.missionControl, this.stateMachine); 
 
@@ -62,12 +58,8 @@ public class Explorer implements IExplorerRaid {
     }
 
     @Override
-    //the state machine decides next action and then the decsion JSON object will be passed into the action class methods
     public String takeDecision() {
 
-        // JSONObject decision = new JSONObject();
-        // decision.put("action", "stop"); // we stop the exploration immediately
-        // logger.info("** Decision: {}",decision.toString());
 
         algorithm.runStep();
         String decision = missionControl.getTakeDecision(); 
@@ -76,27 +68,16 @@ public class Explorer implements IExplorerRaid {
 
 
 
-        // String finalDecision = MissionControl.getRecentAction(); 
-    
-        // return decision.toString();
-
+       
         return decision; 
 
-        // String action = currState.executeState(); 
-        // return action; 
-        //add logic for states
+        
     }
 
     @Override
-    // where to store the decisions made my the drone 
     public void acknowledgeResults(String s) {
         JSONObject response = new JSONObject(new JSONTokener(new StringReader(s)));
-        // JSONObject extraInfo = response.getJSONObject("extras"); 
-        // JSONObject biomesArray = extraInfo.getJSONObject("biomes"); 
-
-        // this.currAction.updateDrone(response); // !!! --> Mission Control
-        // this.currAction.updateIsland(response); // !!! --> Mission Control 
-
+       
         missionControl.setResponse(response); 
         
         logger.info("** Response received:\n"+response.toString(2));

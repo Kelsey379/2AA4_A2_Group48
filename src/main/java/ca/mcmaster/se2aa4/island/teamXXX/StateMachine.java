@@ -6,6 +6,7 @@ import ca.mcmaster.se2aa4.island.teamXXX.States.FindGround;
 import ca.mcmaster.se2aa4.island.teamXXX.States.FlyForward;
 import ca.mcmaster.se2aa4.island.teamXXX.States.FoundGroundTurnEast;
 import ca.mcmaster.se2aa4.island.teamXXX.States.GoHome;
+import ca.mcmaster.se2aa4.island.teamXXX.States.IslandEdge;
 import ca.mcmaster.se2aa4.island.teamXXX.States.LossOfSignal;
 import ca.mcmaster.se2aa4.island.teamXXX.States.NoGroundFlySouth;
 import ca.mcmaster.se2aa4.island.teamXXX.States.Scan;
@@ -29,6 +30,7 @@ public class StateMachine {
     public State LossOfSignal; 
     public State Scan; 
     public State EchoCheck;
+    public State IslandEdge;
 
 
 
@@ -47,8 +49,6 @@ public class StateMachine {
 
     public Direction currDir; 
 
-
-        // public List<State> states = new ArrayList<State>();
 
 
         public StateMachine(Drone drone, Action action, Island island, Direction currDir, MissionControl missionControl) {
@@ -75,12 +75,10 @@ public class StateMachine {
 
             this.NoGroundFlySouth = new NoGroundFlySouth(this.drone, this.currAction, this.island, this,this.missionControl); 
             this.EchoCheck = new EchoCheck(this.drone, this.currAction, this.island, this,this.missionControl); 
-
+            this.IslandEdge = new IslandEdge(this.drone, this.currAction, this.island, this,this.missionControl);
 
 
             this.currentState = this.Turn;  
-
-            // this.currentState = new StartState(this.drone, this.currAction, this.island);
         }
 
         public void setState(State state) {
@@ -90,10 +88,6 @@ public class StateMachine {
         public State getState(){
             return this.currentState; 
         }
-
-        // /*public void transitionTo(State state) {
-        //     this.currentState = state;
-        // }*/
 
         
     }

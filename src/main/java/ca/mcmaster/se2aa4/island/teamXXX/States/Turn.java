@@ -21,19 +21,19 @@ public class Turn extends State {
 
     @Override
     public void executeState() {
-        // Get drone's current direction directly
+        
         Direction currentDirection = drone.getFacingDirection();
 
-        // Always turn right from current direction
+       
         Direction newDirection = action.turnRight(currentDirection);
 
-        // Update drone's internal direction
+        
         drone.setFacingDirection(newDirection);
 
-        // Log clearly
+        
         logger.info("Drone turned from {} to {}", currentDirection, newDirection);
 
-        // Set the drone's heading action
+        
         String currAction = drone.heading(newDirection);
         missionControl.takeDecision(currAction);
     }

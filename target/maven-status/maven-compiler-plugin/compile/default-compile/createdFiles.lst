@@ -9,6 +9,7 @@ ca/mcmaster/se2aa4/island/teamXXX/enums/Direction.class
 ca/mcmaster/se2aa4/island/teamXXX/States/LossOfSignal.class
 ca/mcmaster/se2aa4/island/teamXXX/enums/Type.class
 ca/mcmaster/se2aa4/island/teamXXX/Island.class
+ca/mcmaster/se2aa4/island/teamXXX/States/UTurn$1.class
 ca/mcmaster/se2aa4/island/teamXXX/States/Turn.class
 ca/mcmaster/se2aa4/island/teamXXX/States/FlyForward.class
 ca/mcmaster/se2aa4/island/teamXXX/States/EchoCheck.class
@@ -24,3 +25,4 @@ ca/mcmaster/se2aa4/island/teamXXX/Explorer.class
 ca/mcmaster/se2aa4/island/teamXXX/Runner.class
 ca/mcmaster/se2aa4/island/teamXXX/enums/Command.class
 ca/mcmaster/se2aa4/island/teamXXX/States/UTurn.class
+ca/mcmaster/se2aa4/island/teamXXX/States/IslandEdge.class
