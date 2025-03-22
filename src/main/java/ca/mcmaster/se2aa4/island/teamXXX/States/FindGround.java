@@ -16,7 +16,6 @@ public class FindGround extends State {
     private final Logger logger = LogManager.getLogger(); 
 
 
-    // Flag to indicate that we've issued our initial command
 
 
     public FindGround(Drone drone, Action action, Island island, StateMachine state, MissionControl missionControl) {
@@ -27,7 +26,6 @@ public class FindGround extends State {
     @Override
     public void executeState(){
         
-            // Issue the initial echo command.
         String resultAction = drone.echo(Direction.E); 
         logger.info("echoing from findground");
         missionControl.takeDecision(resultAction);
@@ -36,7 +34,6 @@ public class FindGround extends State {
     
     @Override
     public State exitState(){
-        // Check if a response is available.
         JSONObject response = missionControl.getResponse();
         logger.info("Received response is: " + response);
         if (response == null) {
@@ -44,18 +41,14 @@ public class FindGround extends State {
             return stateMachine.getState();
         }
         
-        // Log the entire response for debugging.
         logger.info("Response received: " + response.toString());
         
-        // Process the response.
         Integer cost = response.getInt("cost"); 
         String status = response.getString("status"); 
         JSONObject extras = response.getJSONObject("extras"); 
         
-        // Log the extras for debugging.
         logger.info("Extras received: " + extras.toString());
         
-        // Check if the range field is present.
         if (!extras.has("range")) {
             logger.error("Range field is missing in the response extras.");
             return stateMachine.getState();
@@ -75,9 +68,7 @@ public class FindGround extends State {
 
         missionControl.setResponse(null);
 
-        // Decide next command based on range.
         if (found.equals("GROUND")) {
-            // Ground found: adjust heading.
             logger.info("The drone is facing " + drone.getFacingDirection());
             logger.info("Transitioning to FoundGroundTurnEast");
             
@@ -85,7 +76,6 @@ public class FindGround extends State {
 
             return stateMachine.FoundGroundTurnEast;
         } else {
-            // Nothing detected: issue fly command.
             logger.info("The drone is facing " + drone.getFacingDirection());
             logger.info("Transitioning to NoGroundFlySouth");
             return stateMachine.NoGroundFlySouth;

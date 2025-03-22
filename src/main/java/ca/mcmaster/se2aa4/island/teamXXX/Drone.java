@@ -67,7 +67,6 @@ public class Drone {
         this.parameters.put("direction", changeDirection);
         this.decision.put("parameters", this.parameters);
         
-        // Optionally update the drone's internal facing direction:
         return decision.toString();
     }
 
@@ -79,7 +78,6 @@ public class Drone {
         this.decision = new JSONObject();
         this.parameters = new JSONObject();
         this.decision.put("action","echo");
-        // this.direction.NORTH --> "N"; 
         this.parameters.put("direction", this.echoDirection); 
         this.decision.put("parameters", this.parameters); 
 

@@ -48,7 +48,6 @@ public class StateMachine {
     public Direction currDir; 
 
 
-        // public List<State> states = new ArrayList<State>();
 
 
         public StateMachine(Drone drone, Action action, Island island, Direction currDir, MissionControl missionControl) {
@@ -80,7 +79,6 @@ public class StateMachine {
 
             this.currentState = this.Turn;  
 
-            // this.currentState = new StartState(this.drone, this.currAction, this.island);
         }
 
         public void setState(State state) {
@@ -91,9 +89,7 @@ public class StateMachine {
             return this.currentState; 
         }
 
-        // /*public void transitionTo(State state) {
-        //     this.currentState = state;
-        // }*/
+     
 
         
     }

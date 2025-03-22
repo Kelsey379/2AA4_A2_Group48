@@ -12,13 +12,11 @@ public class MissionControl{
 
     public MissionControl(){}
 
-    // setter 
-    // this is setCurrentAction
+    
     public void takeDecision(String currAction){
         this.currAction = currAction; 
     }
 
-    //this is getCurrentAction
     public String getTakeDecision(){
         return this.currAction; 
     }

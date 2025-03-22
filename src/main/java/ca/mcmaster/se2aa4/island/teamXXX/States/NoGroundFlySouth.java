@@ -21,10 +21,8 @@ public class NoGroundFlySouth extends State {
 
     @Override
     public void executeState() {
-        // Ensure drone is facing SOUTH before flying
         drone.setFacingDirection(Direction.S);
 
-        // Execute fly action (already facing south now)
         String currAction = drone.fly(); 
         missionControl.takeDecision(currAction);
     }

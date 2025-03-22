@@ -21,7 +21,6 @@ public class FoundGroundTurnEast extends State {
 
     @Override
     public void executeState() {
-        // Directly set drone's facing direction
         drone.setFacingDirection(Direction.E);
         
         String currAction = drone.heading(Direction.E); 
