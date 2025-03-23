@@ -125,6 +125,7 @@ public class Drone {
 
     }
 
+    //Below are the methods to adjust the last facing direction before beginning vertical search
     public void setPrevHorizontalDirection(Direction dir) {
         this.prevHorizontalDirection = dir;
     }
@@ -133,7 +134,7 @@ public class Drone {
         return this.prevHorizontalDirection;
     }
 
-
+    //Below are the methods to keep track of falling off the island after horizontal search completion
     public void incrementSequentialOutOfRange() {
         sequentialOutOfRange++;
     }

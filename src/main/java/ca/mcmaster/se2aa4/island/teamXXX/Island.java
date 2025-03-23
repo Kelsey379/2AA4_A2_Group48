@@ -49,7 +49,7 @@ public class Island {
         this.range = range;
     }
 
-   
+    //Below methods to track whether or not the drone has landed on the island
     public boolean hasLandedOnIsland() {
         return hasLandedOnIsland;
     }

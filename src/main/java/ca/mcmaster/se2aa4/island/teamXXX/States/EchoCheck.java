@@ -13,7 +13,6 @@ import ca.mcmaster.se2aa4.island.teamXXX.StateMachine;
 public class EchoCheck extends State {
 
     private final Logger logger = LogManager.getLogger();
-    private int sequentialOutOfRange = 0;
 
     public EchoCheck(Drone drone, Action action, Island island, StateMachine stateMachine, MissionControl missionControl) {
         super(drone, action, island, stateMachine, missionControl);
@@ -65,7 +64,7 @@ public class EchoCheck extends State {
             return stateMachine.FlyForward;
         }        
         else {
-            // Fallback for unexpected values
+            //Fallback 
             logger.warn("EchoCheck: Unexpected echo result: " + echoResult + ". Performing UTurn.");
             return stateMachine.UTurn;
         }

@@ -78,7 +78,7 @@ public class Scan extends State {
             return stateMachine.UTurn;
         }
 
-        logger.info("Transition to FlyForward state");
+        logger.info("** Transition to FlyForward state");
         return stateMachine.FlyForward;
     }
 }

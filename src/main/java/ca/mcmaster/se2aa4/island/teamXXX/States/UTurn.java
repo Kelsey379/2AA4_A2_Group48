@@ -30,20 +30,20 @@ public class UTurn extends State {
         currDir = drone.getFacingDirection();
         prevHorzDir = drone.getPrevHorizontalDirection();
 
-        // STEP 0: First turn from current direction
+        //STEP 0: First turn from current direction
         if (step == 0) {
-            if (currDir.equals(Direction.E)) {
+            if (currDir.equals(Direction.E)) { //E to S
                 prevDir = currDir;
-                newDir = action.turnRight(currDir); // E → S
-            } else if (currDir.equals(Direction.W)) {
+                newDir = action.turnRight(currDir); 
+            } else if (currDir.equals(Direction.W)) { //W to S
                 prevDir = currDir;
-                newDir = action.turnLeft(currDir); // W → S
+                newDir = action.turnLeft(currDir); 
             } else if (currDir.equals(Direction.N)) {
                 prevDir = currDir;
-                newDir = (prevHorzDir.equals(Direction.E)) ? action.turnRight(currDir) : action.turnLeft(currDir); // N → E or W
+                newDir = (prevHorzDir.equals(Direction.E)) ? action.turnRight(currDir) : action.turnLeft(currDir); //N to E or W
             } else if (currDir.equals(Direction.S)) {
                 prevDir = currDir;
-                newDir = (prevHorzDir.equals(Direction.E)) ? action.turnLeft(currDir) : action.turnRight(currDir); // S → E or W
+                newDir = (prevHorzDir.equals(Direction.E)) ? action.turnLeft(currDir) : action.turnRight(currDir); //S to E or W
             }
 
             if (newDir != null) {
@@ -55,7 +55,7 @@ public class UTurn extends State {
             }
         }
 
-        // STEP 1: Turn to face opposite of original direction
+        //STEP 1: Turn to face opposite of original direction
         if (step == 1) {
             if (prevDir == null) {
                 logger.error("prevDir is null during UTurn step 2!");
@@ -103,14 +103,14 @@ public class UTurn extends State {
             return stateMachine.UTurn;
         } else if (step == 2) {
             logger.info("UTurn: Completed. Drone now facing " + drone.getFacingDirection());
-            // Reset internal state
+            //Reset internal state
             step = 0;
             prevDir = null;
             logger.info("UTurn: Transitioning to Scan state.");
             return stateMachine.Scan;
         }
 
-        // Fallback
+        //Fallback
         logger.warn("UTurn: Unexpected fallback. Returning to Scan.");
         return stateMachine.Scan;
     }
