@@ -13,6 +13,7 @@ import ca.mcmaster.se2aa4.island.teamXXX.StateMachine;
 public class EchoCheck extends State {
 
     private final Logger logger = LogManager.getLogger();
+    private int sequentialOceanEchoes = 0;
 
     public EchoCheck(Drone drone, Action action, Island island, StateMachine stateMachine, MissionControl missionControl) {
         super(drone, action, island, stateMachine, missionControl);
@@ -29,28 +30,41 @@ public class EchoCheck extends State {
         JSONObject response = missionControl.getResponse();
         Integer cost = response.getInt("cost");
         String status = response.getString("status");
-        JSONObject extras = response.getJSONObject("extras"); 
+        JSONObject extras = response.getJSONObject("extras");
 
         int range = extras.getInt("range");
-        logger.info("The range is " + range);
+        String echoResult = extras.getString("found");
 
         drone.updateDrone(cost, status);
 
-        if (!status.equals("OK")) {
-            logger.info("EchoCheck: Status not OK. Transitioning to LossOfSignal.");
+        logger.info("EchoCheck: Status = " + status + ", Echo result = " + echoResult + ", Range = " + range);
+
+        if (!"OK".equals(status)) {
+            logger.warn("EchoCheck: Status not OK. Transitioning to LossOfSignal.");
             return stateMachine.LossOfSignal;
         }
 
-        String echoResult = response.getJSONObject("extras").getString("found");
-        logger.info("EchoCheck: Echo result = " + echoResult);
+        if ("OCEAN".equals(echoResult)) {
+            sequentialOceanEchoes++;
+            logger.info("EchoCheck: Ocean detected. sequentialOceanEchoes = " + sequentialOceanEchoes);
 
-        if (!"GROUND".equals(echoResult)) {
-            logger.info("EchoCheck: End of island detected. Transitioning to UTurn.");
+            if (sequentialOceanEchoes >= 2) {
+                logger.info("EchoCheck: Two consecutive ocean echoes. Transitioning to IslandEdge.");
+                sequentialOceanEchoes = 0;
+                return stateMachine.IslandEdge;
+            }
+
+            logger.info("EchoCheck: Ocean detected, but not enough to confirm island edge. UTurning.");
             return stateMachine.UTurn;
-        } else {
-            logger.info("EchoCheck: Still ground ahead. Transitioning to FlyForward.");
+        } else if ("GROUND".equals(echoResult)) {
+            sequentialOceanEchoes = 0;
             island.setRange(range);
+            logger.info("EchoCheck: Ground detected. Resetting ocean count. Transitioning to FlyForward.");
             return stateMachine.FlyForward;
+        } else {
+            //fallback
+            logger.warn("EchoCheck: Unexpected biome type detected: " + echoResult + ". UTurning.");
+            return stateMachine.UTurn;
         }
     }
 }

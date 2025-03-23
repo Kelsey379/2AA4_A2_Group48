@@ -49,18 +49,17 @@ public class Scan extends State {
 
         logger.info("** Scan received biomes array: " + biomes.toString());
 
-        
         foundCreek = creeks.length() > 0;
         foundSite = sites.length() > 0;
         island.updateIsland(foundCreek, foundSite); 
 
-        
         if (biomes.length() > 0) {
             String biomeType = biomes.getString(0);
             logger.info("** First biome detected: " + biomeType);
+
             if ("OCEAN".equals(biomeType)) {
                 foundOcean = true;
-                logger.info("** Ocean is first biome. Preparing to transition to echo check.");
+                logger.info("** Ocean detected as first biome.");
             }
         }
 
@@ -74,7 +73,7 @@ public class Scan extends State {
         } else if (foundOcean && island.hasLandedOnIsland()) {
             logger.info("** Ocean detected & drone already on island. Going to EchoCheck state.");
             return stateMachine.EchoCheck;
-        } else if (foundOcean) {
+        } else if (foundOcean) { //fallback
             logger.info("** Ocean detected before landing. Transitioning to UTurn.");
             return stateMachine.UTurn;
         }
@@ -82,5 +81,4 @@ public class Scan extends State {
         logger.info("Transition to FlyForward state");
         return stateMachine.FlyForward;
     }
-
 }

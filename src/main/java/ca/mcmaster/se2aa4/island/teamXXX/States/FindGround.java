@@ -15,7 +15,7 @@ public class FindGround extends State {
 
     private final Logger logger = LogManager.getLogger(); 
 
-
+    
 
 
     public FindGround(Drone drone, Action action, Island island, StateMachine state, MissionControl missionControl) {
@@ -26,7 +26,9 @@ public class FindGround extends State {
     @Override
     public void executeState(){
         
-        String resultAction = drone.echo(Direction.E); 
+        Direction currDir = drone.getFacingDirection();
+        
+        String resultAction = drone.echo(action.turnLeft(currDir)); 
         logger.info("echoing from findground");
         missionControl.takeDecision(resultAction);
 

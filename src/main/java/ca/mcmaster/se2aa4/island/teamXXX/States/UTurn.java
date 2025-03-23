@@ -16,6 +16,7 @@ public class UTurn extends State {
     private Direction currDir; 
     private Direction newDir;
     private Direction prevDir;
+    private Direction prevHorzDir;
     private String currAction;
     private int step = 0;
     private final Logger logger = LogManager.getLogger();
@@ -27,8 +28,9 @@ public class UTurn extends State {
     @Override
     public void executeState(){
         currDir = drone.getFacingDirection();
+        prevHorzDir = drone.getPrevHorizontalDirection();
 
-        // STEP 1: Set prevDir, turn from E or W to S
+        //first turn in U-turn
         if (step == 0) {
             if (currDir.equals(Direction.E)) {
                 prevDir = currDir;
@@ -36,6 +38,22 @@ public class UTurn extends State {
             } else if (currDir.equals(Direction.W)) {
                 prevDir = currDir;
                 newDir = action.turnLeft(currDir);
+            } else if (currDir.equals(Direction.N)){
+                prevDir = currDir;
+                if(prevHorzDir.equals(Direction.E)){
+                    newDir = action.turnRight(currDir);
+                }
+                else if(prevHorzDir.equals(Direction.W)){
+                    newDir = action.turnLeft(currDir);
+                }
+            } else if (currDir.equals(Direction.S)){
+                prevDir = currDir;
+                if(prevHorzDir.equals(Direction.E)){
+                    newDir = action.turnLeft(currDir);
+                }
+                else if(prevHorzDir.equals(Direction.W)){
+                    newDir = action.turnRight(currDir);
+                }
             }
 
             if (newDir != null) {
@@ -48,13 +66,25 @@ public class UTurn extends State {
         }
 
         // STEP 2: Now facing S, turn to opposite of original direction
-        if (step == 1 && currDir.equals(Direction.S)) {
+        if (step == 1) {
             if (prevDir == null) {
                 logger.error("prevDir is null during UTurn step 2!");
                 return;
             }
 
-            if (prevDir.equals(Direction.W)) {
+            if(prevDir.equals(Direction.N)){
+                if((drone.getFacingDirection()).equals(Direction.E)){
+                    newDir = action.turnRight(currDir);
+                } else if((drone.getFacingDirection()).equals(Direction.W)){
+                    newDir = action.turnLeft(currDir);
+                }
+            } else if(prevDir.equals(Direction.S)){
+                if((drone.getFacingDirection()).equals(Direction.E)){
+                    newDir = action.turnLeft(currDir);
+                } else if((drone.getFacingDirection()).equals(Direction.W)){
+                    newDir = action.turnRight(currDir);
+                }
+            } else if (prevDir.equals(Direction.W)) {
                 newDir = action.turnLeft(currDir);
             } else if (prevDir.equals(Direction.E)) {
                 newDir = action.turnRight(currDir);

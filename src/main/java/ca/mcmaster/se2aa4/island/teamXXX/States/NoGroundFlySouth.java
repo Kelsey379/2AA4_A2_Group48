@@ -9,7 +9,6 @@ import ca.mcmaster.se2aa4.island.teamXXX.Drone;
 import ca.mcmaster.se2aa4.island.teamXXX.Island;
 import ca.mcmaster.se2aa4.island.teamXXX.MissionControl;
 import ca.mcmaster.se2aa4.island.teamXXX.StateMachine;
-import ca.mcmaster.se2aa4.island.teamXXX.enums.Direction;
 
 public class NoGroundFlySouth extends State {
 
@@ -21,7 +20,6 @@ public class NoGroundFlySouth extends State {
 
     @Override
     public void executeState() {
-        drone.setFacingDirection(Direction.S);
 
         String currAction = drone.fly(); 
         missionControl.takeDecision(currAction);
