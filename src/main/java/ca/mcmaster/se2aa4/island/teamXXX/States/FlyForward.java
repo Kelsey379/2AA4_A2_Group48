@@ -40,6 +40,8 @@ public class FlyForward extends State {
             return stateMachine.LossOfSignal; 
         }
 
+        drone.resetSequentialOutOfRange();
+
         if (range > 0) {
             range--;
             island.setRange(range);

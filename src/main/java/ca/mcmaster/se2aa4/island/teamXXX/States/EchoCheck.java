@@ -13,7 +13,7 @@ import ca.mcmaster.se2aa4.island.teamXXX.StateMachine;
 public class EchoCheck extends State {
 
     private final Logger logger = LogManager.getLogger();
-    private int sequentialOceanEchoes = 0;
+    private int sequentialOutOfRange = 0;
 
     public EchoCheck(Drone drone, Action action, Island island, StateMachine stateMachine, MissionControl missionControl) {
         super(drone, action, island, stateMachine, missionControl);
@@ -44,26 +44,29 @@ public class EchoCheck extends State {
             return stateMachine.LossOfSignal;
         }
 
-        if ("OCEAN".equals(echoResult)) {
-            sequentialOceanEchoes++;
-            logger.info("EchoCheck: Ocean detected. sequentialOceanEchoes = " + sequentialOceanEchoes);
-
-            if (sequentialOceanEchoes >= 2) {
-                logger.info("EchoCheck: Two consecutive ocean echoes. Transitioning to IslandEdge.");
-                sequentialOceanEchoes = 0;
+        if ("OUT_OF_RANGE".equals(echoResult)) {
+            drone.incrementSequentialOutOfRange();
+            int count = drone.getSequentialOutOfRange();
+        
+            logger.info("EchoCheck: OUT_OF_RANGE detected. Count = " + count);
+        
+            if (count >= 2) {
+                logger.info("EchoCheck: Two consecutive OUT_OF_RANGE echoes. Transitioning to IslandEdge.");
                 return stateMachine.IslandEdge;
             }
-
-            logger.info("EchoCheck: Ocean detected, but not enough to confirm island edge. UTurning.");
+        
+            logger.info("EchoCheck: Single OUT_OF_RANGE echo. Performing UTurn.");
             return stateMachine.UTurn;
-        } else if ("GROUND".equals(echoResult)) {
-            sequentialOceanEchoes = 0;
+        }
+        else if ("GROUND".equals(echoResult)) {
+            drone.resetSequentialOutOfRange();
             island.setRange(range);
-            logger.info("EchoCheck: Ground detected. Resetting ocean count. Transitioning to FlyForward.");
+            logger.info("EchoCheck: GROUND detected. Resetting OUT_OF_RANGE count. Transitioning to FlyForward.");
             return stateMachine.FlyForward;
-        } else {
-            //fallback
-            logger.warn("EchoCheck: Unexpected biome type detected: " + echoResult + ". UTurning.");
+        }        
+        else {
+            // Fallback for unexpected values
+            logger.warn("EchoCheck: Unexpected echo result: " + echoResult + ". Performing UTurn.");
             return stateMachine.UTurn;
         }
     }

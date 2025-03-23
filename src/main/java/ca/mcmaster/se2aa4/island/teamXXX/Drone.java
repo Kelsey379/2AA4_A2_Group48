@@ -22,6 +22,8 @@ public class Drone {
     public JSONObject parameters; 
     public String status; 
 
+    private int sequentialOutOfRange = 0;
+
 
     private Direction prevHorizontalDirection; //store last horz direction prior to beginning verticsl search
 
@@ -130,6 +132,20 @@ public class Drone {
     public Direction getPrevHorizontalDirection() {
         return this.prevHorizontalDirection;
     }
+
+
+    public void incrementSequentialOutOfRange() {
+        sequentialOutOfRange++;
+    }
+
+    public int getSequentialOutOfRange() {
+        return sequentialOutOfRange;
+    }
+
+    public void resetSequentialOutOfRange() {
+        sequentialOutOfRange = 0;
+    }
+
 
     
 

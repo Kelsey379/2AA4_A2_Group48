@@ -30,30 +30,20 @@ public class UTurn extends State {
         currDir = drone.getFacingDirection();
         prevHorzDir = drone.getPrevHorizontalDirection();
 
-        //first turn in U-turn
+        // STEP 0: First turn from current direction
         if (step == 0) {
             if (currDir.equals(Direction.E)) {
                 prevDir = currDir;
-                newDir = action.turnRight(currDir);
+                newDir = action.turnRight(currDir); // E → S
             } else if (currDir.equals(Direction.W)) {
                 prevDir = currDir;
-                newDir = action.turnLeft(currDir);
-            } else if (currDir.equals(Direction.N)){
+                newDir = action.turnLeft(currDir); // W → S
+            } else if (currDir.equals(Direction.N)) {
                 prevDir = currDir;
-                if(prevHorzDir.equals(Direction.E)){
-                    newDir = action.turnRight(currDir);
-                }
-                else if(prevHorzDir.equals(Direction.W)){
-                    newDir = action.turnLeft(currDir);
-                }
-            } else if (currDir.equals(Direction.S)){
+                newDir = (prevHorzDir.equals(Direction.E)) ? action.turnRight(currDir) : action.turnLeft(currDir); // N → E or W
+            } else if (currDir.equals(Direction.S)) {
                 prevDir = currDir;
-                if(prevHorzDir.equals(Direction.E)){
-                    newDir = action.turnLeft(currDir);
-                }
-                else if(prevHorzDir.equals(Direction.W)){
-                    newDir = action.turnRight(currDir);
-                }
+                newDir = (prevHorzDir.equals(Direction.E)) ? action.turnLeft(currDir) : action.turnRight(currDir); // S → E or W
             }
 
             if (newDir != null) {
@@ -65,29 +55,25 @@ public class UTurn extends State {
             }
         }
 
-        // STEP 2: Now facing S, turn to opposite of original direction
+        // STEP 1: Turn to face opposite of original direction
         if (step == 1) {
             if (prevDir == null) {
                 logger.error("prevDir is null during UTurn step 2!");
                 return;
             }
 
-            if(prevDir.equals(Direction.N)){
-                if((drone.getFacingDirection()).equals(Direction.E)){
-                    newDir = action.turnRight(currDir);
-                } else if((drone.getFacingDirection()).equals(Direction.W)){
-                    newDir = action.turnLeft(currDir);
-                }
-            } else if(prevDir.equals(Direction.S)){
-                if((drone.getFacingDirection()).equals(Direction.E)){
-                    newDir = action.turnLeft(currDir);
-                } else if((drone.getFacingDirection()).equals(Direction.W)){
-                    newDir = action.turnRight(currDir);
-                }
-            } else if (prevDir.equals(Direction.W)) {
+            if(prevDir.equals(Direction.N) && (currDir.equals(Direction.E))){
+                newDir = action.turnRight(currDir);
+            } else if(prevDir.equals(Direction.N) && currDir.equals(Direction.W)){
                 newDir = action.turnLeft(currDir);
+            } else if(prevDir.equals(Direction.S) && currDir.equals(Direction.E)){
+                newDir = action.turnLeft(currDir);
+            } else if(prevDir.equals(Direction.S) && currDir.equals(Direction.W)){
+                newDir = action.turnRight(currDir);
             } else if (prevDir.equals(Direction.E)) {
                 newDir = action.turnRight(currDir);
+            } else if (prevDir.equals(Direction.W)) {
+                newDir = action.turnLeft(currDir);
             }
 
             if (newDir != null) {
@@ -107,26 +93,25 @@ public class UTurn extends State {
         drone.updateDrone(cost, status);
 
         if (!status.equals("OK")) {
-            logger.info("The drone is facing " + drone.getFacingDirection());
-            logger.info("Transitioning to LossOfSignal state.");
+            logger.info("UTurn: Drone encountered issue, facing " + drone.getFacingDirection());
+            logger.info("UTurn: Transitioning to LossOfSignal state.");
             return stateMachine.LossOfSignal; 
         }
 
         if (step == 1) {
-            logger.info("The drone is facing " + drone.getFacingDirection());
-            logger.info("U-Turn step 1 complete. Continuing U-turn.");
+            logger.info("UTurn: Step 1 complete. Drone now facing " + drone.getFacingDirection());
             return stateMachine.UTurn;
         } else if (step == 2) {
-            logger.info("U-Turn complete. Drone now facing " + drone.getFacingDirection());
-            // Reset internal state for reuse
+            logger.info("UTurn: Completed. Drone now facing " + drone.getFacingDirection());
+            // Reset internal state
             step = 0;
             prevDir = null;
-            logger.info("Transition to in Scan state.");
+            logger.info("UTurn: Transitioning to Scan state.");
             return stateMachine.Scan;
         }
 
         // Fallback
-        logger.info("Transition to in Scan state.");
+        logger.warn("UTurn: Unexpected fallback. Returning to Scan.");
         return stateMachine.Scan;
     }
 }
