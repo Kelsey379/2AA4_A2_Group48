@@ -2,7 +2,6 @@ package ca.mcmaster.se2aa4.island.teamXXX.States;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.json.JSONObject;
 
 import ca.mcmaster.se2aa4.island.teamXXX.Action;
 import ca.mcmaster.se2aa4.island.teamXXX.Drone;
@@ -23,6 +22,7 @@ public class GoHome extends State{
     public void executeState(){
 
         String resultAction = drone.stop(); 
+        logger.info("** Drone Discoveries: " + drone.getDiscoveries().toString());
         missionControl.takeDecision(resultAction); 
 
        
@@ -30,16 +30,6 @@ public class GoHome extends State{
 
     @Override 
     public State exitState(){
-        
-        JSONObject response = missionControl.getResponse(); 
-
-
-        Integer cost = response.getInt("cost"); 
-        String status = response.getString("status"); 
-
-        drone.updateDrone(cost, status);
-
-        logger.info("** Drone Discoveries: " + drone.getDiscoveries().toString());
 
         return null; 
     }
