@@ -2,6 +2,7 @@ package ca.mcmaster.se2aa4.island.teamXXX;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import ca.mcmaster.se2aa4.island.teamXXX.enums.Direction; 
@@ -32,7 +33,7 @@ public class Drone {
 
     private Direction prevHorizontalDirection; //store last horz direction prior to beginning verticsl search
 
-    public JSONObject discoveries;
+    public JSONObject discoveries = new JSONObject();
 
     public Drone(Direction startDir, Integer startBattery){
 
@@ -42,7 +43,10 @@ public class Drone {
         this.threshhold = 50; 
         this.currAction = new Action(); 
         this.decision = new JSONObject(); 
-        this.parameters = new JSONObject();     
+        this.parameters = new JSONObject();  
+        
+        this.discoveries.put("creeks", new JSONArray());
+        this.discoveries.put("sites", new JSONArray());
     }
 
     public JSONObject getDiscoveries() {
@@ -51,8 +55,15 @@ public class Drone {
 
     public void addDiscovery(String type, JSONObject discovery) {
         if (type.equals("creeks")) {
+            if (!this.discoveries.has("creeks")) {
+                this.discoveries.put("creeks", new JSONArray());
+            }
             this.discoveries.getJSONArray("creeks").put(discovery);
+            logger.info("** Added creek to discoveries: " + discovery.toString()); // Debugging log
         } else if (type.equals("sites")) {
+            if (!this.discoveries.has("sites")) {
+                this.discoveries.put("sites", new JSONArray());
+            }
             this.discoveries.getJSONArray("sites").put(discovery);
         }
     }

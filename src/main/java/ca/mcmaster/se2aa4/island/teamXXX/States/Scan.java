@@ -56,13 +56,13 @@ public class Scan extends State {
 
         if (foundCreek) {
             JSONObject creek = creeks.getJSONObject(0);  
-            drone.addDiscovery("creek", creek);  
+            drone.addDiscovery("creeks", creek);  
+            logger.info("** found a creek. ading to discoveries.");
         }
     
-      
         if (foundSite) {
             JSONObject site = sites.getJSONObject(0);  
-            drone.addDiscovery("site", site);  
+            drone.addDiscovery("sites", site);  
         }
 
         if (biomes.length() > 0) {
