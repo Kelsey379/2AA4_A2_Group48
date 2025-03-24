@@ -40,6 +40,11 @@ public class FlyForward extends State {
             return stateMachine.LossOfSignal; 
         }
 
+        if (drone.isBatteryLow()) {
+            logger.info("** Battery level is below threshold. Transitioning to GoHome state.");
+            return stateMachine.GoHome;  // Transition to GoHome if battery is low
+        }
+
         
 
         drone.resetSequentialOutOfRange();

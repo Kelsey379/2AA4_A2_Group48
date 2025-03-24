@@ -17,6 +17,7 @@ public class Scan extends State {
     private boolean foundSite = false;
     public boolean foundOcean = false;
 
+
     private final Logger logger = LogManager.getLogger();
 
     public Scan(Drone drone, Action action, Island island, StateMachine stateMachine, MissionControl missionControl) {
@@ -53,6 +54,17 @@ public class Scan extends State {
         foundSite = sites.length() > 0;
         island.updateIsland(foundCreek, foundSite); 
 
+        if (foundCreek) {
+            JSONObject creek = creeks.getJSONObject(0);  
+            drone.addDiscovery("creek", creek);  
+        }
+    
+      
+        if (foundSite) {
+            JSONObject site = sites.getJSONObject(0);  
+            drone.addDiscovery("site", site);  
+        }
+
         if (biomes.length() > 0) {
             String biomeType = biomes.getString(0);
             logger.info("** First biome detected: " + biomeType);
@@ -63,14 +75,14 @@ public class Scan extends State {
             }
         }
 
+        if (drone.isBatteryLow()) {
+            logger.info("** Battery level is below threshold. Transitioning to GoHome state.");
+            return stateMachine.GoHome;  // Transition to GoHome if battery is low
+        }
+
+
         // === Decision Logic ===
-        if (foundCreek && island.getSites()) {
-            logger.info("** Transitioning to GoHome State");
-            return stateMachine.GoHome;
-        } else if (foundSite && island.getCreek()) {
-            logger.info("** Transitioning to GoHome State");
-            return stateMachine.GoHome;
-        } else if (foundOcean && island.hasLandedOnIsland()) {
+        if (foundOcean && island.hasLandedOnIsland()) {
             logger.info("** Ocean detected & drone already on island. Going to EchoCheck state.");
             return stateMachine.EchoCheck;
         } else if (foundOcean) { //fallback

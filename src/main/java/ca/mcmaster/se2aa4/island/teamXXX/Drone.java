@@ -18,6 +18,9 @@ public class Drone {
 
     private final Action currAction; 
 
+    public Integer threshhold; 
+    private boolean isBatteryLow = false; 
+
     public JSONObject decision; 
     public JSONObject parameters; 
     public String status; 
@@ -29,16 +32,29 @@ public class Drone {
 
     private Direction prevHorizontalDirection; //store last horz direction prior to beginning verticsl search
 
+    public JSONObject discoveries;
+
     public Drone(Direction startDir, Integer startBattery){
 
         this.currDir = startDir; 
 
         this.currBattery = startBattery; 
-
+        this.threshhold = 50; 
         this.currAction = new Action(); 
-
         this.decision = new JSONObject(); 
         this.parameters = new JSONObject();     
+    }
+
+    public JSONObject getDiscoveries() {
+        return this.discoveries;
+    }
+
+    public void addDiscovery(String type, JSONObject discovery) {
+        if (type.equals("creeks")) {
+            this.discoveries.getJSONArray("creeks").put(discovery);
+        } else if (type.equals("sites")) {
+            this.discoveries.getJSONArray("sites").put(discovery);
+        }
     }
 
     public Action getCurrAction(){
@@ -59,6 +75,14 @@ public class Drone {
 
     public void setBattery(Integer cost) {
         this.currBattery -= cost; 
+    }
+
+    public boolean isBatteryLow() {
+        if (this.currBattery.compareTo(this.threshhold) <  0){
+            isBatteryLow = true;
+            return isBatteryLow; 
+        }
+        return isBatteryLow; 
     }
 
     

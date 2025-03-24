@@ -92,6 +92,11 @@ public class UTurn extends State {
         String status = response.getString("status"); 
         drone.updateDrone(cost, status);
 
+        if (drone.isBatteryLow()) {
+            logger.info("** Battery level is below threshold. Transitioning to GoHome state.");
+            return stateMachine.GoHome;  // Transition to GoHome if battery is low
+        }
+
         if (!status.equals("OK")) {
             logger.info("UTurn: Drone encountered issue, facing " + drone.getFacingDirection());
             logger.info("UTurn: Transitioning to LossOfSignal state.");
