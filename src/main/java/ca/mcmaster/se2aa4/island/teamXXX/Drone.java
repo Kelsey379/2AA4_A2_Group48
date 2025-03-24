@@ -57,11 +57,15 @@ public class Drone {
     }
 
     public void addDiscovery(String type, String discovery) {
-        if (type.equals("creeks")) {
-            this.discoveries.getJSONArray("creeks").put(discovery);
-            logger.info("** Added creek to discoveries: " + discovery); 
-        } else if (type.equals("sites")) {
-            this.discoveries.getJSONArray("sites").put(discovery);
+        //Check if the discovery is already in creeks or sites
+        JSONArray discoveryArray = this.discoveries.getJSONArray(type);
+    
+        //Avoid adding the discovery if it already exists
+        if (!discoveryArray.toList().contains(discovery)) {
+            discoveryArray.put(discovery);
+            logger.info("** Added " + type + " to discoveries: " + discovery); 
+        } else {
+            logger.info("** Discovery already exists, not adding " + type + ": " + discovery);
         }
     }
 

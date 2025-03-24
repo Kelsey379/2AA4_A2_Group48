@@ -9,7 +9,6 @@ import ca.mcmaster.se2aa4.island.teamXXX.Drone;
 import ca.mcmaster.se2aa4.island.teamXXX.Island;
 import ca.mcmaster.se2aa4.island.teamXXX.MissionControl;
 import ca.mcmaster.se2aa4.island.teamXXX.StateMachine;
-import ca.mcmaster.se2aa4.island.teamXXX.enums.Direction;
 
 public class EchoCheck extends State {
 
@@ -41,34 +40,34 @@ public class EchoCheck extends State {
 
         logger.info("EchoCheck: Status = " + status + ", Echo result = " + echoResult + ", Range = " + range);
 
-        if (!"OK".equals(status)) {
+        if (!"OK".equals(status)) { //check if status has been lost and drone is MIA
             logger.warn("EchoCheck: Status not OK. Transitioning to LossOfSignal.");
             return stateMachine.LossOfSignal;
         }
 
-        if ("OUT_OF_RANGE".equals(echoResult)) {
+        if ("OUT_OF_RANGE".equals(echoResult)) { //if an ocean is scanned and theres no ground in range, move towards u-turn 
             drone.incrementSequentialOutOfRange();
             int count = drone.getSequentialOutOfRange();
         
             logger.info("EchoCheck: OUT_OF_RANGE detected. Count = " + count);
         
-            if (count >= 2) {
+            if (count >= 2) { //if out of range is scanned back 2 back, drone has fallen off island
                 logger.info("EchoCheck: Two consecutive OUT_OF_RANGE echoes.");
-                Direction dir = drone.getFacingDirection();
-                if(drone.getVertSearch() && (dir.equals(Direction.N) || dir.equals(Direction.S))){
+                /*Direction dir = drone.getFacingDirection();
+                if(drone.getVertSearch() && (dir.equals(Direction.N) || dir.equals(Direction.S))){ //in the case a verticals earch has been completed, move forward one more time 
                     drone.setVertSearch(false);
                     logger.info("Vertical search conditions met, Flyforward once before IslandEdge.");
                     return stateMachine.FlyForward;
-                }
-                drone.resetSequentialOutOfRange();
+                }*/
+                drone.resetSequentialOutOfRange(); //back 2 back out of range echoes should be reset
                 logger.info("Vertical search/Horz conditions met, Flyforward once before IslandEdge.");
-                return stateMachine.IslandEdge;
+                return stateMachine.IslandEdge; 
             }
         
             logger.info("EchoCheck: Single OUT_OF_RANGE echo. Performing UTurn.");
             return stateMachine.UTurn;
         }
-        else if ("GROUND".equals(echoResult)) {
+        else if ("GROUND".equals(echoResult)) { //In case of an ocean scan followed by echoing ground, mfly forward until ground is reached
             drone.resetSequentialOutOfRange();
             island.setRange(range);
             logger.info("EchoCheck: GROUND detected. Resetting OUT_OF_RANGE count. Transitioning to FlyForward.");

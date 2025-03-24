@@ -21,37 +21,35 @@ public class IslandEdge extends State {
 
     @Override
     public void executeState() {
-        logger.info("Transitioning to vertical search");
+        logger.info("Transitioning to IslandEdge");
         Direction currentDir = drone.getFacingDirection();
         logger.info("IslandEdge: Current direction: " + currentDir);
 
-
-        logger.info("has entered islandstate if block");
         Direction newDir = null;
 
-        if (currentDir.equals(Direction.E)) {
+        if (currentDir.equals(Direction.E)) { //After completing horizontal search and facing east, turn north to start vertical search
             drone.setPrevHorizontalDirection(currentDir);  
             newDir = action.turnLeft(currentDir);          
             logger.info("IslandEdge: Turning LEFT from E to N");
         } 
-        else if (currentDir.equals(Direction.W)) {
+        else if (currentDir.equals(Direction.W)) { //After completing horizontal search and facing west, turn north to start vertical search
             drone.setPrevHorizontalDirection(currentDir);  
             newDir = action.turnRight(currentDir);         
             logger.info("IslandEdge: Turning RIGHT from W to N");
         }
-        else if (currentDir.equals(Direction.S) && (drone.getPrevHorizontalDirection()).equals(Direction.E)) {  
+        else if (currentDir.equals(Direction.S) && (drone.getPrevHorizontalDirection()).equals(Direction.E)) {  //After completing vertical search, determine which direction to start horizontal search
             newDir = action.turnRight(currentDir);         
             logger.info("IslandEdge: Turning RIGHT from S to W");
         }
-        else if (currentDir.equals(Direction.S) && (drone.getPrevHorizontalDirection()).equals(Direction.W)) {
+        else if (currentDir.equals(Direction.S) && (drone.getPrevHorizontalDirection()).equals(Direction.W)) { //After completing vertical search, determine which direction to start horizontal search
             newDir = action.turnLeft(currentDir);         
             logger.info("IslandEdge: Turning RIGHT from S to E");
         }   
-        else if (currentDir.equals(Direction.N) && (drone.getPrevHorizontalDirection()).equals(Direction.W)) {
+        else if (currentDir.equals(Direction.N) && (drone.getPrevHorizontalDirection()).equals(Direction.W)) { //After completing vertical search, determine which direction to start horizontal search
             newDir = action.turnRight(currentDir);         
             logger.info("IslandEdge: Turning RIGHT from S to E");
         }
-        else if (currentDir.equals(Direction.N) && (drone.getPrevHorizontalDirection()).equals(Direction.E)) {
+        else if (currentDir.equals(Direction.N) && (drone.getPrevHorizontalDirection()).equals(Direction.E)) { //After completing vertical search, determine which direction to start horizontal search
             newDir = action.turnLeft(currentDir);         
             logger.info("IslandEdge: Turning RIGHT from S to W");
         }             

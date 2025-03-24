@@ -2,6 +2,7 @@ package ca.mcmaster.se2aa4.island.teamXXX.States;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.json.JSONArray;
 
 import ca.mcmaster.se2aa4.island.teamXXX.Action;
 import ca.mcmaster.se2aa4.island.teamXXX.Drone;
@@ -19,15 +20,30 @@ public class GoHome extends State{
     }
 
     @Override
-    public void executeState(){
+    public void executeState() {
 
         String resultAction = drone.stop(); 
-        logger.info("** Drone Discoveries: " + drone.getDiscoveries().toString());
-        // sets the action that needs to be taken by the drone and called by the takeDescision method.
-        missionControl.takeDecision(resultAction); 
+        logger.info("** Drone Discoveries:");
 
-       
+        // Get the "creeks" and "sites" arrays from the discoveries object
+        JSONArray creeks = drone.getDiscoveries().getJSONArray("creeks");
+        JSONArray sites = drone.getDiscoveries().getJSONArray("sites");
+
+        // Log each creek line by line
+        logger.info("** Creeks:");
+        for (int i = 0; i < creeks.length(); i++) {
+            logger.info("  " + creeks.getString(i));
+        }
+
+        // Log each site line by line
+        logger.info("** Sites:");
+        for (int i = 0; i < sites.length(); i++) {
+            logger.info("  " + sites.getString(i));
+        }
+
+        missionControl.takeDecision(resultAction); 
     }
+
 
     @Override 
     public State exitState(){
