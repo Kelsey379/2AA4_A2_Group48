@@ -9,6 +9,7 @@ import ca.mcmaster.se2aa4.island.teamXXX.Drone;
 import ca.mcmaster.se2aa4.island.teamXXX.Island;
 import ca.mcmaster.se2aa4.island.teamXXX.MissionControl;
 import ca.mcmaster.se2aa4.island.teamXXX.StateMachine;
+import ca.mcmaster.se2aa4.island.teamXXX.enums.Direction;
 
 public class EchoCheck extends State {
 
@@ -50,8 +51,16 @@ public class EchoCheck extends State {
             logger.info("EchoCheck: OUT_OF_RANGE detected. Count = " + count);
         
             if (count >= 2) {
-                logger.info("EchoCheck: Two consecutive OUT_OF_RANGE echoes. Transitioning to FlyWord");
-                return stateMachine.FlyForward; 
+                logger.info("EchoCheck: Two consecutive OUT_OF_RANGE echoes.");
+                Direction dir = drone.getFacingDirection();
+                if(drone.getVertSearch() && (dir.equals(Direction.N) || dir.equals(Direction.S))){
+                    drone.setVertSearch(false);
+                    logger.info("Vertical search conditions met, Flyforward once before IslandEdge.");
+                    return stateMachine.FlyForward;
+                }
+                drone.resetSequentialOutOfRange();
+                logger.info("Vertical search/Horz conditions met, Flyforward once before IslandEdge.");
+                return stateMachine.IslandEdge;
             }
         
             logger.info("EchoCheck: Single OUT_OF_RANGE echo. Performing UTurn.");
