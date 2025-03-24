@@ -17,7 +17,6 @@ public class Scan extends State {
     private boolean foundSite = false;
     public boolean foundOcean = false;
 
-
     private final Logger logger = LogManager.getLogger();
 
     public Scan(Drone drone, Action action, Island island, StateMachine stateMachine, MissionControl missionControl) {
@@ -55,13 +54,13 @@ public class Scan extends State {
         island.updateIsland(foundCreek, foundSite); 
 
         if (foundCreek) {
-            JSONObject creek = creeks.getJSONObject(0);  
+            String creek = creeks.getString(0);  
             drone.addDiscovery("creeks", creek);  
-            logger.info("** found a creek. ading to discoveries.");
+            logger.info("** Found a creek. Adding to discoveries.");
         }
     
         if (foundSite) {
-            JSONObject site = sites.getJSONObject(0);  
+            String site = sites.getString(0);  
             drone.addDiscovery("sites", site);  
         }
 
@@ -79,7 +78,6 @@ public class Scan extends State {
             logger.info("** Battery level is below threshold. Transitioning to GoHome state.");
             return stateMachine.GoHome;  // Transition to GoHome if battery is low
         }
-
 
         // === Decision Logic ===
         if (foundOcean && island.hasLandedOnIsland()) {

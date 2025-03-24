@@ -30,21 +30,19 @@ public class Drone {
 
     private Boolean vertSearch = true;
 
-
-    private Direction prevHorizontalDirection; //store last horz direction prior to beginning verticsl search
+    private Direction prevHorizontalDirection; //store last horz direction prior to beginning vertical search
 
     public JSONObject discoveries = new JSONObject();
 
     public Drone(Direction startDir, Integer startBattery){
 
         this.currDir = startDir; 
-
         this.currBattery = startBattery; 
         this.threshhold = 50; 
         this.currAction = new Action(); 
         this.decision = new JSONObject(); 
         this.parameters = new JSONObject();  
-        
+
         this.discoveries.put("creeks", new JSONArray());
         this.discoveries.put("sites", new JSONArray());
     }
@@ -53,17 +51,11 @@ public class Drone {
         return this.discoveries;
     }
 
-    public void addDiscovery(String type, JSONObject discovery) {
+    public void addDiscovery(String type, String discovery) {
         if (type.equals("creeks")) {
-            if (!this.discoveries.has("creeks")) {
-                this.discoveries.put("creeks", new JSONArray());
-            }
             this.discoveries.getJSONArray("creeks").put(discovery);
-            logger.info("** Added creek to discoveries: " + discovery.toString()); // Debugging log
+            logger.info("** Added creek to discoveries: " + discovery); 
         } else if (type.equals("sites")) {
-            if (!this.discoveries.has("sites")) {
-                this.discoveries.put("sites", new JSONArray());
-            }
             this.discoveries.getJSONArray("sites").put(discovery);
         }
     }
@@ -89,21 +81,15 @@ public class Drone {
     }
 
     public boolean isBatteryLow() {
-        if (this.currBattery.compareTo(this.threshhold) <  0){
-            isBatteryLow = true;
-            return isBatteryLow; 
-        }
-        return isBatteryLow; 
+        return this.currBattery < this.threshhold;
     }
 
-    
     public String fly(){
         this.decision.put("action","fly"); 
         return decision.toString(); 
     }
 
     public String heading(Direction changeDirection){
-        
         this.currDir = changeDirection;
         this.decision = new JSONObject();
         this.parameters = new JSONObject();
@@ -112,14 +98,10 @@ public class Drone {
         this.parameters.put("direction", changeDirection);
         this.decision.put("parameters", this.parameters);
 
-        
-        
         return decision.toString();
     }
 
-
     public String echo(Direction echoDirection){
-
         this.echoDirection = echoDirection; 
         
         this.decision = new JSONObject();
@@ -145,7 +127,6 @@ public class Drone {
         this.status = status; 
     }
 
-
     public String getStatus(){
         return status; 
     }
@@ -155,14 +136,10 @@ public class Drone {
     }
 
     public void updateDrone(Integer cost, String status){
-
         setBattery(cost);  
-        
         setStatus(status); 
-
     }
 
-    //Below are the methods to adjust the last facing direction before beginning vertical search
     public void setPrevHorizontalDirection(Direction dir) {
         this.prevHorizontalDirection = dir;
     }
@@ -171,7 +148,6 @@ public class Drone {
         return this.prevHorizontalDirection;
     }
 
-    //Below are the methods to keep track of falling off the island after horizontal search completion
     public void incrementSequentialOutOfRange() {
         this.sequentialOutOfRange++;
     }
@@ -191,12 +167,4 @@ public class Drone {
     public void setVertSearch(Boolean vertSearch){
         this.vertSearch = vertSearch;
     }
-
-    
-
-
-    
-
-
-
 }
