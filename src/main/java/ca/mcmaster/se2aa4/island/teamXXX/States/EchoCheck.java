@@ -53,7 +53,7 @@ public class EchoCheck extends State {
             if (count >= 2) {
                 logger.info("EchoCheck: Two consecutive OUT_OF_RANGE echoes.");
                 Direction dir = drone.getFacingDirection();
-                if(drone.getVertSearch() && (dir.equals(Direction.N) || dir.equals(Direction.S))){
+                if(drone.getVertSearch() && (dir.equals(Direction.N) || dir.equals(Direction.N))){
                     drone.setVertSearch(false);
                     logger.info("Vertical search conditions met, Flyforward once before IslandEdge.");
                     return stateMachine.FlyForward;
