@@ -9,6 +9,7 @@ import ca.mcmaster.se2aa4.island.teamXXX.Drone;
 import ca.mcmaster.se2aa4.island.teamXXX.Island;
 import ca.mcmaster.se2aa4.island.teamXXX.MissionControl;
 import ca.mcmaster.se2aa4.island.teamXXX.StateMachine;
+import ca.mcmaster.se2aa4.island.teamXXX.enums.Direction;
 
 public class FlyForward extends State {
      
@@ -38,6 +39,18 @@ public class FlyForward extends State {
 
         if (!status.equals("OK")) {
             return stateMachine.LossOfSignal; 
+        }
+
+        if(drone.getSequentialOutOfRange() == 2){
+            Direction dir = drone.getFacingDirection();
+            if(drone.getVertSearch() && (dir.equals(Direction.N) || dir.equals(Direction.S))){
+                drone.setVertSearch(false);
+                logger.info("Vertical search conditions met, Flyforward once before IslandEdge.");
+                return stateMachine.FlyForward;
+            }
+            drone.resetSequentialOutOfRange();
+            logger.info("Vertical search/Horz conditions met, Flyforward once before IslandEdge.");
+            return stateMachine.IslandEdge;
         }
 
         drone.resetSequentialOutOfRange();

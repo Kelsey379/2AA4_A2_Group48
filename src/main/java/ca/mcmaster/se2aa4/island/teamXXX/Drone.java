@@ -24,6 +24,8 @@ public class Drone {
 
     private int sequentialOutOfRange = 0;
 
+    private Boolean vertSearch = true;
+
 
     private Direction prevHorizontalDirection; //store last horz direction prior to beginning verticsl search
 
@@ -136,16 +138,26 @@ public class Drone {
 
     //Below are the methods to keep track of falling off the island after horizontal search completion
     public void incrementSequentialOutOfRange() {
-        sequentialOutOfRange++;
+        this.sequentialOutOfRange++;
     }
 
     public int getSequentialOutOfRange() {
-        return sequentialOutOfRange;
+        return this.sequentialOutOfRange;
     }
 
     public void resetSequentialOutOfRange() {
-        sequentialOutOfRange = 0;
+        this.sequentialOutOfRange = 0;
     }
+
+    public Boolean getVertSearch(){
+        return this.vertSearch;
+    }
+
+    public void setVertSearch(Boolean vertSearch){
+        this.vertSearch = vertSearch;
+    }
+
+    
 
 
     

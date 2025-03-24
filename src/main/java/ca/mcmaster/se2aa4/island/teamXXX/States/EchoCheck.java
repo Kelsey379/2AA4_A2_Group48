@@ -50,8 +50,8 @@ public class EchoCheck extends State {
             logger.info("EchoCheck: OUT_OF_RANGE detected. Count = " + count);
         
             if (count >= 2) {
-                logger.info("EchoCheck: Two consecutive OUT_OF_RANGE echoes. Transitioning to IslandEdge.");
-                return stateMachine.IslandEdge;
+                logger.info("EchoCheck: Two consecutive OUT_OF_RANGE echoes. Transitioning to FlyWord");
+                return stateMachine.FlyForward; 
             }
         
             logger.info("EchoCheck: Single OUT_OF_RANGE echo. Performing UTurn.");
