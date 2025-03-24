@@ -53,8 +53,12 @@ public class FlyForward extends State {
         }
 
         
-
-        drone.resetSequentialOutOfRange();
+        if(drone.getSequentialOutOfRange() == 2){
+            logger.info("Flew forward before restarting horizontal search");
+            drone.resetSequentialOutOfRange();
+            return stateMachine.IslandEdge;
+        }
+        
 
         if (range > 0) {
             range--;
