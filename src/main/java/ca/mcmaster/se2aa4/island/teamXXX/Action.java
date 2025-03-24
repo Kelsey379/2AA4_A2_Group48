@@ -5,6 +5,9 @@ import org.json.JSONObject;
 
 import ca.mcmaster.se2aa4.island.teamXXX.enums.Direction;
 
+// this is a class that implement the interface named ActionInterface 
+
+// it controls just changing of the direction so that it can be used by the drone class. 
 public class Action implements ActionInterface{
 
     protected Drone drone; 
@@ -13,7 +16,7 @@ public class Action implements ActionInterface{
 
     protected JSONObject decision;
 
-
+    // does not change the heading of the drone but rather the direction ( and this direction can be used for echoing or chaning heading ) 
     @Override 
     public Direction turnLeft(Direction currDir){
         switch(currDir){
@@ -33,6 +36,8 @@ public class Action implements ActionInterface{
         return currDir;
     }
 
+
+    // does not change the heading of the drone but rather the direction ( and this direction can be used for echoing or chaning heading ) 
     @Override 
     public Direction turnRight(Direction currDir){
         switch(currDir){

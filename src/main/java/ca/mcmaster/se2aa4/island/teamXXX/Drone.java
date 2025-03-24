@@ -34,11 +34,15 @@ public class Drone {
 
     public JSONObject discoveries = new JSONObject();
 
+    // constructor for the drone and all the attributes that are important for the operation of the drone 
+
     public Drone(Direction startDir, Integer startBattery){
 
         this.currDir = startDir; 
         this.currBattery = startBattery; 
+        //  the above 2 attributes are passed as parameters when it is initialzied 
         this.threshhold = 50; 
+
         this.currAction = new Action(); 
         this.decision = new JSONObject(); 
         this.parameters = new JSONObject();  
@@ -46,6 +50,7 @@ public class Drone {
         this.discoveries.put("creeks", new JSONArray());
         this.discoveries.put("sites", new JSONArray());
     }
+
 
     public JSONObject getDiscoveries() {
         return this.discoveries;
@@ -60,18 +65,22 @@ public class Drone {
         }
     }
 
+    // this is used for possibly changing the heading of the drone 
     public Action getCurrAction(){
         return this.currAction; 
-    }
-
+    }   
+    
+    // facingDirection is for the front Nose of the drone, need to know which way FlyForward will take the drone 
+    // since other direcitons of the drone can be echoed
     public Direction getFacingDirection(){
         return this.currDir; 
     }
-
+    // setter method for the nose of the drone 
     public void setFacingDirection(Direction currDir){
         this.currDir = currDir; 
     }
-
+    
+    // Integer return type to avoid primitive obsession 
     public Integer getBattery(){
         return this.currBattery; 
     }
@@ -80,15 +89,18 @@ public class Drone {
         this.currBattery -= cost; 
     }
 
+    // conditional check to see if the drone needs to head home or stop safely w/o loss of signla 
     public boolean isBatteryLow() {
         return this.currBattery < this.threshhold;
     }
 
+    // allows drone to move forward
     public String fly(){
         this.decision.put("action","fly"); 
         return decision.toString(); 
     }
 
+    // changes the heading of the drone given a new direction 
     public String heading(Direction changeDirection){
         this.currDir = changeDirection;
         this.decision = new JSONObject();
@@ -101,6 +113,7 @@ public class Drone {
         return decision.toString();
     }
 
+    // drone action to use echo to get the range of the neartest island 
     public String echo(Direction echoDirection){
         this.echoDirection = echoDirection; 
         
@@ -113,16 +126,19 @@ public class Drone {
         return this.decision.toString(); 
     }
 
+    // drone action to see what the biome type is under its current locatoin 
     public String scan(){
         this.decision.put("action","scan");
         return this.decision.toString(); 
     }
 
+    // drone goes home ( simulation ends )
     public String stop() {
         this.decision.put("action","stop");
         return this.decision.toString(); 
     }
 
+    // setter and methods used to check if doing a certain action with the drone causes it to lose signal 
     public void setStatus(String status){
         this.status = status; 
     }
@@ -131,14 +147,14 @@ public class Drone {
         return status; 
     }
 
-    public void turnRight(Direction currDir) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
+    // updates the attributes of the dorne that need to be tracked 
     public void updateDrone(Integer cost, String status){
         setBattery(cost);  
         setStatus(status); 
     }
+
+    // following methods are quite self explnatory. 
+
 
     public void setPrevHorizontalDirection(Direction dir) {
         this.prevHorizontalDirection = dir;

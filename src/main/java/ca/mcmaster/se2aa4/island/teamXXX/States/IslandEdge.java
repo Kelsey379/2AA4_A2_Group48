@@ -61,6 +61,7 @@ public class IslandEdge extends State {
         if (newDir != null) {
             drone.setFacingDirection(newDir);
             String currAction = drone.heading(newDir);
+            // sets the action that needs to be taken by the drone and called by the takeDescision method.
             missionControl.takeDecision(currAction);
             logger.info("Changing to vertical search");
             return;

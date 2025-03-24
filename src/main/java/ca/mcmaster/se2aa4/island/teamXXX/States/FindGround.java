@@ -30,14 +30,19 @@ public class FindGround extends State {
         
         String resultAction = drone.echo(action.turnLeft(currDir)); 
         logger.info("echoing from findground");
+        // sets the action that needs to be taken by the drone and called by the takeDescision method.
         missionControl.takeDecision(resultAction);
 
     }
     
     @Override
     public State exitState(){
+        // gets the responnse from the acknowledgeResults game engine 
         JSONObject response = missionControl.getResponse();
         logger.info("Received response is: " + response);
+
+
+        // condiitonal checks to check the validiity of the response and if can be parsed fr certain informatoin 
         if (response == null) {
             logger.error("No response received from mission control.");
             return stateMachine.getState();
@@ -61,6 +66,7 @@ public class FindGround extends State {
 
         String found = extras.has("found") ? extras.getString("found") : "";
 
+        // update the attributes of the dorne 
         drone.updateDrone(cost, status);
     
         if(!status.equals("OK")){
@@ -68,6 +74,7 @@ public class FindGround extends State {
             return stateMachine.LossOfSignal; 
         }
 
+        // clears the resopnse of the game engine from the previous actions so nothing lingers for next action results 
         missionControl.setResponse(null);
 
         if (found.equals("GROUND")) {
@@ -76,10 +83,12 @@ public class FindGround extends State {
             
             island.setRange(range); 
 
+            // if found ground, transitions to turning the nose of the drone facing towards the island 
             return stateMachine.FoundGroundTurnEast;
         } else {
             logger.info("The drone is facing " + drone.getFacingDirection());
             logger.info("Transitioning to NoGroundFlySouth");
+            // move to the state that continues moving down the island 
             return stateMachine.NoGroundFlySouth;
         }
     }

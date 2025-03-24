@@ -24,16 +24,22 @@ public class FoundGroundTurnEast extends State {
         drone.setFacingDirection(Direction.E);
         
         String currAction = drone.heading(Direction.E); 
+        // sets the action that needs to be taken by the drone and called by the takeDescision method.
         missionControl.takeDecision(currAction);
     }
 
     @Override
     public State exitState() {
+        // gets acknowledgeResults from the resulting exeucte state 
         JSONObject response = missionControl.getResponse();
         
         Integer cost = response.getInt("cost"); 
         String status = response.getString("status"); 
+
+        // updates drone attributes
         drone.updateDrone(cost, status);
+
+        // conditional checks to determeine the validiity of the drone and based off that determeine the next states 
 
         if (!status.equals("OK")) {
             logger.info("The drone is facing " + drone.getFacingDirection());
@@ -42,6 +48,7 @@ public class FoundGroundTurnEast extends State {
         }
         logger.info("The drone is facing " + drone.getFacingDirection());
         logger.info("Transitioning to FlyForward state.");
+        // found island, status is fine, move towards the island
         return stateMachine.FlyForward; 
     }
 }

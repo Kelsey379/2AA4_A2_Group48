@@ -1,5 +1,8 @@
 package ca.mcmaster.se2aa4.island.teamXXX.enums;
 
+
+// enum class, that is able to keep track of the drone direction 
+// it is initialzied in the explorer class
 public enum Direction {
     N("N"), 
     S("S"), 
@@ -7,7 +10,7 @@ public enum Direction {
     W("W"); 
 
     private final String currDirection; 
-
+    // consutrctor, startDir is the Direction the drone is facing when the simulation begins 
     Direction(String startDir) {
         this.currDirection = startDir; 
     }
@@ -43,6 +46,7 @@ public enum Direction {
         return this.currDirection; 
     }
 
+// uses "O" of SOLID, open closed principles 
 
 
 }

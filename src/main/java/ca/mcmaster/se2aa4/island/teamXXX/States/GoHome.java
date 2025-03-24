@@ -23,6 +23,7 @@ public class GoHome extends State{
 
         String resultAction = drone.stop(); 
         logger.info("** Drone Discoveries: " + drone.getDiscoveries().toString());
+        // sets the action that needs to be taken by the drone and called by the takeDescision method.
         missionControl.takeDecision(resultAction); 
 
        
@@ -30,7 +31,7 @@ public class GoHome extends State{
 
     @Override 
     public State exitState(){
-
+        // this is an accepting state, the simulation needs to terminate if ever reached, should never have a next state since it goes home
         return null; 
     }
     

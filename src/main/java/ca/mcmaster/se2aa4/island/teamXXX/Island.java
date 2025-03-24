@@ -12,12 +12,14 @@ public class Island {
 
     private boolean hasLandedOnIsland = false; 
 
+    // Constructor, this class keeps track if sites and creeks have been found or not 
     public Island() {
         this.foundCreek = false; 
         this.foundSites = false; 
         this.range = 0;
     }
-
+    
+    // found or not foundc creeks
     public void setCreeks(Boolean creeks) {
         this.foundCreek = creeks; 
     }
@@ -34,17 +36,20 @@ public class Island {
         return this.foundSites; 
     }
 
+    // used to update the attribiutes of the island class, has it found creeks or sites 
+
     public void updateIsland(Boolean foundCreek, Boolean foundSite) {
        
         if (foundCreek) this.foundCreek = true;
         if (foundSite) this.foundSites = true;
     }
     
-
+    // stores the range of the nearest next island 
     public int getRange() {
         return this.range;
     }
     
+
     public void setRange(int range) {
         this.range = range;
     }

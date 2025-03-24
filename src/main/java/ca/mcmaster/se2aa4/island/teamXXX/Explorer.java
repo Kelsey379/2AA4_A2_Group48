@@ -43,7 +43,7 @@ public class Explorer implements IExplorerRaid {
         logger.info("The drone is facing {}", direction);
         logger.info("Battery level is {}", batteryLevel);
 
-
+        // initializes all the objects that are needed for the simulation of searching the island 
         this.drone = new Drone(this.startDir, batteryLevel);
         this.currAction = this.drone.getCurrAction(); 
         this.island = new Island(); 
@@ -52,7 +52,7 @@ public class Explorer implements IExplorerRaid {
         this.stateMachine = new StateMachine(this.drone, this.currAction, this.island, this.startDir, this.missionControl); 
 
         
-
+        
         this.algorithm = new Algorithm(this.drone, this.currAction, this.island, this.startDir, this.missionControl, this.stateMachine); 
 
 

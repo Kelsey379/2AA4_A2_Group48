@@ -26,6 +26,7 @@ public class Scan extends State {
     @Override
     public void executeState() {
         String resultAction = drone.scan();
+        // sets the action that needs to be taken by the drone and called by the takeDescision method.
         missionControl.takeDecision(resultAction);
     }
 
@@ -35,6 +36,8 @@ public class Scan extends State {
         foundCreek = false;
         foundSite = false;
         foundOcean = false;
+
+        // acknowledgeResults from the current resulting executestate 
 
         JSONObject response = missionControl.getResponse();
         Integer cost = response.getInt("cost");
@@ -49,25 +52,29 @@ public class Scan extends State {
 
         logger.info("** Scan received biomes array: " + biomes.toString());
 
+        // checks to see if the current scan found a site or a creeks 
         foundCreek = creeks.length() > 0;
         foundSite = sites.length() > 0;
         island.updateIsland(foundCreek, foundSite); 
 
+        // if it found a creels update the discoveries 
         if (foundCreek) {
             String creek = creeks.getString(0);  
             drone.addDiscovery("creeks", creek);  
             logger.info("** Found a creek. Adding to discoveries.");
         }
-    
+        // if found sites update the discoveries 
         if (foundSite) {
             String site = sites.getString(0);  
             drone.addDiscovery("sites", site);  
         }
 
+        // does a biome exist? 
         if (biomes.length() > 0) {
             String biomeType = biomes.getString(0);
             logger.info("** First biome detected: " + biomeType);
 
+            // check to see if it found ocean because it concerns deteremining the next state 
             if ("OCEAN".equals(biomeType)) {
                 foundOcean = true;
                 logger.info("** Ocean detected as first biome.");
@@ -82,13 +89,17 @@ public class Scan extends State {
         // === Decision Logic ===
         if (foundOcean && island.hasLandedOnIsland()) {
             logger.info("** Ocean detected & drone already on island. Going to EchoCheck state.");
+            // check if there is an viable ground ahead? 
             return stateMachine.EchoCheck;
         } else if (foundOcean) { //fallback
+            // there is no viable ground ahead, and the drone is not on an island anymore ( just ocean )
             logger.info("** Ocean detected before landing. Transitioning to UTurn.");
+            // u turn ( not on the same row however but one row down )
             return stateMachine.UTurn;
         }
 
         logger.info("** Transition to FlyForward state");
+        // move to next part of the island 
         return stateMachine.FlyForward;
     }
 }

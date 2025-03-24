@@ -19,7 +19,7 @@ public class LossOfSignal extends State {
     @Override
     public void executeState(){
        String resultAction = drone.stop(); 
-
+       // sets the action that needs to be taken by the drone and called by the takeDescision method.
        missionControl.takeDecision(resultAction); 
       
 
@@ -34,6 +34,7 @@ public class LossOfSignal extends State {
         String status = response.getString("status"); 
         drone.updateDrone(cost, status);
 
+        // this is a rejection state, if ever reached the drone cannot be communicated with anymore and it needs to have no next state 
         return null; 
 
     }

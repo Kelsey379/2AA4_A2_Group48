@@ -22,11 +22,13 @@ public class EchoCheck extends State {
     @Override
     public void executeState() {
         String echoAction = drone.echo(drone.getFacingDirection());
+        // sets the action that needs to be taken by the drone and called by the takeDescision method.
         missionControl.takeDecision(echoAction);
     }
 
     @Override
     public State exitState() {
+        // gets 
         JSONObject response = missionControl.getResponse();
         Integer cost = response.getInt("cost");
         String status = response.getString("status");

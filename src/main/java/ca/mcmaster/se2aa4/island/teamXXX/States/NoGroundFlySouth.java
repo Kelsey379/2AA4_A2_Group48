@@ -22,25 +22,30 @@ public class NoGroundFlySouth extends State {
     public void executeState() {
 
         String currAction = drone.fly(); 
+        // sets the action that needs to be taken by the drone and called by the takeDescision method.
         missionControl.takeDecision(currAction);
     }
 
     @Override
     public State exitState() {
+        // gets the acknowledgeResults from the resulting execute state drone actions 
         JSONObject response = missionControl.getResponse();
 
         Integer cost = response.getInt("cost"); 
         String status = response.getString("status"); 
-
+        
+        // update the attributes of the drone 
         drone.updateDrone(cost, status);
 
         if (!status.equals("OK")) {
             logger.info("The drone is facing " + drone.getFacingDirection());
             logger.info("Transitioning to LossOfSignal state.");
+            // if drone signal lost, move to the rejection / termination state 
             return stateMachine.LossOfSignal;
         }
         logger.info("The drone is facing " + drone.getFacingDirection());
         logger.info("Transitioning back to FindGround state.");
+        // sets the next 
         return stateMachine.FindGround;
     }
 }
