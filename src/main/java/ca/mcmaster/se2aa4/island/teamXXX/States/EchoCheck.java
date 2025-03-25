@@ -9,6 +9,7 @@ import ca.mcmaster.se2aa4.island.teamXXX.Drone;
 import ca.mcmaster.se2aa4.island.teamXXX.Island;
 import ca.mcmaster.se2aa4.island.teamXXX.MissionControl;
 import ca.mcmaster.se2aa4.island.teamXXX.StateMachine;
+import ca.mcmaster.se2aa4.island.teamXXX.enums.Direction;
 
 public class EchoCheck extends State {
 
@@ -53,12 +54,12 @@ public class EchoCheck extends State {
         
             if (count >= 2) { //if out of range is scanned back 2 back, drone has fallen off island
                 logger.info("EchoCheck: Two consecutive OUT_OF_RANGE echoes.");
-                /*Direction dir = drone.getFacingDirection();
+                Direction dir = drone.getFacingDirection();
                 if(drone.getVertSearch() && (dir.equals(Direction.N) || dir.equals(Direction.S))){ //in the case a verticals earch has been completed, move forward one more time 
                     drone.setVertSearch(false);
                     logger.info("Vertical search conditions met, Flyforward once before IslandEdge.");
                     return stateMachine.FlyForward;
-                }*/
+                }
                 drone.resetSequentialOutOfRange(); //back 2 back out of range echoes should be reset
                 logger.info("Vertical search/Horz conditions met, Flyforward once before IslandEdge.");
                 return stateMachine.IslandEdge; 
@@ -67,8 +68,8 @@ public class EchoCheck extends State {
             logger.info("EchoCheck: Single OUT_OF_RANGE echo. Performing UTurn.");
             return stateMachine.UTurn;
         }
-        else if ("GROUND".equals(echoResult)) { //In case of an ocean scan followed by echoing ground, mfly forward until ground is reached
-            drone.resetSequentialOutOfRange();
+        else if ("GROUND".equals(echoResult)) { //In case of an ocean scan followed by echoing ground, fly forward until ground is reached
+            drone.resetSequentialOutOfRange(); //if theres ground available after scanning ocean, reset back 2 back out of range echoes to 0
             island.setRange(range);
             logger.info("EchoCheck: GROUND detected. Resetting OUT_OF_RANGE count. Transitioning to FlyForward.");
             return stateMachine.FlyForward;
