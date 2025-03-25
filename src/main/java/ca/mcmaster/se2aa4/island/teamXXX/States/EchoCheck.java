@@ -72,7 +72,7 @@ public class EchoCheck extends State {
             drone.resetSequentialOutOfRange(); //if theres ground available after scanning ocean, reset back 2 back out of range echoes to 0
             island.setRange(range);
             logger.info("EchoCheck: GROUND detected. Resetting OUT_OF_RANGE count. Transitioning to FlyForward.");
-            return stateMachine.FlyForward;
+            return stateMachine.FlyForward; //switch to fly forward
         }        
         else {
             //Fallback 
