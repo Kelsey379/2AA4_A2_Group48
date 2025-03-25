@@ -58,12 +58,6 @@ public class EchoCheck extends State {
         
             if (count >= 2) { //if out of range is scanned back 2 back, drone has fallen off island
                 logger.info("EchoCheck: Two consecutive OUT_OF_RANGE echoes.");
-                Direction dir = drone.getFacingDirection();
-                if(drone.getVertSearch() && (dir.equals(Direction.N) || dir.equals(Direction.S))){ //in the case a search is completed on the top or right side of the island, move forward one more time 
-                    drone.setVertSearch(false);
-                    logger.info("Vertical search conditions met, Flyforward once before IslandEdge.");
-                    return stateMachine.FlyForward;
-                }
                 drone.resetSequentialOutOfRange(); //back 2 back out of range echoes should be reset
                 logger.info("Vertical search/Horz conditions met, Flyforward once before IslandEdge.");
                 return stateMachine.IslandEdge; 

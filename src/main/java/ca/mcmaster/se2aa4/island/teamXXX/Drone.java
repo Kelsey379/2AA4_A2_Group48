@@ -28,7 +28,6 @@ public class Drone {
 
     private int sequentialOutOfRange = 0;
 
-    private Boolean vertSearch = true;
 
     private Direction prevHorizontalDirection; //store last horz direction prior to beginning vertical search
 
@@ -180,11 +179,4 @@ public class Drone {
         this.sequentialOutOfRange = 0;
     }
 
-    public Boolean getVertSearch(){
-        return this.vertSearch;
-    }
-
-    public void setVertSearch(Boolean vertSearch){
-        this.vertSearch = vertSearch;
-    }
 }
