@@ -48,7 +48,7 @@ public class EchoCheck extends State {
 
         if ("OUT_OF_RANGE".equals(echoResult)) { //if an ocean is scanned and theres no ground in range, move towards u-turn 
             drone.incrementSequentialOutOfRange();
-            int count = drone.getSequentialOutOfRange();
+            int count = drone.getSequentialOceanOfRange();
         
             logger.info("EchoCheck: OUT_OF_RANGE detected. Count = " + count);
         
@@ -56,7 +56,7 @@ public class EchoCheck extends State {
                 logger.info("EchoCheck: Two consecutive OUT_OF_RANGE echoes.");
                 Direction dir = drone.getFacingDirection();
                 if(drone.getVertSearch() && (dir.equals(Direction.N) || dir.equals(Direction.S))){ //in the case a verticals earch has been completed, move forward one more time 
-                    drone.setVertSearch(false);
+                
                     logger.info("Vertical search conditions met, Flyforward once before IslandEdge.");
                     return stateMachine.FlyForward;
                 }
@@ -68,11 +68,11 @@ public class EchoCheck extends State {
             logger.info("EchoCheck: Single OUT_OF_RANGE echo. Performing UTurn.");
             return stateMachine.UTurn;
         }
-        else if ("GROUND".equals(echoResult)) { //In case of an ocean scan followed by echoing ground, fly forward until ground is reached
-            drone.resetSequentialOutOfRange(); //if theres ground available after scanning ocean, reset back 2 back out of range echoes to 0
+        else if ("GROUND".equals(echoResult)) { //In case of an ocean scan followed by echoing ground, mfly forward until ground is reached
+            drone.resetSequentialOutOfRange();
             island.setRange(range);
             logger.info("EchoCheck: GROUND detected. Resetting OUT_OF_RANGE count. Transitioning to FlyForward.");
-            return stateMachine.FlyForward; //switch to fly forward
+            return stateMachine.FlyForward;
         }        
         else {
             //Fallback 
