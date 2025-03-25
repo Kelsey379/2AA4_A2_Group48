@@ -29,7 +29,7 @@ public class Drone {
     private int sequentialOutOfRange = 0;
 
 
-    private Direction prevHorizontalDirection; //store last horz direction prior to beginning vertical search
+    private Direction prevHorizontalDirection; //store last horizontal direction prior to beginning vertical search
 
     public JSONObject discoveries = new JSONObject();
 
@@ -39,7 +39,7 @@ public class Drone {
 
         this.currDir = startDir; 
         this.currBattery = startBattery; 
-        //  the above 2 attributes are passed as parameters when it is initialzied 
+        //  the above 2 attributes are passed as parameters when it is initialized
         this.threshhold = 50; 
 
         this.currAction = new Action(); 
@@ -92,7 +92,7 @@ public class Drone {
         this.currBattery -= cost; 
     }
 
-    // conditional check to see if the drone needs to head home or stop safely w/o loss of signla 
+    // conditional check to see if the drone needs to head home or stop safely w/o loss of signal
     public boolean isBatteryLow() {
         return this.currBattery < this.threshhold;
     }
@@ -116,7 +116,7 @@ public class Drone {
         return decision.toString();
     }
 
-    // drone action to use echo to get the range of the neartest island 
+    // drone action to use echo to get the range of the nearest island
     public String echo(Direction echoDirection){
         this.echoDirection = echoDirection; 
         
@@ -129,7 +129,7 @@ public class Drone {
         return this.decision.toString(); 
     }
 
-    // drone action to see what the biome type is under its current locatoin 
+    // drone action to see what the biome type is under its current location
     public String scan(){
         this.decision.put("action","scan");
         return this.decision.toString(); 
@@ -156,7 +156,7 @@ public class Drone {
         setStatus(status); 
     }
 
-    // following methods are quite self explnatory. 
+    // following methods are quite self-explanatory.
 
 
     public void setPrevHorizontalDirection(Direction dir) {

@@ -22,7 +22,7 @@ public class EchoCheck extends State {
     @Override
     public void executeState() {
         String echoAction = drone.echo(drone.getFacingDirection());
-        // sets the action that needs to be taken by the drone and called by the takeDescision method.
+        // sets the action that needs to be taken by the drone and called by the takeDecision method.
         missionControl.takeDecision(echoAction);
     }
 
@@ -50,7 +50,7 @@ public class EchoCheck extends State {
             return stateMachine.GoHome;  // Transition to GoHome if battery is low
         }
 
-        if ("OUT_OF_RANGE".equals(echoResult)) { //if an ocean is scanned and theres no ground in range, move towards u-turn 
+        if ("OUT_OF_RANGE".equals(echoResult)) { //if an ocean is scanned and there's no ground in range, move towards u-turn
             drone.incrementSequentialOutOfRange();
             int count = drone.getSequentialOutOfRange();
         
@@ -66,7 +66,7 @@ public class EchoCheck extends State {
             logger.info("EchoCheck: Single OUT_OF_RANGE echo. Performing UTurn.");
             return stateMachine.UTurn;
         }
-        else if ("GROUND".equals(echoResult)) { //In case of an ocean scan followed by echoing ground, mfly forward until ground is reached
+        else if ("GROUND".equals(echoResult)) { //In case of an ocean scan followed by echoing ground, fly forward until ground is reached
             drone.resetSequentialOutOfRange();
             island.setRange(range);
             logger.info("EchoCheck: GROUND detected. Resetting OUT_OF_RANGE count. Transitioning to FlyForward.");

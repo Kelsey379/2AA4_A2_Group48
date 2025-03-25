@@ -30,7 +30,7 @@ public class Turn extends State {
         logger.info("Drone turned from {} to {}", currentDirection, newDirection);
 
         String currAction = drone.heading(newDirection);
-        // sets the action that needs to be taken by the drone and called by the takeDescision method.
+        // sets the action that needs to be taken by the drone and called by the takeDecision method.
         missionControl.takeDecision(currAction);
     }
 

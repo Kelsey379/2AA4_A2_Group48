@@ -10,7 +10,7 @@ public enum Direction {
     W("W"); 
 
     private final String currDirection; 
-    // consutrctor, startDir is the Direction the drone is facing when the simulation begins 
+    // constructor, startDir is the Direction the drone is facing when the simulation begins
     Direction(String startDir) {
         this.currDirection = startDir; 
     }
@@ -37,10 +37,6 @@ public enum Direction {
         // Direction."N", Direction.N there is a diff
                 
     }
-
-    // public String getDir(){
-    //     return this.currDirection; 
-    // }
 
     public String getDir(){
         return this.currDirection; 

@@ -19,7 +19,7 @@ public class Island {
         this.range = 0;
     }
     
-    // found or not foundc creeks
+    // found or not found creeks
     public void setCreeks(Boolean creeks) {
         this.foundCreek = creeks; 
     }
@@ -36,7 +36,7 @@ public class Island {
         return this.foundSites; 
     }
 
-    // used to update the attribiutes of the island class, has it found creeks or sites 
+    // used to update the attributes of the island class, has it found creeks or sites
 
     public void updateIsland(Boolean foundCreek, Boolean foundSite) {
        

@@ -75,7 +75,7 @@ public class Scan extends State {
             String biomeType = biomes.getString(0);
             logger.info("** First biome detected: " + biomeType);
 
-            // check to see if it found ocean because it concerns deteremining the next state 
+            // check to see if it found ocean because it concerns determining the next state
             if ("OCEAN".equals(biomeType)) {
                 foundOcean = true;
                 logger.info("** Ocean detected as first biome.");

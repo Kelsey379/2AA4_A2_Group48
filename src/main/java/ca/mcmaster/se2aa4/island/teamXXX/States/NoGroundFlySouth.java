@@ -22,7 +22,7 @@ public class NoGroundFlySouth extends State {
     public void executeState() {
 
         String currAction = drone.fly(); 
-        // sets the action that needs to be taken by the drone and called by the takeDescision method.
+        // sets the action that needs to be taken by the drone and called by the takeDecision method.
         missionControl.takeDecision(currAction);
     }
 

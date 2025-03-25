@@ -49,8 +49,8 @@ public class StateMachine {
     public Direction currDir; 
 
 
-            // CONSTRUCTOR: is initialzied by the explrorer class, and the function of this constructor is to
-            // initizalize all the states that the state machine can step through and that the statemachine can change its currState
+            // CONSTRUCTOR: is initialized by the explorer class, and the function of this constructor is to
+            // initialize all the states that the state machine can step through and that the statemachine can change its currState
 
 
         public StateMachine(Drone drone, Action action, Island island, Direction currDir, MissionControl missionControl) {
@@ -82,7 +82,7 @@ public class StateMachine {
 
         }
 
-        // able to set the nextState that the algorithm will needs to step through 
+        // able to set the nextState that the algorithm will need to step through
         public void setState(State state) {
             this.currentState = state;
         }

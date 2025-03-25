@@ -30,7 +30,7 @@ public class FindGround extends State {
         
         String resultAction = drone.echo(action.turnLeft(currDir)); 
         logger.info("echoing from findground");
-        // sets the action that needs to be taken by the drone and called by the takeDescision method.
+        // sets the action that needs to be taken by the drone and called by the takeDecision method.
         missionControl.takeDecision(resultAction);
 
     }
@@ -42,7 +42,7 @@ public class FindGround extends State {
         logger.info("Received response is: " + response);
 
 
-        // condiitonal checks to check the validiity of the response and if can be parsed fr certain informatoin 
+        // conditional checks to check the validity of the response and if it can be parsed for certain information
         if (response == null) {
             logger.error("No response received from mission control.");
             return stateMachine.getState();
@@ -74,7 +74,7 @@ public class FindGround extends State {
             return stateMachine.LossOfSignal; 
         }
 
-        // clears the resopnse of the game engine from the previous actions so nothing lingers for next action results 
+        // clears the response of the game engine from the previous actions so nothing lingers for next action results
         missionControl.setResponse(null);
 
         if (found.equals("GROUND")) {

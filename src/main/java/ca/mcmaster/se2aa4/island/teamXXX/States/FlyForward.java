@@ -22,13 +22,13 @@ public class FlyForward extends State {
     @Override 
     public void executeState() {
         String resultAction = drone.fly(); 
-        // sets the action that needs to be taken by the drone and called by the takeDescision method.
+        // sets the action that needs to be taken by the drone and called by the takeDecision method.
         missionControl.takeDecision(resultAction); 
     }
 
     @Override
     public State exitState(){
-        // the response getrs the acknowledgeResults ( the result of executing this state )
+        // the response gets the acknowledgeResults ( the result of executing this state )
         JSONObject response = missionControl.getResponse(); 
 
         range = island.getRange(); 
@@ -36,7 +36,7 @@ public class FlyForward extends State {
         Integer cost = response.getInt("cost"); 
         String status = response.getString("status"); 
 
-        // gets the attributes that åre neededed to update the status of the drone 
+        // gets the attributes that åre needed to update the status of the drone
         drone.updateDrone(cost, status);
 
 
@@ -61,7 +61,7 @@ public class FlyForward extends State {
             island.setHasLandedOnIsland(true); 
             logger.info("The drone is facing " + drone.getFacingDirection());
             logger.info("Transition to Scan state.");
-            // if not on OCEAN biome then continue to scanning this island since it mihgt contain a site or creeks.
+            // if not on OCEAN biome then continue to scanning this island since it might contain a site or creeks.
             return stateMachine.Scan; 
         }
     }
