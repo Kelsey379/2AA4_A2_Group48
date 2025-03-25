@@ -28,7 +28,6 @@ public class EchoCheck extends State {
 
     @Override
     public State exitState() {
-        // gets 
         JSONObject response = missionControl.getResponse();
         Integer cost = response.getInt("cost");
         String status = response.getString("status");
@@ -46,17 +45,22 @@ public class EchoCheck extends State {
             return stateMachine.LossOfSignal;
         }
 
+        if (drone.isBatteryLow()) {
+            logger.info("** Battery level is below threshold. Transitioning to GoHome state.");
+            return stateMachine.GoHome;  // Transition to GoHome if battery is low
+        }
+
         if ("OUT_OF_RANGE".equals(echoResult)) { //if an ocean is scanned and theres no ground in range, move towards u-turn 
             drone.incrementSequentialOutOfRange();
-            int count = drone.getSequentialOceanOfRange();
+            int count = drone.getSequentialOutOfRange();
         
             logger.info("EchoCheck: OUT_OF_RANGE detected. Count = " + count);
         
             if (count >= 2) { //if out of range is scanned back 2 back, drone has fallen off island
                 logger.info("EchoCheck: Two consecutive OUT_OF_RANGE echoes.");
                 Direction dir = drone.getFacingDirection();
-                if(drone.getVertSearch() && (dir.equals(Direction.N) || dir.equals(Direction.S))){ //in the case a verticals earch has been completed, move forward one more time 
-                
+                if(drone.getVertSearch() && (dir.equals(Direction.N) || dir.equals(Direction.S))){ //in the case a search is completed on the top or right side of the island, move forward one more time 
+                    drone.setVertSearch(false);
                     logger.info("Vertical search conditions met, Flyforward once before IslandEdge.");
                     return stateMachine.FlyForward;
                 }

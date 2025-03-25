@@ -40,9 +40,6 @@ public class FlyForward extends State {
         drone.updateDrone(cost, status);
 
 
-        // conditional checks to determine the next state 
-
-
         if (!status.equals("OK")) {
             return stateMachine.LossOfSignal; 
         }

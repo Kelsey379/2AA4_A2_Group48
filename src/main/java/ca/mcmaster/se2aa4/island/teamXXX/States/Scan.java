@@ -67,6 +67,7 @@ public class Scan extends State {
         if (foundSite) {
             String site = sites.getString(0);  
             drone.addDiscovery("sites", site);  
+            logger.info("** Found a site. Adding to discoveries.");
         }
 
         // does a biome exist? 
